@@ -4,3 +4,7 @@
 
 ## 박성인
 - 우리팀 아이디어 : https://www.notion.so/cbd5b932834a4be996f7dd28ebf902da?v=4530defb0ef149e8aafb43a34f72cbcb
+
+
+## 문경림
+- 요구사항 명세 : https://www.notion.so/bf1796a924334040845204939020d4c8
