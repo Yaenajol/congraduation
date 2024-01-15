@@ -8,3 +8,8 @@
 
 ## 문경림
 - 요구사항 명세 : https://www.notion.so/bf1796a924334040845204939020d4c8
+
+
+## 이용준
+- 기능명세서 : https://www.notion.so/8b8f2ddbbc0e4eb99d4ec671b425a948
+
