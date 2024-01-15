@@ -13,3 +13,5 @@
 ## 이용준
 - 기능명세서 : https://www.notion.so/8b8f2ddbbc0e4eb99d4ec671b425a948
 
+## 서정현
+- 얘나졸 :  https://www.notion.so/454354bff23d43ef983cb71750406aef
