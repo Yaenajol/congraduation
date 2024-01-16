@@ -17,6 +17,7 @@
 
 ## 서정현
 - 얘나졸 :  https://www.notion.so/454354bff23d43ef983cb71750406aef
+- ERD : https://www.erdcloud.com/d/ckzgeoKmup9GoQsg2
 
 ## 박소현
 - 240115 미팅 : https://www.notion.so/24-01-15-2fb74597d04d46049906e63e0fe7431f
