@@ -8,6 +8,7 @@
 
 ## 문경림
 - 요구사항 명세 : https://www.notion.so/bf1796a924334040845204939020d4c8
+- 목업 만들기 :  https://www.figma.com/file/M0WWufaQ4FQ5JIZc0tUEEu/%EC%96%98%EB%82%98%EC%A1%B8-%ED%94%BC%EA%B7%B8%EB%A7%88-%EC%9E%91%EC%97%85?type=design&node-id=0-1&mode=design&t=heJqXBBXTFowxx3L-0
 
 
 ## 이용준
