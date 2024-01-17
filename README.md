@@ -27,3 +27,4 @@
 ## 박소현
 - 240115 미팅 : https://www.notion.so/24-01-15-2fb74597d04d46049906e63e0fe7431f
 - 유저스토리 : https://www.notion.so/ea2298fb4d11445691871ebc2d65aed5
+- 코치세션 : https://www.notion.so/1-65faf3df29484ac7a057cccabebf34a6
