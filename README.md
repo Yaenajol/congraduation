@@ -41,3 +41,4 @@
 - 240115 미팅 : https://www.notion.so/24-01-15-2fb74597d04d46049906e63e0fe7431f
 - 코치세션 : https://www.notion.so/1-65faf3df29484ac7a057cccabebf34a6
 - 240118 유저스토리 수정 : https://www.notion.so/48aa0c4e08194cabbea2e687826294d3
+- api명세서 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff
