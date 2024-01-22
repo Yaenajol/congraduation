@@ -2,6 +2,11 @@
 
 import React, { useState } from 'react';
 
+
+//내부 경로
+import Frames from "../frames/Frame"
+import MemoryMessage from '../text/MemoryMessage';
+
 function ImageUpload() {
     const [images, setImages] = useState([]);
     const [mergedImage, setMergedImage] = useState(null);
@@ -68,6 +73,7 @@ function ImageUpload() {
 
     return (
         <div>
+            <Frames/>
             {images.length < 4 && (
                 <input type='file' onChange={handleImageChange} />
             )}
@@ -78,6 +84,8 @@ function ImageUpload() {
                 <button onClick={handleSubmit}>사진 전송</button>
             )}
 
+            <MemoryMessage />
+            {/* 아래 코드는 프론트에서 결과 확인용, 백엔드 요청이 성공하면 필요없음 (미리보기 기능 구현시 필요할수도) */}
             {mergedImage && (
               <div>
                 <h2>합성 이미지</h2>
