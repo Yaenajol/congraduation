@@ -1,9 +1,11 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+// import { useNavigate } from 'react-router-dom'
 
 
 // 내부 경로
 import Main from "../../assets/Main.jpg"
+import KakaoLoginButton from '../button/KakaoLoginButton';
+import Title from '../text/Title';
 
 function HomePage() {
 
@@ -19,10 +21,12 @@ function HomePage() {
   
   return (
     <div>
-      <h1>얘들아 나 졸업해</h1>
-      <img src={Main}></img>
+      {/* <h1>얘들아 나 졸업해</h1> */}
+      <Title text={"얘들아 나 졸업해"}/>
+      <img src={Main} alt="logo"></img>
       <br></br>
-      <button onClick={LoginHandler}>kakao 로그인</button>
+      <KakaoLoginButton text={"카카오 로그인 버튼"} onClick={LoginHandler}/>
+      {/* <button onClick={LoginHandler}>kakao 로그인</button> */}
     </div>
   )
 }
