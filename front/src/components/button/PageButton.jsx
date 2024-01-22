@@ -3,3 +3,9 @@
     ex)
     <- 1/23 ->
 */
+
+export default function PageButton() {
+    return (
+        <div>Page UpDown button</div>
+    )
+}
