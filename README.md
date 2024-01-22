@@ -38,6 +38,7 @@
 - 공개일 전 썸네일 : 프레임 하나 저장, 블러처리할 거임 
 - api명세:https://www.notion.so/7-47731fd2819d44da80fd729aaac93618?p=7703343dfe03452b97954ae938e70dff&pm=s
 - api명세 수정:https://www.notion.so/7-47731fd2819d44da80fd729aaac93618?p=7703343dfe03452b97954ae938e70dff&pm=s
+- jenkins 구축
 
 ## 박소현
 - 240115 미팅 : https://www.notion.so/24-01-15-2fb74597d04d46049906e63e0fe7431f
