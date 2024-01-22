@@ -1,0 +1,1 @@
+// 앨범 페이지 "/albums/{albums.pk}"
