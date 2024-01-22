@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom"
 export default function Settings() {
  
     function MyPage() {
-        <Navigate replace to="/album/edit" />
+        <Navigate to="/album/edit" />
     }
 
     return (
