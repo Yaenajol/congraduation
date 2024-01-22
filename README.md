@@ -29,6 +29,7 @@
 - 2주차 2차 컨코미팅 : https://www.notion.so/2-2-3c409f6d3631479d8efc313fe77aa5bb
 - API 명세서 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff?p=77e0b578092c4c329e587eae773833ac&pm=s
 - API 명세서 + 프로젝트 세팅 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff
+- Entity 작성 : JPA Entity 설계 및 작성 
 
 
 ## 서정현
