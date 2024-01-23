@@ -16,7 +16,7 @@ public class HealthController {
   @GetMapping("/ping")
   public ResponseEntity<Map<String,String>> ping(){
     Map<String,String> result=new HashMap<>();
-    result.put("result","pong !");
+    result.put("result","pong !!");
     return ResponseEntity.ok().body(result);
   }
 }
