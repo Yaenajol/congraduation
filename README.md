@@ -46,3 +46,4 @@
 - 240118 유저스토리 수정 : https://www.notion.so/48aa0c4e08194cabbea2e687826294d3
 - api명세서 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff
 - entity->mysql 연동
+- 카카오 소셜 로그인 中
