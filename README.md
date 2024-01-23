@@ -29,6 +29,7 @@
 - 2주차 2차 컨코미팅 : https://www.notion.so/2-2-3c409f6d3631479d8efc313fe77aa5bb
 - API 명세서 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff?p=77e0b578092c4c329e587eae773833ac&pm=s
 - API 명세서 + 프로젝트 세팅 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff
+- Entity 작성 : JPA Entity 설계 및 작성 
 
 
 ## 서정현
@@ -37,9 +38,11 @@
 - 공개일 전 썸네일 : 프레임 하나 저장, 블러처리할 거임 
 - api명세:https://www.notion.so/7-47731fd2819d44da80fd729aaac93618?p=7703343dfe03452b97954ae938e70dff&pm=s
 - api명세 수정:https://www.notion.so/7-47731fd2819d44da80fd729aaac93618?p=7703343dfe03452b97954ae938e70dff&pm=s
+- jenkins 구축
 
 ## 박소현
 - 240115 미팅 : https://www.notion.so/24-01-15-2fb74597d04d46049906e63e0fe7431f
 - 코치세션 : https://www.notion.so/1-65faf3df29484ac7a057cccabebf34a6
 - 240118 유저스토리 수정 : https://www.notion.so/48aa0c4e08194cabbea2e687826294d3
 - api명세서 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff
+- entity->mysql 연동

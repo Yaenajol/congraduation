@@ -21,6 +21,7 @@ import Memory from '../memories/Memory'
 import Main from "../../assets/Main.jpg"
 
 export default function AlbumPage() {
+
   return (
     <div>
       <h1>AlbumPage</h1>
