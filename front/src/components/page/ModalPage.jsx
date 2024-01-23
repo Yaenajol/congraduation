@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-// 이미지 import
+// 이미지 import /
 import testImage from './Sample.PNG';
 
 // ModalPage 컴포넌트 정의
