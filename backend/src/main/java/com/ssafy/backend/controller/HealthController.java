@@ -1,4 +1,4 @@
-package com.ssafy.backend.health.controller;
+package com.ssafy.backend.controller;
 
 import java.util.HashMap;
 import java.util.Map;
