@@ -1,61 +1,100 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
+import ReactModal from 'react-modal';
 
 // 이미지 import /
 import testImage from './Sample.PNG';
 
-// ModalPage 컴포넌트 정의
 const ModalPage = () => {
-  // isModalOpen 상태와 setModalOpen 함수 생성 및 초기값은 false로 설정
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // 모달이 열려있는지 여부를 state로 관리
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   // 모달 열기 이벤트 핸들러
   const openModal = () => {
-    // isModalOpen 상태를 true로 업데이트하여 모달을 엽니다.
-    setIsModalOpen(true);
+    setModalIsOpen(true);
   };
 
   // 모달 닫기 이벤트 핸들러
   const closeModal = () => {
-    // isModalOpen 상태를 false로 업데이트하여 모달을 닫습니다.
-    setIsModalOpen(false);
+    setModalIsOpen(false);
   };
 
-  // 모달 내용
-  const modalContent = (
-    <div className="modal-content">
-      {/* 이미지 표시 */}
-      <img
-        src={testImage} // 이미지 import로 변경
-        alt="Memory"
-        style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-        onClick={closeModal} // 이미지 클릭 시 모달 닫기
-      />
-    </div>
-  );
-
-  // JSX 반환
   return (
     <div>
-      {/* 작은 이미지를 보여주는 부분 */}
+      {/* 작은 이미지를 클릭하면 모달을 열 수 있도록 하는 부분 */}
       <img
         src={testImage}
-        alt="Thumbnail"
-        style={{ width: '80px', height: '80px', objectFit: 'contain' }}
-        onClick={openModal} // 작은 이미지 클릭 시 모달 열기
+        alt="smallimage"
+        onClick={openModal}
+        style={{
+          width: '200px',
+          height: '300px',
+          objectFit: 'cover',
+          // 모달이 열린 경우에만 블러 처리
+          filter: modalIsOpen ? 'blur(5px)' : 'none',
+        }}
       />
 
-      {/* isModalOpen이 true일 때 모달을 렌더링 */}
-      {isModalOpen && (
-        <div className="modal-overlay" onClick={closeModal}>
-          {/* 실제 모달 창 */}
-          <div className="modal" onClick={(e) => e.stopPropagation()}>
-            {/* 모달 닫기 버튼 */}
-            <span className="close" onClick={closeModal}>
+      {/* 모달이 열려 있는 경우에만 모달 컴포넌트를 렌더링하는 부분 */}
+      {modalIsOpen && (
+        <ReactModal
+          // 모달이 열려 있는지 여부를 확인
+          isOpen={modalIsOpen}
+          // 모달 외부를 클릭하면 모달이 닫히도록 설정
+          onRequestClose={closeModal}
+          // 모달에 대한 설명 (접근성을 위해 필요한 속성)
+          contentLabel="Modal Content"
+          // 오버레이를 클릭하면 모달이 닫히도록 설정
+          shouldCloseOnOverlayClick={true}
+          // 모달의 스타일을 설정하는 부분
+          style={{
+            // 오버레이 스타일 설정
+            overlay: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            // 모달 내용 스타일 설정
+            content: {
+              width: '90%',
+              height: '90%',
+              margin: 'auto',
+              // 배경 전체를 흰색으로 블러 처리
+              background: 'rgba(255,255,255,0.7)',
+              // 모달 테두리를 둥글게 만듦
+              borderRadius: '50px',
+            },
+          }}
+        >
+          {/* 모달 내용을 렌더링하는 부분 */}
+          <div>
+            {/* 우측 상단에 위치한 'x' 표시로 모달을 닫을 수 있도록 하는 부분 */}
+            <span
+              style={{
+                position: 'absolute',
+                top: '10px',
+                right: '30px',
+                cursor: 'pointer',
+                // 'x' 표시의 크기 조절
+                fontSize: '77px',
+                // 텍스트 색상을 검은색으로 설정
+                color: 'yellow',
+              }}
+              onClick={closeModal}
+            >
               &times;
             </span>
-            {modalContent}
+            {/* 실제 이미지를 렌더링하고, 이미지를 클릭하면 모달이 닫히도록 하는 부분 */}
+            <img
+              src={testImage}
+              alt="Memory"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+              }}
+              onClick={closeModal}
+            />
           </div>
-        </div>
+        </ReactModal>
       )}
     </div>
   );
