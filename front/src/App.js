@@ -15,8 +15,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/album" element={<AlbumPage />} />
-        <Route path="/album/edit" element={<MemoryUpload />} />
+        <Route path="/albums" element={<AlbumPage />} />
+        <Route path="/albums/edit" element={<MemoryUpload />} />
         <Route path="/kakao/oauth" element={<RedirectPage />} />
         <Route path="/modal" element={<ModalPage />}/>
         <Route path="*" element={<Navigate replace to="/kakao/oauth" />} />

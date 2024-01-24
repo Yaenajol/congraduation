@@ -14,7 +14,10 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import './AlbumPage.css'
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 
 // const REST_API_KEY = "http://localhost:3000/";
 
@@ -26,13 +29,11 @@ export default function AlbumPage() {
   // 특정 앨범의 메모리 리스트 조회
   const [albumMemories, setAlbumMemories] = useState([]);
 
-  const [curPage, setCurPage] = useState(1);
-
   // 특정 앨범 조회용 - 하나의 객체만 가져왔을 때
   useEffect(() => {
     axios.get('https://jsonplaceholder.typicode.com/photos/1')
          .then(response => setAlbum(response.data))
-  })
+  }, [])
 
   // 특정 앨범의 메모리 리스트 조회
   useEffect(() => {
@@ -65,15 +66,29 @@ export default function AlbumPage() {
 
   const count = AlbumMemoriesCountByAlbumId(albumMemories, 1);  //albumId 1로 고정 수정 필
 
-  // albumId = 1 로 고정하고 썸네일을 나오게 해보자
-  function showSpecificAlbumMemories() {
-    if (albumMemories.some((memory) => memory.id === 1)) {
-      albumMemories.forEach((memory)=> {
-        if(memory.id === 1) {
-          return <image src={memory.thumbnailUrl}></image>
-        }
-      })
-    }
+  function BasicGrid() {
+    const Item = styled(Paper)(({ theme }) => ({
+      backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+      ...theme.typography.body2,
+      padding: theme.spacing(1),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    }));
+    return (
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={2}>
+            {
+              albumMemories && albumMemories.filter((val) => val.albumId === 1).map((val, index) => {
+                return (
+                  <Grid item xs={4} key={index}>
+                    <Item><img src={val.thumbnailUrl}></img></Item>
+                  </Grid>
+                )
+              })
+            }
+        </Grid>
+      </Box>
+    );
   }
 
   return (
@@ -91,11 +106,7 @@ export default function AlbumPage() {
         <div>{album.id} 대학교</div> {/* 특정 앨범 조회 */}
         <div>{count} 개 도착</div>  {/* 특정 앨범의 메모리 리스트 조회*/}
       </div>
-      <div className='container'>
-        <div className='container-firstPos'>
-          {showSpecificAlbumMemories()}
-        </div>
-      </div>
+      <BasicGrid />
       <button onClick={() => {
         window.location.href = "https://www.naver.com";
       }}>공유하러 가기</button>
@@ -103,3 +114,12 @@ export default function AlbumPage() {
   )
 }
 
+{/* <div>
+  {
+    albumMemories && albumMemories.map((val) => {
+      return (
+        val.albumId === 1 ? <img src={val.thumbnailUrl}></img> : null
+      )
+    })
+  }
+</div> */}
