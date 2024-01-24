@@ -14,7 +14,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import './AlbumPage.css'
+// import './AlbumPage.css'
 
 // const REST_API_KEY = "http://localhost:3000/";
 
@@ -32,7 +32,7 @@ export default function AlbumPage() {
   useEffect(() => {
     axios.get('https://jsonplaceholder.typicode.com/photos/1')
          .then(response => setAlbum(response.data))
-  })
+  },[])
 
   // 특정 앨범의 메모리 리스트 조회
   useEffect(() => {
