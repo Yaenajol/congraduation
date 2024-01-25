@@ -3,7 +3,14 @@ package com.ssafy.backend.service;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.backend.domain.Album;
-import com.ssafy.backend.model.response.MemberDto;
+import com.ssafy.backend.domain.Member;
+import com.ssafy.backend.exception.CustomException;
+import com.ssafy.backend.exception.ErrorCode;
+import com.ssafy.backend.jwt.JwtTokenService;
+import com.ssafy.backend.model.response.KakaoTokenDto;
+import com.ssafy.backend.model.response.KakaoInfoDto;
+import com.ssafy.backend.model.response.MemberResponseDto;
+import com.ssafy.backend.repository.AlbumRepository;
 import com.ssafy.backend.repository.MemberRepository;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -12,8 +19,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,12 +30,17 @@ public class MemberService {
 
   @Autowired
   private MemberRepository memberRepository;
+  @Autowired
+  private AlbumRepository albumRepository;
+  @Autowired
+  private JwtTokenService jwtTokenService;
 
-  /** 인가코드로 토큰 받아오기 **/
-  // accessToken 암호화? 필요함!!!!!!!!!!!!!!!!!!!!! 일단 일반 accessToken으로 보내느중
-  public String getKakaoAccessToken(String code) {
-    String accessToken = "";
-    String refreshToken = "";
+  /**
+   * 인가코드로 토큰 받아오기. 시간 되면 restTemplate로 리팩토링하기!!
+   **/
+  // accessToken 암호화? 필요함!!!!!!!!!!!!!!!!!!!!! 일단 쌩accessToken으로 보내느중
+  public KakaoTokenDto getKakaoAccessToken(String code) {
+    KakaoTokenDto kakaoTokenDto = null;
     String reqUrl = "https://kauth.kakao.com/oauth/token";
 
     // 1. connection 생성, 2. POST로 보낼 Body 작성, 3. 받아온 결과를 json 파싱
@@ -42,7 +56,7 @@ public class MemberService {
       BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
       StringBuilder sb = new StringBuilder();
       sb.append("grant_type=authorization_code");
-      sb.append("&redirect_uri=http://localhost:8080/kakao/redirect");
+      sb.append("&redirect_uri=http://localhost:8080/kakao/callback");
       sb.append("&client_id=89c1b2b891249d40bdead7fa2acbedae");
       sb.append("&code=" + code);
 
@@ -65,58 +79,50 @@ public class MemberService {
       JsonParser parser = new JsonParser();
       JsonElement element = parser.parse(result);
 
-      accessToken = element.getAsJsonObject().get("access_token").getAsString();
-      refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
+      String accessToken = element.getAsJsonObject().get("access_token").getAsString();
+      String refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
+      String tokenType = element.getAsJsonObject().get("token_type").getAsString();
+      int expiresIn = element.getAsJsonObject().get("expires_in").getAsInt();
+      String scope = element.getAsJsonObject().get("scope").getAsString();
+      int refreshTokenExpiresIn = element.getAsJsonObject().get("refresh_token_expires_in")
+          .getAsInt();
 
-      System.out.println("accesstoken: " + accessToken);
-      System.out.println("refreshtoken: " + refreshToken);
+      kakaoTokenDto = KakaoTokenDto.builder()
+          .accessToken(accessToken)
+          .refreshToken(refreshToken)
+          .refreshTokenExpiresin(refreshTokenExpiresIn)
+          .tokenType(tokenType)
+          .scope(scope)
+          .expiresIn(expiresIn)
+          .build();
 
+      System.out.println("1단계 " + kakaoTokenDto);
     } catch (IOException e) {
       e.getStackTrace();
     }
 
-    return accessToken;
-
-    /**
-     * <webclient 방법>
-     *
-     * // 요청 param(body)
-     *     MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-     *     params.add("grant_type", "authorization_code");
-     *     params.add("redirect_uri", "http://localhost:8080/kakao/redirect");
-     *     params.add("client_id", "89c1b2b891249d40bdead7fa2acbedae");
-     *     params.add("code", code);
-     *
-     *     // request
-     *     String accessUrl = "https://kauth.kakao.com/oauth/token";
-     *     WebClient wc = WebClient.builder()
-     *         .baseUrl(accessUrl)
-     *         .build();
-     *     JsonObject response = wc.post()
-     *         .body(BodyInserters.fromFormData(params))
-     *         .header("Content-type", "application/x-www-form-urlencoded;charset=utf-8") // 헤더에 들어가야 하는 정보
-     *         .retrieve()
-     *         .bodyToMono(JsonObject.class)
-     *         .block();
-     *
-     *     System.out.println("response: " + response);
-     *
-     *     //json형태로 변환
-     * //    ObjectMapper objectMapper = new ObjectMapper();
-     * //    String accessToken = "";
-     *
-     *     String accessToken = response.get("access_token").getAsString();
-     *
-     *     return accessToken;
-     */
-
+    return kakaoTokenDto;
   }
 
-  /** 토큰을 통해 카카오api로 사용자 정보 받아오기 **/
-  public MemberDto getKakaoMemberInfo(String token) {
-    String id = "";
-    String nickname = "";
-    String albumPk = "";
+  /**
+   * refreshToken으로 accessToken 새로 갱신
+   */
+  public String refreshAccessToken(String accessToken, String refreshToken) {
+    KakaoInfoDto kakaoInfo = getKakaoMemberInfo(accessToken, refreshToken);
+    if (kakaoInfo == null) {
+      throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
+    }
+    if (!jwtTokenService.validateToken(refreshToken)) {
+      throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
+    }
+    return jwtTokenService.createAccessToken(kakaoInfo.getId().toString());
+  }
+
+  /**
+   * 토큰을 통해 카카오api로 사용자 정보 받아오기
+   **/
+  public KakaoInfoDto getKakaoMemberInfo(String accessToken, String refreshToken) {
+    KakaoInfoDto kakaoInfoDto = null;
     String reqUrl = "https://kapi.kakao.com/v2/user/me";
 
     try {
@@ -126,7 +132,8 @@ public class MemberService {
       // POST 요청을 위해 기본값이 false인 setDoOutput을 true로
       conn.setRequestMethod("POST");
       conn.setDoOutput(true);
-      conn.setRequestProperty("Authorization", "Bearer " + token); // 전송할 헤더에 accessToken 담아 전송
+      conn.setRequestProperty("Authorization",
+          "Bearer " + accessToken); // 전송할 헤더에 accessToken 담아 전송
 
       // 결과 코드가 200이라면 성공
       int responseCode = conn.getResponseCode();
@@ -145,44 +152,72 @@ public class MemberService {
       JsonElement kakaoAccount = element.getAsJsonObject().get("kakao_account");
       JsonElement profile = kakaoAccount.getAsJsonObject().get("profile");
 
-      id = element.getAsJsonObject().get("id").getAsString();
-      nickname = profile.getAsJsonObject().get("nickname").getAsString();
-      albumPk = UUID.randomUUID().toString();
-      Album album = new Album();
-      album.setPk(albumPk);
+      String id = element.getAsJsonObject().get("id").getAsString();
+      String nickname = profile.getAsJsonObject().get("nickname").getAsString();
+      String albumPk = UUID.randomUUID().toString();
+
+      kakaoInfoDto = KakaoInfoDto.builder()
+          .id(id)
+          .nickname(nickname)
+          .albumPk(albumPk)
+          .accessToken(accessToken)
+          .refreshToken(refreshToken)
+          .authority(false)
+          .build();
+
+      System.out.println("2단계 " + kakaoInfoDto);
     } catch (IOException e) {
       e.getStackTrace();
     }
-    return new MemberDto(id, nickname, token, albumPk, false);
 
-    /**
-     * <webclient 방법>
-     *  // 카카오에 요청 보내기 및 응답 받기
-     *     String infoUrl = "https://kapi.kakao.com/v2/user/me";
-     *     WebClient wc = WebClient.create(infoUrl);
-     *     String response = wc.post()
-     *         .uri(infoUrl)
-     *         .header("Authorization", "Bearer " + token)
-     *         .header("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
-     *         .retrieve()
-     *         .bodyToMono(String.class)
-     *         .block();
-     *
-     *     // json 파싱
-     *     MemberDTO memberDTO = null;
-     *     ObjectMapper objectMapper = new ObjectMapper();
-     *     try {
-     *       memberDTO = objectMapper.readValue(response, MemberDTO.class);
-     *     } catch (JsonProcessingException e) {
-     *       e.printStackTrace();
-     *     }
-     *     return memberDTO;
-     */
+    return kakaoInfoDto;
   }
 
-  /** 앨범 권한 조회 **/
-//  public MemberDTO AuthorizationToAlbum() {
-//    MemberDTO memberInfo =
-//  }
+  /**
+   * 회원가입
+   **/
+  public MemberResponseDto kakaoSignUp(String code) {
+    // 1. 인가코드 통해서 토큰 받기
+    KakaoTokenDto kakaoTokenDto = getKakaoAccessToken(code);
+    String accessToken = kakaoTokenDto.getAccessToken();
+    String refreshToken = kakaoTokenDto.getRefreshToken();
+    System.out.println(accessToken);
+
+    // 2. 토큰 통해서 사용자 정보 받기
+    KakaoInfoDto kakaoInfo = getKakaoMemberInfo(accessToken, refreshToken);
+
+    // 3. 얻어온 사용자 정보가 null이라면 회원가입 및 앨범 생성
+    if (memberRepository.findMemberByPk(kakaoInfo.getId()) == null) {
+      Member member = Member.builder()
+          .pk(kakaoInfo.getId())
+          .nickname(kakaoInfo.getNickname())
+          .createdAt(LocalDateTime.now()).build();
+      memberRepository.save(member);
+
+      Album album = Album.builder()
+          .pk(kakaoInfo.getAlbumPk())
+          .member(member)
+          .createdAt(LocalDateTime.now()).build();
+      albumRepository.save(album);
+    }
+
+    // accessToken과 albumPk 반환
+    return MemberResponseDto.builder()
+        .accessToken(accessToken)
+        .albumPk(kakaoInfo.getAlbumPk())
+        .build();
+  }
+
+  /**
+   * 앨범 권한 조회
+   **/
+  public Boolean checkAuthorizationToAlbum(String id, String albumPk) {
+    Album album = albumRepository.findAlbumByPk(albumPk);
+    if (id.equals(album.getMember())) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 }

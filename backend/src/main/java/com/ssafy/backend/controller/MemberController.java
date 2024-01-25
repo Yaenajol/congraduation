@@ -1,17 +1,21 @@
 package com.ssafy.backend.controller;
 
+import com.ssafy.backend.domain.Album;
 import com.ssafy.backend.domain.Member;
-import com.ssafy.backend.model.response.MemberDto;
+import com.ssafy.backend.model.response.KakaoInfoDto;
+import com.ssafy.backend.model.response.MemberResponseDto;
 import com.ssafy.backend.repository.AlbumRepository;
 import com.ssafy.backend.repository.MemberRepository;
 import com.ssafy.backend.service.MemberService;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,35 +32,21 @@ public class MemberController {
   @Autowired
   private AlbumRepository albumRepository;
 
-  /**
-   * 로그인
-   **/
-  @GetMapping("/kakao/redirect")
-  public ResponseEntity<MemberDto> kakaoLogin(@RequestParam("code") String code) {
-    // 1. 인가코드 통해서 토큰 받기
-    String accessToken = memberService.getKakaoAccessToken(code);
 
-    // 2. 사용자 정보 받기
-    MemberDto memberInfo = memberService.getKakaoMemberInfo(accessToken);
+  /** 로그인 **/
+  @GetMapping("/kakao/callback") // 나 혼자 해볼라고 uri로 넘어오는 쿼리스트링 때문에 getmapping함
+  public ResponseEntity<MemberResponseDto> kakaoLogin(@RequestParam("code") String code) {
+    // accessToken, albumPk 반환
+    MemberResponseDto memberResponseDto = memberService.kakaoSignUp(code);
 
-    // 3. 회원가입과 동시에 앨범이 생성되어야 함
-    // 이건 또 뭘로 확인하노....
-//    albumRepository.
-
-
-    return new ResponseEntity<MemberDto>(memberInfo, HttpStatus.OK);
+    return new ResponseEntity<MemberResponseDto>(memberResponseDto, HttpStatus.OK);
   }
 
-  /**
-   * 앨범 권한 조회
-   **/
+  /** 앨범 권한 조회 **/
+//  @GetMapping("/users/authority")
+//  public ResponseEntity<Boolean> authorityAlbum(String id, @RequestParam("albumPk") String albumPk) {
   @GetMapping("/users/authority/album={albumPk}")
-  public ResponseEntity<MemberDto> authorityAlbum(@RequestParam("albumPk") String albumPk,
-      @RequestHeader("access_token") String token) {
-    // 현재 로그인 중인 유저의 id/토큰과 accessToken으로 얻어온 사용자의 id/토큰이 일치하면 권한 있음
-    // 로그인 중인 유저 어케 가져오더라?????????? 돌겟네
-    MemberDto memberInfo = memberService.getKakaoMemberInfo(token); // 토큰으로 얻어온 사용자 정보
-    if (memberInfo.getAccessToken() == token) memberInfo.setAuthority(true);
-    return new ResponseEntity<>(memberInfo, HttpStatus.OK);
+  public ResponseEntity<Boolean> authorityAlbum(String id, @PathVariable String albumPk) {
+    return new ResponseEntity<>(memberService.checkAuthorizationToAlbum(id, albumPk), HttpStatus.OK);
   }
 }
