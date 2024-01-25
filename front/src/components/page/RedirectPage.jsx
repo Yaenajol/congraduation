@@ -21,7 +21,7 @@ function RedirectPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ authCode }), // 인가 코드를 JSON 형태로 포맷팅
+        body: JSON.stringify({ authCode }), // 인가 코드를 JSON 형태로 
       });
 
       if (!response.ok) {
@@ -29,7 +29,7 @@ function RedirectPage() {
       }
 
       const result = await response.json(); // 백엔드에서 보낸 응답을 JSON 형태로 변환
-      console.log(result);                  // 응답 데이터를 콘솔에 출력 (디버깅 목적)
+      console.log(result);                  
       setData(result);                      // 응답 데이터를 상태에 저장
       navigate('/albums')
 

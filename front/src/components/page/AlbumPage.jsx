@@ -14,11 +14,17 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
+<<<<<<< HEAD
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import { Pagination } from '@mui/material';
+=======
+// import './AlbumPage.css'
+
+// const REST_API_KEY = "http://localhost:3000/";
+>>>>>>> c06a02ed1e861d9ddedfa9c45b5fbb525873aefc
 
 export default function AlbumPage() {
   const [album, setAlbum] = useState([]); // 특정 앨범 조회용
@@ -29,11 +35,16 @@ export default function AlbumPage() {
   // 특정 앨범 조회용 - 하나의 객체만 가져왔을 때
   useEffect(() => {
     axios.get('https://jsonplaceholder.typicode.com/photos/1')
+<<<<<<< HEAD
          .then(response => {
            console.log('Album Data:', response.data);
            setAlbum(response.data);
          })
   }, []);
+=======
+         .then(response => setAlbum(response.data))
+  },[])
+>>>>>>> c06a02ed1e861d9ddedfa9c45b5fbb525873aefc
 
   // 특정 앨범의 메모리 리스트 조회
   useEffect(() => {

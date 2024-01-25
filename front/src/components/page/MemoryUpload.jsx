@@ -7,9 +7,14 @@ import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 
 //내부 경로
-
 import MemoryMessage from '../text/MemoryMessage';
 import "./MemoryUpload.css"
+
+
+//mui
+import CropOriginal from '@mui/icons-material/CropOriginal';
+
+
 
 function ImageUpload() {
     const [images, setImages] = useState({ a: null, b: null, c: null, d: null});
@@ -84,7 +89,7 @@ function ImageUpload() {
           ctx.drawImage(img, pos.x, pos.y, imageSize, imageSize);
 
           // 프레임 그리기
-          ctx.strokeStyle = 'white'; // 테두리 색상 설정
+          ctx.strokeStyle = 'black'; // 테두리 색상 설정
           ctx.lineWidth = borderSize; // 테두리 두께 설정
           ctx.strokeRect(pos.x - borderSize / 2, pos.y - borderSize / 2, imageSize + borderSize, imageSize + borderSize);
       });
@@ -123,21 +128,24 @@ function ImageUpload() {
   
 
     return (
-        <div>
-            <GridLayout   
-                className="layout, location"
-                layout={layout}
-                cols={12}
-                rowHeight={50}
-                width={1500}
-            >
-                {['a', 'b', 'c', 'd'].map((key) => (
-                    <div className="test" key={key} onClick={() => handleGridItemClick(key)}>
-                        {images[key] ? null : '+'}
-                        {images[key] && <img src={images[key]} alt={`${key}-img`} style={{ maxWidth: '100%' }} />}
-                    </div>
-                ))}
-            </GridLayout>
+        <div className='container'>
+            <div className='grid-container'>
+                <GridLayout   
+                    className="layout"
+                    layout={layout}
+                    cols={2}
+                    rowHeight={200}
+                    width={800}
+                >
+                    {['a', 'b', 'c', 'd'].map((key) => (
+                        <div className="uploadpicture" key={key} onClick={() => handleGridItemClick(key)}>
+                            {images[key] ? null : <CropOriginal/>}
+                            {images[key] && <img src={images[key]} alt={`${key}-img`} style={{ maxWidth: '100%' }} />}
+                        </div>
+                    ))}
+                </GridLayout>
+            </div>
+            
             
             {/* 사진 추가 하는 기능  */}
             <input
@@ -151,15 +159,18 @@ function ImageUpload() {
             <br />
 
             <input
+                className= "nickname"
                 type="text"
                 placeholder="별명을 입력하세요"
                 value={nickname}
                 onChange={e => setNickname(e.target.value)}
             />
+            <br />
             <textarea
                 placeholder="문구를 입력하세요"
                 value={message}
                 onChange={e => setMessage(e.target.value)}
+                
             />
 
             {isReadyToSubmit && (
