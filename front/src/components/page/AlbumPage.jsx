@@ -18,45 +18,31 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-
-// const REST_API_KEY = "http://localhost:3000/";
+import { Pagination } from '@mui/material';
 
 export default function AlbumPage() {
-  
-  // 특정 앨범 조회용
-  const [album, setAlbum] = useState([]);
-
-  // 특정 앨범의 메모리 리스트 조회
-  const [albumMemories, setAlbumMemories] = useState([]);
+  const [album, setAlbum] = useState([]); // 특정 앨범 조회용
+  const [albumMemories, setAlbumMemories] = useState([]); // 특정 앨범의 메모리 리스트 조회
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6; // 페이지 당 표시할 아이템 수
 
   // 특정 앨범 조회용 - 하나의 객체만 가져왔을 때
   useEffect(() => {
     axios.get('https://jsonplaceholder.typicode.com/photos/1')
-         .then(response => setAlbum(response.data))
-  }, [])
+         .then(response => {
+           console.log('Album Data:', response.data);
+           setAlbum(response.data);
+         })
+  }, []);
 
   // 특정 앨범의 메모리 리스트 조회
   useEffect(() => {
     axios.get('https://jsonplaceholder.typicode.com/photos')
-         .then(response => setAlbumMemories(response.data))
-  }, [albumMemories])
-
-
-  // 앨범의 유저pk와 유저의 pk 가 같으면 (1로 고정 , 수정 필)
-  function settingButton() {
-    if(album.id === 1) {
-      return <div>set</div>
-    }
-  }
-  
-  // 커버 이미지가 있으면 커버 이미지를 보여주고 없으면 기본 이미지로 대체
-  function existCover() {
-    if(album.thumbnailUrl !== null) {
-      return <div><img src= {album.thumbnailUrl}></img></div>
-    }
-    
-    return <div>기본 이미지 나오게 설정</div>
-  }
+         .then(response => {
+           console.log('Album Memories Data:', response.data);
+           setAlbumMemories(response.data);
+         })
+  }, [albumMemories]);
 
   // 특정 앨범의 메모리 수
   function AlbumMemoriesCountByAlbumId(albumMemories, albumId) {
@@ -65,6 +51,16 @@ export default function AlbumPage() {
   }
 
   const count = AlbumMemoriesCountByAlbumId(albumMemories, 1);  //albumId 1로 고정 수정 필
+
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  }
+
+  // 1로 필터링하고 Pagenation 진행 
+  const filteredAlbumMemories = albumMemories.filter((val) => val.albumId === 1);
+  const startIndex = (currentPage - 1) * itemsPerPage; 
+  const endIndex = startIndex + itemsPerPage;
+  const displayedAlbumMemories = filteredAlbumMemories.slice(startIndex, endIndex);
 
   function BasicGrid() {
     const Item = styled(Paper)(({ theme }) => ({
@@ -77,19 +73,15 @@ export default function AlbumPage() {
     return (
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
-            {
-              albumMemories && albumMemories.filter((val) => val.albumId === 1).map((val, index) => {
-                return (
-                  <Grid item xs={4} key={index}>
-                    <Item><img src={val.thumbnailUrl}></img></Item>
-                  </Grid>
-                )
-              })
-            }
+            {displayedAlbumMemories.map((val, index) => (
+              <Grid item xs={4} key={index}>
+                <Item><img src={val.thumbnailUrl} alt={`Memory ${index + 1}`} /></Item>
+              </Grid>
+            ))}
         </Grid>
       </Box>
     );
-  }
+  };
 
   return (
     <div>
@@ -98,15 +90,21 @@ export default function AlbumPage() {
         <div>{album.title}</div>    {/* 특정 앨범 조회 */}
       </div>
 
-      {settingButton()}
+      {album.id === 1 && <div>set</div>}
 
-      {existCover()}
+      {album.thumbnailUrl ? <img src={album.thumbnailUrl} alt="Album Cover" /> : <div>기본 이미지 나오게 설정</div>}
 
       <div>
-        <div>{album.id} 대학교</div> {/* 특정 앨범 조회 */}
+        {/* {album.id} 를 쓰면 무한콘솔 찍히는 현상 발견*/}
+        {/* <div>{album.id} 대학교</div> 특정 앨범 조회 */}
         <div>{count} 개 도착</div>  {/* 특정 앨범의 메모리 리스트 조회*/}
       </div>
       <BasicGrid />
+      <Pagination 
+        count={Math.ceil(filteredAlbumMemories.length / itemsPerPage)}
+        page={currentPage}
+        onChange={handlePageChange}
+      />
       <button onClick={() => {
         window.location.href = "https://www.naver.com";
       }}>공유하러 가기</button>
@@ -114,12 +112,83 @@ export default function AlbumPage() {
   )
 }
 
-{/* <div>
-  {
-    albumMemories && albumMemories.map((val) => {
-      return (
-        val.albumId === 1 ? <img src={val.thumbnailUrl}></img> : null
-      )
-    })
-  }
-</div> */}
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
+// import { styled } from '@mui/material/styles';
+// import Box from '@mui/material/Box';
+// import Paper from '@mui/material/Paper';
+// import Grid from '@mui/material/Grid';
+// import { Pagination } from '@mui/material';
+
+// export default function AlbumPage() {
+//   const [album, setAlbum] = useState([]);
+//   const [albumMemories, setAlbumMemories] = useState([]);
+//   const [currentPage, setCurrentPage] = useState(1);
+//   const itemsPerPage = 6; // 페이지당 표시할 아이템 수
+
+//   useEffect(() => {
+//     axios.get('https://jsonplaceholder.typicode.com/photos/1')
+//          .then(response => setAlbum(response.data))
+//   }, );
+
+//   useEffect(() => {
+//     axios.get('https://jsonplaceholder.typicode.com/photos')
+//          .then(response => setAlbumMemories(response.data))
+//   }, [albumMemories]);
+
+//   function AlbumMemoriesCountByAlbumId(albumMemories, albumId) {
+//     const albumMemoriesWithAlbumId = albumMemories.filter((albumMemory) => albumMemory.albumId === albumId);
+//     return albumMemoriesWithAlbumId.length;
+//   }
+
+//   const count = AlbumMemoriesCountByAlbumId(albumMemories, 1);
+
+//   const handlePageChange = (event, value) => {
+//     setCurrentPage(value);
+//   };
+
+//   const filteredAlbumMemories = albumMemories.filter((val) => val.albumId === 1);
+//   const startIndex = (currentPage - 1) * itemsPerPage;
+//   const endIndex = startIndex + itemsPerPage;
+//   const displayedAlbumMemories = filteredAlbumMemories.slice(startIndex, endIndex);
+
+//   const BasicGrid = () => {
+//     const Item = styled(Paper)(({ theme }) => ({
+//       backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+//       ...theme.typography.body2,
+//       padding: theme.spacing(1),
+//       textAlign: 'center',
+//       color: theme.palette.text.secondary,
+//     }));
+//     return (
+//       <Box sx={{ flexGrow: 1 }}>
+//         <Grid container spacing={2}>
+//           {displayedAlbumMemories.map((val, index) => (
+//             <Grid item xs={4} key={index}>
+//               <Item><img src={val.thumbnailUrl} alt={`Memory ${index + 1}`} /></Item>
+//             </Grid>
+//           ))}
+//         </Grid>
+//       </Box>
+//     );
+//   };
+
+//   return (
+//     <div>
+//       <div>
+//         <div>D - {album.id}</div>
+//         <div>{album.title}</div>
+//       </div>
+
+//       <div>{count} 개 도착</div>
+
+//       <BasicGrid />
+
+//       <Pagination
+//         count={Math.ceil(filteredAlbumMemories.length / itemsPerPage)}
+//         page={currentPage}
+//         onChange={handlePageChange}
+//       />
+//     </div>
+//   );
+// }
