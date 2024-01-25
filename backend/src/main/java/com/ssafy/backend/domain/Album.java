@@ -1,5 +1,6 @@
 package com.ssafy.backend.domain;
 
+import com.ssafy.backend.model.request.AlbumUpdateRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
