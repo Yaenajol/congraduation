@@ -13,7 +13,7 @@ import "./MemoryUpload.css"
 
 //mui
 import CropOriginal from '@mui/icons-material/CropOriginal';
-
+import { Container } from '@mui/material';
 
 
 function ImageUpload() {
