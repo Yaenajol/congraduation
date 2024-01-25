@@ -1,0 +1,78 @@
+
+
+body {  background-color: rgba(252, 252, 252);}
+
+/* YourComponent.css */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  /* border: solid 1px; color: #000; */
+  background-color: rgba(255, 239, 182, 0.88);
+  width: 768px;
+  min-height: 1400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imagebox {
+  width: auto;
+  height: auto;
+}
+
+.kakaobutton {
+  width: 50%;
+  height: 20px;
+  padding: 15px 20px;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  border-radius: 1rem;
+  position: relative;
+  background-color: rgb(245, 225, 75);
+  color: rgb(55, 31, 31);
+}
+
+.kakaoballoon {
+  width: 1.25rem;
+  position: absolute;
+  left: 1.5rem;
+}
+
+.csstitle {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    color: rgba(87, 0, 0, 0.849);
+}
+
+/* 미디어 쿼리 */
+@media (max-width: 768px) {
+  .box{
+    width: 100%;
+  }
+  .container {
+    
+  }
+
+  .kakaobutton {
+    width: 70%;
+  }
+
+  .csstitle {
+
+  }
+
+  .imagebox {
+
+  }
+}
