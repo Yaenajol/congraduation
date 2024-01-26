@@ -7,8 +7,9 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class MemberResponseDto {
-  private String accessToken;
+public class LoginResponseDto {
+  /** 로그인 후 응답 **/
+  private String jwtToken;
   private String albumPk;
 
 }

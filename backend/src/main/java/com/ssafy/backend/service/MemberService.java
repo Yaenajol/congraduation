@@ -4,12 +4,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.backend.domain.Album;
 import com.ssafy.backend.domain.Member;
-import com.ssafy.backend.exception.CustomException;
-import com.ssafy.backend.exception.ErrorCode;
-import com.ssafy.backend.jwt.JwtTokenService;
+import com.ssafy.backend.jwt.JwtProvider;
 import com.ssafy.backend.model.response.KakaoTokenDto;
 import com.ssafy.backend.model.response.KakaoInfoDto;
-import com.ssafy.backend.model.response.MemberResponseDto;
+import com.ssafy.backend.model.response.LoginResponseDto;
 import com.ssafy.backend.repository.AlbumRepository;
 import com.ssafy.backend.repository.MemberRepository;
 import java.io.BufferedReader;
@@ -22,7 +20,6 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,12 +30,11 @@ public class MemberService {
   @Autowired
   private AlbumRepository albumRepository;
   @Autowired
-  private JwtTokenService jwtTokenService;
+  private JwtProvider provider;
 
   /**
    * 인가코드로 토큰 받아오기. 시간 되면 restTemplate로 리팩토링하기!!
    **/
-  // accessToken 암호화? 필요함!!!!!!!!!!!!!!!!!!!!! 일단 쌩accessToken으로 보내느중
   public KakaoTokenDto getKakaoAccessToken(String code) {
     KakaoTokenDto kakaoTokenDto = null;
     String reqUrl = "https://kauth.kakao.com/oauth/token";
@@ -83,11 +79,13 @@ public class MemberService {
       String refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
       String tokenType = element.getAsJsonObject().get("token_type").getAsString();
       int expiresIn = element.getAsJsonObject().get("expires_in").getAsInt();
+      String idToken = element.getAsJsonObject().get("id_token").getAsString();
       String scope = element.getAsJsonObject().get("scope").getAsString();
       int refreshTokenExpiresIn = element.getAsJsonObject().get("refresh_token_expires_in")
           .getAsInt();
 
       kakaoTokenDto = KakaoTokenDto.builder()
+          .idToken((idToken))
           .accessToken(accessToken)
           .refreshToken(refreshToken)
           .refreshTokenExpiresin(refreshTokenExpiresIn)
@@ -105,20 +103,6 @@ public class MemberService {
   }
 
   /**
-   * refreshToken으로 accessToken 새로 갱신
-   */
-  public String refreshAccessToken(String accessToken, String refreshToken) {
-    KakaoInfoDto kakaoInfo = getKakaoMemberInfo(accessToken, refreshToken);
-    if (kakaoInfo == null) {
-      throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
-    }
-    if (!jwtTokenService.validateToken(refreshToken)) {
-      throw new CustomException(ErrorCode.INVALID_REFRESH_TOKEN);
-    }
-    return jwtTokenService.createAccessToken(kakaoInfo.getId().toString());
-  }
-
-  /**
    * 토큰을 통해 카카오api로 사용자 정보 받아오기
    **/
   public KakaoInfoDto getKakaoMemberInfo(String accessToken, String refreshToken) {
@@ -132,8 +116,7 @@ public class MemberService {
       // POST 요청을 위해 기본값이 false인 setDoOutput을 true로
       conn.setRequestMethod("POST");
       conn.setDoOutput(true);
-      conn.setRequestProperty("Authorization",
-          "Bearer " + accessToken); // 전송할 헤더에 accessToken 담아 전송
+//      conn.setRequestProperty("Authorization", "Bearer " + accessToken); // 전송할 헤더에 accessToken 담아 전송
 
       // 결과 코드가 200이라면 성공
       int responseCode = conn.getResponseCode();
@@ -176,12 +159,20 @@ public class MemberService {
   /**
    * 회원가입
    **/
-  public MemberResponseDto kakaoSignUp(String code) {
-    // 1. 인가코드 통해서 토큰 받기
+  public LoginResponseDto kakaoSignUp(String code) {
+    // 1. 인가코드 통해서 카카오토큰 받기
     KakaoTokenDto kakaoTokenDto = getKakaoAccessToken(code);
     String accessToken = kakaoTokenDto.getAccessToken();
     String refreshToken = kakaoTokenDto.getRefreshToken();
-    System.out.println(accessToken);
+    String idToken = kakaoTokenDto.getIdToken();
+
+    JsonParser parser = new JsonParser();
+    JsonElement element = parser.parse(idToken);
+    String id = element.getAsJsonObject().get("id").getAsString();
+//    String nickname = element.getAsJsonObject().get("nickname").getAsString();
+//    String cAt = element.getAsJsonObject().get("createdAt").getAsString();
+//    String eAt = element.getAsJsonObject().get("expiredAt").getAsString();
+    System.out.println(id);
 
     // 2. 토큰 통해서 사용자 정보 받기
     KakaoInfoDto kakaoInfo = getKakaoMemberInfo(accessToken, refreshToken);
@@ -201,9 +192,14 @@ public class MemberService {
       albumRepository.save(album);
     }
 
-    // accessToken과 albumPk 반환
-    return MemberResponseDto.builder()
-        .accessToken(accessToken)
+    // 4. 유저 정보에 따라 JWT 토큰(idToken의 id, nickname, cAt, eAt, accessToken 담김) 생성
+    // 일단 accessToken만 담기도록 해놓음
+    String jwtToken = provider.createJwtToken(id);
+    System.out.println(jwtToken);
+
+    // jwtToken과 albumPk 반환
+    return LoginResponseDto.builder()
+        .jwtToken(jwtToken)
         .albumPk(kakaoInfo.getAlbumPk())
         .build();
   }
