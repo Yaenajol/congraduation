@@ -29,6 +29,8 @@ public class ImageService {
   public String uploadThumbnailAndReturnUrl(MultipartFile multipartFile, String memberPk) throws IOException {
     String originalFileName = multipartFile.getOriginalFilename(); // 클라이언트가 전송한 파일 이름
 
+    // 파일 업로드 + s3 파일 조회 방향 변경 -> S3 PreSigned URL 방식으로 변경 예정
+
     // 파일 이름 중복 방지 ::  파일 고유 uuid + "-" + 작성한memberPk
     String saveFileName = UUID.randomUUID().toString() + "-" + memberPk ;
 
