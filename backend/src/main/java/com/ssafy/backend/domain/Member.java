@@ -3,9 +3,12 @@ package com.ssafy.backend.domain;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +29,19 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Member {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "member_pk")
+  @Size(max=100)
   private String pk;
+
+  @Column(name="nickname",nullable = false)
+  @Size(max=50)
   private String nickname;
 
-  @CreatedDate
+  @Column(name = "created_at",nullable=false, updatable = false,insertable = false, columnDefinition = "DATETIME(6) DEFAULT NOW(6)")
   private LocalDateTime createdAt;
+
+  @Column(name="deleted_at")
   private LocalDateTime deletedAt;
 
   @OneToMany(mappedBy = "writer")
