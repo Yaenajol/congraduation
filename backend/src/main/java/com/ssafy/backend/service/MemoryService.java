@@ -8,7 +8,9 @@ import com.ssafy.backend.model.response.MemoryResponseDto;
 import com.ssafy.backend.repository.AlbumRepository;
 import com.ssafy.backend.repository.MemberRepository;
 import com.ssafy.backend.repository.MemoryRepository;
+import com.ssafy.backend.util.ImageUtil;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +23,7 @@ public class MemoryService {
   private final MemoryRepository memoryRepository;
   private final MemberRepository memberRepository;
   private final AlbumRepository albumRepository;
-
+  private final ImageUtil imageUtil;
   public MemoryResponseDto getMemory(String memoryPk) {
     Memory memory = memoryRepository.findMemoryByPk(memoryPk);
 
