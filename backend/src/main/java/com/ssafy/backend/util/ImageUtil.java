@@ -16,24 +16,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class ImageUtil {
   public InputStream makeResize(MultipartFile file) throws IOException {
-    System.out.println("makeResize start=======================");
     BufferedImage image=ImageIO.read(file.getInputStream());
     int width = image.getWidth();
     int height = image.getHeight();
-
-    double rate=((double)height)/width;
-
-    int resizeWidth=(int) width/5;
-    int resizeHeight=(int) height/5;
-
-    if(resizeWidth<=300){
-      resizeWidth=300;
-      resizeHeight=(int) (resizeWidth*rate);
+    BufferedImage resizImage=null;
+    if(width <= 300 && height <=300){
+      System.out.println("1");
+      resizImage=image;
     }
-    System.out.println(resizeWidth+" " +resizeHeight);
-
+    if(width >= height && width >300){
+      System.out.println("2");
+      double rate=((double)height)/width;
+      width=300;
+      height=(int) (width*rate);
+      resizImage=resizeImage(image,width,height);
+    }else if(width < height && height > 300){
+      System.out.println("3");
+      double rate=((double)width)/height;
+      height=300;
+      width=(int) (height*rate);
+      resizImage=resizeImage(image,width,height);
+    }
     ByteArrayOutputStream os = new ByteArrayOutputStream();
-    ImageIO.write(resizeImage(image,resizeWidth,resizeHeight), "jpeg", os);
+    ImageIO.write(resizImage, "jpeg", os);
     try{
       InputStream is = new ByteArrayInputStream(os.toByteArray());
       System.out.println("Resize end=======================");
@@ -50,20 +55,29 @@ public class ImageUtil {
   }
 
   public InputStream makeThumbnaill (MultipartFile file) throws IOException {
-    System.out.println("makeThumbnaill start=======================");
     BufferedImage image=ImageIO.read(file.getInputStream());
-
     int width = image.getWidth();
     int height = image.getHeight();
-
-    double rate=((double)height)/width;
-
-    int resizeWidth=200;
-    int resizeHeight=(int)(resizeWidth*rate);
-
+    BufferedImage resizImage=null;
+    if(width <= 100 && height <=100){
+      System.out.println("1");
+      resizImage=image;
+    }
+    if(width >= height && width >100){
+      System.out.println("2");
+      double rate=((double)height)/width;
+      width=100;
+      height=(int) (width*rate);
+      resizImage=resizeImage(image,width,height);
+    }else if(width < height && height > 100){
+      System.out.println("3");
+      double rate=((double)width)/height;
+      height=100;
+      width=(int) (height*rate);
+      resizImage=resizeImage(image,width,height);
+    }
     ByteArrayOutputStream os = new ByteArrayOutputStream();
-    ImageIO.write(resizeImage(image,resizeWidth,resizeHeight), "jpeg", os);
-
+    ImageIO.write(resizImage, "jpeg", os);
     try{
       InputStream is = new ByteArrayInputStream(os.toByteArray());
       System.out.println("Resize end=======================");
@@ -80,21 +94,31 @@ public class ImageUtil {
   }
 
   public InputStream makeThumbnailBlur(MultipartFile file) throws IOException {
-    System.out.println("makeThumbnaill start=======================");
     BufferedImage image=ImageIO.read(file.getInputStream());
-
     int width = image.getWidth();
     int height = image.getHeight();
-
-    double rate=((double)height)/width;
-
-    int resizeWidth=200;
-    int resizeHeight=(int)(resizeWidth*rate);
-
+    BufferedImage resizImage=null;
+    if(width <= 100 && height <=100){
+      System.out.println("1");
+      resizImage=image;
+    }
+    if(width >= height && width >100){
+      System.out.println("2");
+      double rate=((double)height)/width;
+      width=100;
+      height=(int) (width*rate);
+      resizImage=resizeImage(image,width,height);
+    }else if(width < height && height > 100){
+      System.out.println("3");
+      double rate=((double)width)/height;
+      height=100;
+      width=(int) (height*rate);
+      resizImage=resizeImage(image,width,height);
+    }
     ByteArrayOutputStream os = new ByteArrayOutputStream();
-    BufferedImage resiezedImage=resizeImage(image,resizeWidth,resizeHeight);
-    BufferedImage resizedBufferedImage=blurImage(resiezedImage);
-    ImageIO.write(resizedBufferedImage, "jpeg", os);
+
+    BufferedImage resizeBlurImage=blurImage(resizImage);
+    ImageIO.write(resizeBlurImage, "jpeg", os);
     try{
       InputStream is = new ByteArrayInputStream(os.toByteArray());
       System.out.println("Resize end=======================");
@@ -111,7 +135,7 @@ public class ImageUtil {
   }
 
   private BufferedImage blurImage(BufferedImage target) throws IOException {
-    int radius = 10;
+    int radius = 5;
     int size = radius * 2 + 1;
 
     float[] data = new float[size * size];

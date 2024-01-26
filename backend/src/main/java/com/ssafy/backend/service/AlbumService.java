@@ -98,7 +98,7 @@ public class AlbumService {
     memberRepository.saveAndFlush(member);
   }
   public Resource sendMediaImage(MultipartFile file) throws IOException {
-    InputStream is=imageUtil.makeResize(file);
+    InputStream is=imageUtil.makeThumbnailBlur(file);
     try{
       return new ByteArrayResource(is.readAllBytes());
     }finally {

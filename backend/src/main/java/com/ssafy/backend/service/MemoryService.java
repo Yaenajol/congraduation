@@ -10,7 +10,6 @@ import com.ssafy.backend.repository.MemberRepository;
 import com.ssafy.backend.repository.MemoryRepository;
 import com.ssafy.backend.util.ImageUtil;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
