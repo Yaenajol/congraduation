@@ -30,7 +30,7 @@ public class MemoryService {
     return MemoryResponseDto.builder()
         .nickname(memory.getNickname())
         .content(memory.getContent())
-        .ImageUrl(memory.getImageUrl()).build();
+        .ImageUrl(memory.getImageName()).build();
   }
 
   /** albumPk로 메모리 리스트 가져오기 **/
@@ -51,7 +51,7 @@ public class MemoryService {
         .album(album)
         .nickname(memoryRequestDto.getNickname())
         .content(memoryRequestDto.getContent())
-        .imageUrl(memoryRequestDto.getImageUrl()).build();
+        .imageName(memoryRequestDto.getImageUrl()).build();
 
     // 메모리 저장
     memoryRepository.save(memory);

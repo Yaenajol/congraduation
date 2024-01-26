@@ -66,7 +66,7 @@ public class AlbumService {
     for(Memory memory:memoryList ){
       albumMemoryList.add(AlbumMemoryResponseDto.builder()
           .memoryPk(memory.getPk())
-          .imageUrl(memory.getImageUrl())
+          .imageUrl(memory.getImageName())
           .build());
     }
     return albumMemoryList;
@@ -97,13 +97,13 @@ public class AlbumService {
     member.setNickname(albumUpdateRequest.getNickname());
     memberRepository.saveAndFlush(member);
   }
-//  public Resource sendMediaImage(MultipartFile file) throws IOException {
-//    InputStream is=imageUtil.makeResize(file);
-//    try{
-//      return new ByteArrayResource(is.readAllBytes());
-//    }finally {
-//      System.out.println("is close!");
-//      is.close();
-//    }
-//  }
+  public Resource sendMediaImage(MultipartFile file) throws IOException {
+    InputStream is=imageUtil.makeResize(file);
+    try{
+      return new ByteArrayResource(is.readAllBytes());
+    }finally {
+      System.out.println("is close!");
+      is.close();
+    }
+  }
 }

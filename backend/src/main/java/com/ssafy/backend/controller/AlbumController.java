@@ -58,14 +58,6 @@ public class AlbumController {
     return ResponseEntity.ok().body("update success");
   }
 
-
-  @PostMapping("/member/create")
-  public ResponseEntity<Object> createUser(){
-    log.debug("member");
-    albumService.createUser();
-    return ResponseEntity.ok().body("update success");
-  }
-
   @PostMapping("/imageBlur")
   public ResponseEntity<Resource> imageBlur(@RequestParam(value="file",required=false) MultipartFile file)
       throws IOException {
