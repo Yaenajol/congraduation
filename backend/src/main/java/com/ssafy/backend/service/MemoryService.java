@@ -8,6 +8,7 @@ import com.ssafy.backend.model.response.MemoryResponseDto;
 import com.ssafy.backend.repository.AlbumRepository;
 import com.ssafy.backend.repository.MemberRepository;
 import com.ssafy.backend.repository.MemoryRepository;
+import com.ssafy.backend.util.ImageUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,14 +22,14 @@ public class MemoryService {
   private final MemoryRepository memoryRepository;
   private final MemberRepository memberRepository;
   private final AlbumRepository albumRepository;
-
+  private final ImageUtil imageUtil;
   public MemoryResponseDto getMemory(String memoryPk) {
     Memory memory = memoryRepository.findMemoryByPk(memoryPk);
 
     return MemoryResponseDto.builder()
         .nickname(memory.getNickname())
         .content(memory.getContent())
-        .ImageUrl(memory.getImageUrl()).build();
+        .ImageUrl(memory.getImageName()).build();
   }
 
   /** albumPk로 메모리 리스트 가져오기 **/
@@ -49,7 +50,7 @@ public class MemoryService {
         .album(album)
         .nickname(memoryRequestDto.getNickname())
         .content(memoryRequestDto.getContent())
-        .imageUrl(memoryRequestDto.getImageUrl()).build();
+        .imageName(memoryRequestDto.getImageUrl()).build();
 
     // 메모리 저장
     memoryRepository.save(memory);

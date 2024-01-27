@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,21 +30,38 @@ public class Memory {
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "memory_pk")
+  @Size(max=100)
   private String pk;
 
+  @Column(name = "nickname",nullable = false)
+  @Size(max=100)
   private String nickname;
-  private String content;
-  private String imageUrl;
 
-  @CreatedDate
+  @Column(name = "content",nullable = false)
+  @Size(max=100)
+  private String content;
+
+  @Column(name = "image_name",nullable = false)
+  @Size(max=100)
+  private String imageName;
+
+  @Column(name = "thumbnail_image_name",nullable = false)
+  @Size(max=100)
+  private String thumbnailImageName;
+
+  @Column(name = "thumbnail_blur_image_name",nullable = false)
+  @Size(max=100)
+  private String thumbnailBlurImageName;
+
+  @Column(name = "created_at",nullable=false, updatable = false,insertable = false, columnDefinition = "DATETIME(6) DEFAULT NOW(6)")
   private LocalDateTime createdAt;
 
   @ManyToOne
-  @JoinColumn(name = "member_pk")
+  @JoinColumn(name = "member_pk",nullable = false, updatable = false,columnDefinition="varchar(100)")
   private Member member;
 
+  //eager
   @ManyToOne
-  @JoinColumn(name = "album_pk")
+  @JoinColumn(name = "album_pk",nullable = false, updatable = false,columnDefinition="varchar(100)")
   private Album album;
-
 }
