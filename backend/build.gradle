@@ -23,7 +23,13 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
+	// gson 파싱
+	implementation 'com.google.code.gson:gson:2.8.7'
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.1'
 }
 
 tasks.named('test') {

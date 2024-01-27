@@ -1,4 +1,4 @@
-package com.ssafy.backend.health.controller;
+package com.ssafy.backend.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ public class HealthController {
   @GetMapping("/ping")
   public ResponseEntity<Map<String,String>> ping(){
     Map<String,String> result=new HashMap<>();
-    result.put("result","pong !!!!!!!!!");
+    result.put("result","pong !!!!!!!");
     return ResponseEntity.ok().body(result);
   }
 }
