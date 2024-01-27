@@ -12,9 +12,7 @@ import lombok.NoArgsConstructor;
 public class MemoryRequestDto {
 
   private String albumPk;
-  private String memberPk;
   private String nickname;
-  private String imageUrl;
   private String content;
 
 }

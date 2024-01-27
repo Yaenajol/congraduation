@@ -18,7 +18,8 @@ import org.springframework.stereotype.Component;
 public class ImageUtil {
   @Value("${image.blur_rate}")
   private int imageBlurRate;
-
+  @Value("${image.output_format}")
+  private String imageOutputFormat;
   @Value("${image.thumbnail.max_pixel}")
   private int imageThumbnailMaxPixel;
 
@@ -32,27 +33,23 @@ public class ImageUtil {
     int height = image.getHeight();
     BufferedImage resizImage=null;
     if(width <= imageDefaultMaxPixel && height <= imageDefaultMaxPixel){
-      System.out.println("1");
       resizImage=image;
     }
     if(width >= height && width > imageDefaultMaxPixel){
-      System.out.println("2");
       double rate=((double)height)/width;
       width=300;
       height=(int) (width*rate);
       resizImage=resizeImage(image,width,height);
     }else if(width < height && height > imageDefaultMaxPixel){
-      System.out.println("3");
       double rate=((double)width)/height;
       height=300;
       width=(int) (height*rate);
       resizImage=resizeImage(image,width,height);
     }
     ByteArrayOutputStream os = new ByteArrayOutputStream();
-    ImageIO.write(resizImage, "jpeg", os);
+    ImageIO.write(resizImage, imageOutputFormat, os);
     try{
       InputStream is = new ByteArrayInputStream(os.toByteArray());
-      System.out.println("Resize end=======================");
       try{
         return is;
       }finally {
@@ -71,27 +68,23 @@ public class ImageUtil {
     int height = image.getHeight();
     BufferedImage resizImage=null;
     if(width <= imageThumbnailMaxPixel && height <=imageThumbnailMaxPixel){
-      System.out.println("1");
       resizImage=image;
     }
     if(width >= height && width >imageThumbnailMaxPixel){
-      System.out.println("2");
       double rate=((double)height)/width;
       width=imageThumbnailMaxPixel;
       height=(int) (width*rate);
       resizImage=resizeImage(image,width,height);
     }else if(width < height && height > imageThumbnailMaxPixel){
-      System.out.println("3");
       double rate=((double)width)/height;
       height=imageThumbnailMaxPixel;
       width=(int) (height*rate);
       resizImage=resizeImage(image,width,height);
     }
     ByteArrayOutputStream os = new ByteArrayOutputStream();
-    ImageIO.write(resizImage, "jpeg", os);
+    ImageIO.write(resizImage, imageOutputFormat, os);
     try{
       InputStream is = new ByteArrayInputStream(os.toByteArray());
-      System.out.println("Resize end=======================");
       try{
         return is;
       }finally {
@@ -110,17 +103,14 @@ public class ImageUtil {
     int height = image.getHeight();
     BufferedImage resizImage=null;
     if(width <= imageThumbnailMaxPixel && height <= imageThumbnailMaxPixel){
-      System.out.println("1");
       resizImage=image;
     }
     if(width >= height && width > imageThumbnailMaxPixel){
-      System.out.println("2");
       double rate=((double)height)/width;
       width=imageThumbnailMaxPixel;
       height=(int) (width*rate);
       resizImage=resizeImage(image,width,height);
     }else if(width < height && height > imageThumbnailMaxPixel){
-      System.out.println("3");
       double rate=((double)width)/height;
       height=imageThumbnailMaxPixel;
       width=(int) (height*rate);
@@ -129,10 +119,9 @@ public class ImageUtil {
     ByteArrayOutputStream os = new ByteArrayOutputStream();
 
     BufferedImage resizeBlurImage=blurImage(resizImage);
-    ImageIO.write(resizeBlurImage, "jpeg", os);
+    ImageIO.write(resizeBlurImage, imageOutputFormat, os);
     try{
       InputStream is = new ByteArrayInputStream(os.toByteArray());
-      System.out.println("Resize end=======================");
       try{
         return is;
       }finally {
@@ -183,7 +172,7 @@ public class ImageUtil {
   private BufferedImage resizeImage(BufferedImage image,int resizeWidth,int resizeHeight) throws IOException {
     return Thumbnails.of(image)
         .size(resizeWidth, resizeHeight)
-        .outputFormat("jpeg")
+        .outputFormat(imageOutputFormat)
         .asBufferedImage();
   }
 }

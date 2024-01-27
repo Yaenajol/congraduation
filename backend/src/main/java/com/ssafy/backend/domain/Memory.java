@@ -64,4 +64,5 @@ public class Memory {
   @ManyToOne
   @JoinColumn(name = "album_pk",nullable = false, updatable = false,columnDefinition="varchar(100)")
   private Album album;
+
 }

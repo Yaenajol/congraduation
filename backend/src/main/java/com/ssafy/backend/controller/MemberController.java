@@ -40,8 +40,6 @@ public class MemberController {
   /**
    * 로그인
    **/
-//  @PostMapping("/kakao/callback?code={code}") // 나 혼자 해볼라고 uri로 넘어오는 쿼리스트링 때문에 getmapping함
-//  public ResponseEntity<LoginResponseDto> kakaoLogin(@PathVariable String code) {
   @PostMapping("/kakao/callback") // 나 혼자 해볼라고 uri로 넘어오는 쿼리스트링 때문에 getmapping함
   public ResponseEntity<LoginResponseDto> kakaoLogin(@RequestParam("code") String code) {
     return ResponseEntity.ok().body(memberService.kakaoSignUp(code));
@@ -51,8 +49,7 @@ public class MemberController {
    * 앨범 권한 조회
    **/
   @GetMapping("/members/authority")
-  public ResponseEntity<Boolean> authorityAlbum(@RequestParam("albumPk") String albumPk,@RequestHeader(value = "accessToken",required = false) String accessToken)
-      throws JsonProcessingException {
+  public ResponseEntity<Boolean> authorityAlbum(@RequestParam("albumPk") String albumPk,@RequestHeader(value = "accessToken",required = false) String accessToken) {
     String memberPk=jwtService.parseJwtToken(accessToken);
     return new ResponseEntity<Boolean>(memberService.checkAuthorizationToAlbum(albumPk,memberPk),
         HttpStatus.OK);

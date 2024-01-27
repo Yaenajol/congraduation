@@ -4,6 +4,9 @@ import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.time.Duration;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,24 +24,30 @@ public class ImageService {
   @Value("${spring.cloud.aws.s3.bucket}")
   private String bucketName;
 
+  @Value("${image.output_format}")
+  private String imageOutputFormat;
+
+  @Value("${spring.cloud.aws.presigned_exp}")
+  private int awsPresignedExp;
+
+
   // 참고 깃허브 + 블로그 내용 혼합 사용
   // 블로그가 최신이라 블로그 기준으로 작성하며, 필요한 부분을 깃허브를 참고해서 반영하며 작성하였다.
   // 블로그 : https://techpedia.tistory.com/18
   // 깃허브 : https://github.com/Nliker/sijo/blob/master/src/main/java/com/backend/s3/service/S3ServiceImpl.java
-  @Transactional
-  public String uploadThumbnailAndReturnUrl(MultipartFile multipartFile, String memberPk) throws IOException {
-    String originalFileName = multipartFile.getOriginalFilename(); // 클라이언트가 전송한 파일 이름
 
-    // 파일 업로드 + s3 파일 조회 방향 변경 -> S3 PreSigned URL 방식으로 변경 예정
-
-    // 파일 이름 중복 방지 ::  파일 고유 uuid + "-" + 작성한memberPk
-    String saveFileName = UUID.randomUUID().toString() + "-" + memberPk ;
-
-    // S3에 파일 업로드
-    S3Resource s3Resource = s3Template.upload(bucketName, saveFileName, multipartFile.getInputStream(), ObjectMetadata.builder().contentType(multipartFile.getContentType()).build());
-
-    // 업로드 된 썸네일 Url을 리턴 : 엔티티 필드에 삽입
-    return s3Resource.getURL().toString();
+  public String getPresingendURL(String fileName) {
+    Duration duration1 = Duration.ofMinutes(awsPresignedExp);
+    URL getSignedURL = s3Template.createSignedGetURL(bucketName, fileName, duration1);
+    return getSignedURL.toString();
   }
+
+  public String uploadImage(InputStream inputStream) throws IOException{
+    String saveFileName = UUID.randomUUID().toString() +"."+ imageOutputFormat;
+    s3Template.upload(bucketName, saveFileName, inputStream, ObjectMetadata.builder().contentType("image/"+imageOutputFormat).build());
+    return saveFileName;
+  }
+
+
 
 }
