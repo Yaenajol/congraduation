@@ -1,33 +1,35 @@
 package com.ssafy.backend.jwt;
 
-import com.ssafy.backend.model.response.KakaoTokenDto;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.util.Base64;
-
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
   @Value("${jwt.secret-key")
-  private String secretKey = "auth";
+  private static String secretKey = "sljfsfjoewlt4%@%252pirjwrlfnlsflsfldlflwls";
 
   /** JWT 토큰 생성 **/
   // accessToken만 보내는지 idToken 내용도 담아 보내는지 궁금하다
   public String createJwtToken(String id) {
-    Claims claims = Jwts.claims();
-    claims.put("id", id);
+    Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+    System.out.println(id);
+    Date now = new Date();
     return Jwts.builder()
-        .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-        .setClaims(claims)
-        .setIssuedAt(new Date()) // 발급시간
-        .setExpiration(new Date(System.currentTimeMillis()+1000*100*60)) // 만료시간 얘기 합쉬다!!!!!!!!!!
-        .signWith(SignatureAlgorithm.HS256, secretKey) // 알고리즘, 시크릿키
+        .setHeaderParam("typ", "JWT")
+        .claim("id", id)
+        .setIssuedAt(now)
+        .setExpiration(new Date(System.currentTimeMillis()+ 1*1000*60*60)) // 1시간
+        .signWith(SignatureAlgorithm.HS256, key)
         .compact();
   }
 
@@ -41,8 +43,12 @@ public class JwtProvider {
   }
 
   /** 토큰 앞 부분('Bearer') 제거 메소드 **/
-  private String BearerRemove(String token) {
+  public String BearerRemove(String token) {
     return token.substring("Bearer ".length());
   }
 
+  /** JWT 토큰 복호화 **/
+  public Jws<Claims> getClaims(String jwtToken) {
+    return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+  }
 }

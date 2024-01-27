@@ -3,10 +3,12 @@ package com.ssafy.backend.model.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class KakaoTokenDto {
   /** 카카오 토큰 응답**/
   private String idToken;
