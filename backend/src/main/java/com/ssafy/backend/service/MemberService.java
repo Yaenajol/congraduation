@@ -22,11 +22,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpHeaders;
 
 @Service
 public class MemberService {
+  @Value("${oauth.kakao.client_id}")
+  private String oauthKakaoClientId;
+
+  @Value("${oauth.kakao.redirect_uri}")
+  private String oauthKakaoRedirectUri;
+
 
   @Autowired
   private MemberRepository memberRepository;
@@ -55,8 +62,8 @@ public class MemberService {
       BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
       StringBuilder sb = new StringBuilder();
       sb.append("grant_type=authorization_code");
-      sb.append("&redirect_uri=http://localhost:8080/kakao/callback");
-      sb.append("&client_id=89c1b2b891249d40bdead7fa2acbedae");
+      sb.append("&redirect_uri="+oauthKakaoRedirectUri);
+      sb.append("&client_id="+oauthKakaoClientId);
       sb.append("&code=" + code);
 
       bw.write(sb.toString());

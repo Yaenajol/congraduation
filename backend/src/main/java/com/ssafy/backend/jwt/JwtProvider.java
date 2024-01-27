@@ -15,8 +15,12 @@ import java.util.Base64;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-  @Value("${jwt.secret-key")
-  private static String secretKey = "sljfsfjoewlt4%@%252pirjwrlfnlsflsfldlflwls";
+  @Value("${jwt.secret_key}")
+  private static String secretKey;
+
+  @Value("${jwt.access.token.expiration.seconds}")
+  private static String jwtAccessTokenExpirationSeconds;
+
 
   /** JWT 토큰 생성 **/
   // accessToken만 보내는지 idToken 내용도 담아 보내는지 궁금하다

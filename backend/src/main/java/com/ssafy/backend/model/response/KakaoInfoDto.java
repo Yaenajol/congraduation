@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class KakaoInfoDto {
-  /** 사용자 정보 dto **/
+
   @NotNull
   private String id;
   @NotNull
