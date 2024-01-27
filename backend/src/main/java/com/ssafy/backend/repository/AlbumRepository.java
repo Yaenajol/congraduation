@@ -15,4 +15,6 @@ public interface AlbumRepository extends JpaRepository<Album, String> {
 
   @Query(nativeQuery = true, value = "select * from album a where a.member_pk = :memberPk")
   Album findAlbumByMemberPk(@Param("memberPk") String memberPk);
+
+  Album findByMemberPk(String memberPk);
 }

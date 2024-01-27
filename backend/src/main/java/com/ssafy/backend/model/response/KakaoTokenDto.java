@@ -18,5 +18,4 @@ public class KakaoTokenDto {
   private Integer expiresIn; // accessToken의 유효시간. idToken의 유효시간과 동일
   private Integer refreshTokenExpiresin;
   private String scope;
-
 }

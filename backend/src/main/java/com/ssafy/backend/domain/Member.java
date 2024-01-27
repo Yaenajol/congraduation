@@ -29,7 +29,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Member {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
   @Column(name = "member_pk")
   @Size(max=100)
   private String pk;

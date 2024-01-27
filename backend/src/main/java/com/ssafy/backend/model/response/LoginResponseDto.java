@@ -9,7 +9,6 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoginResponseDto {
   /** 로그인 후 응답 **/
-  private String jwtToken;
+  private String accessToken;
   private String albumPk;
-
 }

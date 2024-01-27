@@ -16,9 +16,4 @@ public class KakaoInfoDto {
   private String id;
   @NotNull
   private String nickname;
-  private String accessToken;
-  private String refreshToken;
-  private String albumPk;
-  private boolean authority;
-
 }
