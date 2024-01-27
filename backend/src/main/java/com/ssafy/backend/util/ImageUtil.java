@@ -9,28 +9,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ImageUtil {
+  @Value("${image.blur_rate}")
+  private int imageBlurRate;
+
+  @Value("${image.thumbnail.max_pixel}")
+  private int imageThumbnailMaxPixel;
+
+  @Value("${image.default.max_pixel}")
+  private int imageDefaultMaxPixel;
+
+
   public InputStream makeResize(MultipartFile file) throws IOException {
     BufferedImage image=ImageIO.read(file.getInputStream());
     int width = image.getWidth();
     int height = image.getHeight();
     BufferedImage resizImage=null;
-    if(width <= 300 && height <=300){
+    if(width <= imageDefaultMaxPixel && height <= imageDefaultMaxPixel){
       System.out.println("1");
       resizImage=image;
     }
-    if(width >= height && width >300){
+    if(width >= height && width > imageDefaultMaxPixel){
       System.out.println("2");
       double rate=((double)height)/width;
       width=300;
       height=(int) (width*rate);
       resizImage=resizeImage(image,width,height);
-    }else if(width < height && height > 300){
+    }else if(width < height && height > imageDefaultMaxPixel){
       System.out.println("3");
       double rate=((double)width)/height;
       height=300;
@@ -59,20 +70,20 @@ public class ImageUtil {
     int width = image.getWidth();
     int height = image.getHeight();
     BufferedImage resizImage=null;
-    if(width <= 100 && height <=100){
+    if(width <= imageThumbnailMaxPixel && height <=imageThumbnailMaxPixel){
       System.out.println("1");
       resizImage=image;
     }
-    if(width >= height && width >100){
+    if(width >= height && width >imageThumbnailMaxPixel){
       System.out.println("2");
       double rate=((double)height)/width;
-      width=100;
+      width=imageThumbnailMaxPixel;
       height=(int) (width*rate);
       resizImage=resizeImage(image,width,height);
-    }else if(width < height && height > 100){
+    }else if(width < height && height > imageThumbnailMaxPixel){
       System.out.println("3");
       double rate=((double)width)/height;
-      height=100;
+      height=imageThumbnailMaxPixel;
       width=(int) (height*rate);
       resizImage=resizeImage(image,width,height);
     }
@@ -98,20 +109,20 @@ public class ImageUtil {
     int width = image.getWidth();
     int height = image.getHeight();
     BufferedImage resizImage=null;
-    if(width <= 100 && height <=100){
+    if(width <= imageThumbnailMaxPixel && height <= imageThumbnailMaxPixel){
       System.out.println("1");
       resizImage=image;
     }
-    if(width >= height && width >100){
+    if(width >= height && width > imageThumbnailMaxPixel){
       System.out.println("2");
       double rate=((double)height)/width;
-      width=100;
+      width=imageThumbnailMaxPixel;
       height=(int) (width*rate);
       resizImage=resizeImage(image,width,height);
-    }else if(width < height && height > 100){
+    }else if(width < height && height > imageThumbnailMaxPixel){
       System.out.println("3");
       double rate=((double)width)/height;
-      height=100;
+      height=imageThumbnailMaxPixel;
       width=(int) (height*rate);
       resizImage=resizeImage(image,width,height);
     }
@@ -135,7 +146,7 @@ public class ImageUtil {
   }
 
   private BufferedImage blurImage(BufferedImage target) throws IOException {
-    int radius = 5;
+    int radius = imageBlurRate;
     int size = radius * 2 + 1;
 
     float[] data = new float[size * size];
