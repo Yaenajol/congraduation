@@ -15,10 +15,9 @@ import com.ssafy.backend.repository.MemberRepository;
 import com.ssafy.backend.repository.MemoryRepository;
 import com.ssafy.backend.util.ImageUtil;
 import java.io.IOException;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,8 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemoryService {
-  @Value("${image.input_format}")
-  private String imageInputFormat;
 
   private final MemoryRepository memoryRepository;
   private final MemberRepository memberRepository;
@@ -38,41 +35,70 @@ public class MemoryService {
 
 
   public MemoryResponseDto getMemory(String memoryPk,String memberPk) {
-    Optional<Memory> memory = memoryRepository.findById(memoryPk);
-    if(memory.isEmpty()){
-      throw new CustomException(MemoryErrorCode)
+    Optional<Memory> optMemory = memoryRepository.findById(memoryPk);
+    if(optMemory.isEmpty()){//해당 메모리가 존재하는가?
+      throw new CustomException(MemoryErrorCode.NotFoundMemory.getCode(),MemoryErrorCode.NotFoundMemory.getDescription());
     }
+
+    Memory memory=optMemory.get();
+    Album album=memory.getAlbum();
+
+    if(!album.getMember().getPk().equals(memberPk)){//해당 메모리의 유저와 현재 로그인된 유저가 일치하는가?
+      throw new CustomException(MemoryErrorCode.NotMatchMember.getCode(),MemoryErrorCode.NotMatchMember.getDescription());
+    }
+
+    if(album.getOpenAt() == null){//해당 앨범의 공개날짜가 설정이 되어 있는가?
+      throw new CustomException(AlbumErrorCode.NotSettingOpenAt.getCode(),AlbumErrorCode.NotSettingOpenAt.getDescription());
+    }
+
+    LocalDateTime albumOpenAt = album.getOpenAt();
+    LocalDateTime now = LocalDateTime.now();
+    if(now.isBefore(albumOpenAt)){//조회하는 시점이 해당 앨범의 공개일 전인가?
+      throw new CustomException(AlbumErrorCode.NotOpened.getCode(), AlbumErrorCode.NotOpened.getDescription());
+    }
+    String imageUrl= imageService.getPresingendURL(memory.getImageName());
+
     return MemoryResponseDto.builder()
         .nickname(memory.getNickname())
         .content(memory.getContent())
-        .ImageUrl(memory.getImageName()).build();
-  }
-
-  /** albumPk로 메모리 리스트 가져오기 **/
-  public List<Memory> getAllMemoryInAlbum(String albumPk) {
-    return memoryRepository.findAllMemoryInAlbumByAlbumPk(albumPk);
+        .ImageUrl(imageUrl).build();
   }
 
   /** 메모리 작성 **/
   @Transactional
   public String writeMemory(MultipartFile image, MemoryRequestDto memoryRequestDto, String memberPk) {
-    // 엔티티 조회
-    //일치하지 않은 input format 은보 내버리기
-//    String ext = Files.getFileExtension(path);
-//    System.out.println(ext);
+    //확장자만 따로 추출해서 유동적으로 받을 수 있도록 하는 로직 추가
+    //    String ext = Files.getFileExtension(path);
+    //    System.out.println(ext);
 
     Optional<Member> optMember = memberRepository.findById(memberPk);    // 메모리 작성자 가져오기
 
-    if (optMember.isEmpty()) {
+    if (optMember.isEmpty()) { //해당 멤버가 존재하는가?
       throw new CustomException(MemberErrorCode.NotFoundMember.getCode(), MemberErrorCode.NotFoundMember.getDescription());
     }
-    Optional<Album> optAlbum = albumRepository.findById(memoryRequestDto.getAlbumPk());       // 메모리 작성되는 앨범 가져오기
+    Member member=optMember.get();
 
-    if (optAlbum.isEmpty()) {
+    Optional<Album> optAlbum = albumRepository.findById(memoryRequestDto.getAlbumPk());
+    if (optAlbum.isEmpty()) {//해당 앨범이 존재하는가?
       throw new CustomException(AlbumErrorCode.NotFoundAlbum.getCode(), AlbumErrorCode.NotFoundAlbum.getDescription()) ;
     }
-    // Exception File(Image)
-    if (image.isEmpty()) {
+
+    Album album=optAlbum.get();
+
+    if(member.getPk().equals(album.getMember().getPk())){
+      throw new CustomException(MemoryErrorCode.NotWritableInYourAlbum.getCode(),MemoryErrorCode.NotWritableInYourAlbum.getDescription());
+    }
+    if(album.getOpenAt() == null){//해당 앨범의 공개날짜가 설정이 되어 있는가?
+      throw new CustomException(AlbumErrorCode.NotSettingOpenAt.getCode(),AlbumErrorCode.NotSettingOpenAt.getDescription());
+    }
+
+    LocalDateTime albumOpenAt = album.getOpenAt();
+    LocalDateTime now = LocalDateTime.now();
+    if(now.isAfter(albumOpenAt)){//작성하는 시점이 해당 앨범의 공개일을 넘겼는가?
+      throw new CustomException(AlbumErrorCode.NotWritable.getCode(), AlbumErrorCode.NotWritable.getDescription());
+    }
+
+    if (image.isEmpty()) {//업로드하는 이미지가 존재하는가?
       throw new CustomException(ImageErrorCode.NotFoundImage.getCode(), ImageErrorCode.NotFoundImage.getDescription());
     }
 
@@ -84,7 +110,7 @@ public class MemoryService {
       // 메모리 생성 : pk uuid로 설정
       Memory memory = Memory.builder()
           .member(optMember.get())
-          .album(optAlbum.get())
+          .album(album)
           .nickname(memoryRequestDto.getNickname())
           .content(memoryRequestDto.getContent())
           .imageName(imageName)

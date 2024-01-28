@@ -14,5 +14,4 @@ public class MemoryRequestDto {
   private String albumPk;
   private String nickname;
   private String content;
-
 }

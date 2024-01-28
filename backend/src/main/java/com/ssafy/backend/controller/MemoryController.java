@@ -25,7 +25,7 @@ public class MemoryController {
 
   @GetMapping("/{memoryPk}")
   public ResponseEntity<MemoryResponseDto> getMemoryDetail(@PathVariable String memoryPk,@RequestHeader(value = "accessToken",required = false) String accessToken) {
-    return ResponseEntity.ok().body(memoryService.getMemory(memoryPk,jwtService.parseJwtToken(accessToken));
+    return ResponseEntity.ok().body(memoryService.getMemory(memoryPk,jwtService.parseJwtToken(accessToken)));
   }
 
   @PostMapping

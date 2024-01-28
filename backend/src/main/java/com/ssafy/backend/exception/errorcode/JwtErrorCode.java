@@ -4,13 +4,12 @@ import lombok.Getter;
 
 @Getter
 public enum JwtErrorCode {
-  InvaldJwtSignature(400,"jwt token was broken"),
-  ExpiredJwt(400,"jwt was expired"),
-  UnsupportedJwt(400,"this jwt is not supported"),
-  IllegalArgumentException(400,"jwt claim is empty"),
-  JwtReqired(400,"jwt is required"),
-  NotFoundRequiredJwtProperty(400,"jwt has no required property")
-  ;
+  InvaldJwtSignature(401,"jwt token was broken"),
+  ExpiredJwt(401,"jwt was expired"),
+  UnsupportedJwt(401,"this jwt is not supported"),
+  IllegalArgumentException(401,"jwt claim is empty"),
+  JwtReqired(401,"jwt is required"),
+  NotFoundRequiredJwtProperty(401,"jwt has no required property");
 
 
   private int code;

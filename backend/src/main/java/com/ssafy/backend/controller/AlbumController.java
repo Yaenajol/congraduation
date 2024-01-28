@@ -1,34 +1,24 @@
 package com.ssafy.backend.controller;
 
+import com.ssafy.backend.jwt.JwtService;
+import com.ssafy.backend.model.request.AlbumUpdateGraduationDateRequestDto;
 import com.ssafy.backend.model.request.AlbumUpdateRequestDto;
 import com.ssafy.backend.model.response.AlbumMemoryResponseDto;
 import com.ssafy.backend.model.response.AlbumResponseDto;
 import com.ssafy.backend.service.AlbumService;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -38,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AlbumController {
 
   private final AlbumService albumService;
+  private final JwtService jwtService;
 
   @GetMapping("/{albumPk}")
   public ResponseEntity<AlbumResponseDto> getAlbumList(@PathVariable String albumPk){
@@ -52,26 +43,31 @@ public class AlbumController {
   }
 
   @PutMapping("/{albumPk}")
-  public ResponseEntity<Object> updateAlbum(@PathVariable String albumPk,@RequestBody AlbumUpdateRequestDto albumUpdateRequest){
+  public ResponseEntity<Object> updateAlbum(@PathVariable String albumPk,
+      @RequestBody AlbumUpdateRequestDto albumUpdateRequest,
+      @RequestHeader(value = "accessToken",required = false) String accessToken){
     log.debug("updateAlbum"+ albumPk);
-    albumService.updateAlbumByPk(albumPk,albumUpdateRequest);
-    return ResponseEntity.ok().body("update success");
+    albumService.updateAlbumByPk(albumPk,albumUpdateRequest,jwtService.parseJwtToken(accessToken));
+    return ResponseEntity.ok().body("success");
   }
 
-  @PostMapping("/imageBlur")
-  public ResponseEntity<Resource> imageBlur(@RequestParam(value="file",required=false) MultipartFile file)
-      throws IOException {
-    Resource image=albumService.sendMediaImage(file);
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentDisposition(
-        ContentDisposition.builder("attachment")
-            .filename("blur.jpg")
-            .build());
+  @PutMapping("/{albumPk}/coverImage")
+  public ResponseEntity<Object> updateAlbum(@PathVariable String albumPk,
+      @RequestPart MultipartFile image,
+      @RequestHeader(value = "accessToken",required = false) String accessToken){
+    log.debug("updateAlbum coverImage"+ image.getSize());
 
-    headers.add(HttpHeaders.CONTENT_TYPE, "image/jpeg");
-    return ResponseEntity
-        .ok()
-        .headers(headers)
-        .body(image);
+    return ResponseEntity.ok().body(albumService.updateAlbumCoverImageByPk(albumPk,image,jwtService.parseJwtToken(accessToken)));
+  }
+
+  @PutMapping("/{albumPk}/graduationDate")
+  public ResponseEntity<Object> updateAlbumGraduationDate(
+      @PathVariable String albumPk,
+      @RequestBody AlbumUpdateGraduationDateRequestDto albumUpdateGraduationDateRequest,
+      @RequestHeader(value = "accessToken",required = false) String accessToken){
+    System.out.println(albumUpdateGraduationDateRequest.getGraduationDate());
+    albumService.updateAlbumGraduationDateByPk(albumPk,albumUpdateGraduationDateRequest,jwtService.parseJwtToken(accessToken));
+
+    return ResponseEntity.ok().body("success");
   }
 }
