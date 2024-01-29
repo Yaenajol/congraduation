@@ -32,6 +32,8 @@ public class BackendApplication {
 						.maxAge(3600);
 			}
 		};
+
+
 	}
 
 }
