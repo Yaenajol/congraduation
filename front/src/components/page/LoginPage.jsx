@@ -22,7 +22,7 @@ function HomePage() {
   
   return (
     <div className='container'>
-      <div className='box'>
+      <div className='imagebox'>
         <br></br>
         <br></br>
         <br></br>

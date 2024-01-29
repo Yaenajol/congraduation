@@ -1,8 +1,10 @@
 
 
-body {  background-color: rgba(252, 252, 252);}
+body {  background-color: rgb(18, 1, 104);}
 
 /* YourComponent.css */
+
+
 
 .container {
   display: flex;
@@ -22,13 +24,22 @@ body {  background-color: rgba(252, 252, 252);}
 }
 
 .imagebox {
-  width: auto;
-  height: auto;
+  background-image: url(./flowerschool.png);
+  width: 100%;
+  max-width: 800px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .kakaobutton {
   width: 50%;
   height: 20px;
+  max-width: 400px;
   padding: 15px 20px;
   display: flex;
   -webkit-box-pack: center;
@@ -55,8 +66,12 @@ body {  background-color: rgba(252, 252, 252);}
     color: rgba(87, 0, 0, 0.849);
 }
 
+.settingbutton {
+
+}
+
 /* 미디어 쿼리 */
-@media (max-width: 768px) {
+@media all and (max-width: 769px) {
   .box{
     width: 100%;
   }
@@ -65,7 +80,7 @@ body {  background-color: rgba(252, 252, 252);}
   }
 
   .kakaobutton {
-    width: 70%;
+    /* width: 70%; */
   }
 
   .csstitle {
@@ -76,3 +91,21 @@ body {  background-color: rgba(252, 252, 252);}
 
   }
 }
+
+/* @media all and (min-width:770px) {
+  .box{
+    background-size: 890px;
+  }
+  .container {
+    
+  }
+
+
+  .csstitle {
+
+  }
+
+  .imagebox {
+    width: 100%;
+  }
+} */
