@@ -10,6 +10,7 @@ import MemoryUpload from "./components/page/MemoryUpload"
 
 import RedirectPage from "./components/page/RedirectPage";
 import SettingsPage from "./components/page/SettingPage";
+import TestPage from "./components/page/TestPage"
 
 // outlet을 통해서 컴포넌트를 특정 페이지에서 안보이게 하기위한 코드 
 import AlbumLayout from "./AlbumLayout";
@@ -20,6 +21,7 @@ function App() {
     <BrowserRouter>
       
       <Routes>
+        <Route path="/test" element={<TestPage/>}/>
         <Route path="/" element={<LoginPage />} />
         <Route path="/albums" element={<AlbumPage />} />
         <Route path="/albums/setting" element={<SettingsPage />} />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
@@ -46,6 +47,7 @@ const AlbumPage = () => {
   const [nextPageImages, setNextPageImages] = useState([]); // 추가: 다음 페이지의 이미지들을 저장할 상태
 
   const itemsPerPage = 6;
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios.get('https://jsonplaceholder.typicode.com/photos/1')
@@ -118,6 +120,9 @@ const AlbumPage = () => {
     });
   }
 
+  const gotoSetting = () => {
+    navigate('/albums/setting')
+  }
   return (
     <StyledContainer>
       <StyledTypography variant="h4">Album Page</StyledTypography>
@@ -128,7 +133,7 @@ const AlbumPage = () => {
       </div>
       
       <div>
-        {album.id === 1 && <SettingsSharpIcon />}
+        {album.id === 1 && <SettingsSharpIcon onClick={() => gotoSetting()}/>}
       </div>
 
       {album.thumbnailUrl ? (
@@ -140,7 +145,17 @@ const AlbumPage = () => {
       <div>
         <StyledTypography>{count} 개 도착</StyledTypography>
       </div>
-      <BasicGrid />
+      {/* <BasicGrid /> */}
+
+      <Grid container spacing={2}>
+        {displayedAlbumMemories.map((val, index) => (
+          <Grid item xs={4} key={index}>
+            <StyledPaper>
+              <StyledImg src={val.thumbnailUrl} alt={`Memory ${index + 1}`} onClick={() => handleImageClick(val.url, index)} />
+            </StyledPaper>
+          </Grid>
+        ))}
+      </Grid>
       <Pagination
         count={Math.ceil(filteredAlbumMemories.length / itemsPerPage)}
         page={currentPage}
@@ -186,3 +201,4 @@ const AlbumPage = () => {
   );
 }
 
+export default AlbumPage
