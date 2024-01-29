@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
@@ -11,7 +11,7 @@ const StyledContainer = styled(Container)(({ theme }) => ({
   alignItems: 'center',
   marginTop: theme.spacing(4),
   // backgroundColor: '#FFFFB5',
-  backgroundImage: 'url("background.png")', // 배경 이미지 추가
+  backgroundImage: 'url("../background.png")', // 배경 이미지 추가
   backgroundSize: 'cover', // 배경 이미지를 화면에 꽉 채우도록 설정
 }));
 
@@ -24,6 +24,7 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
+  
   marginBottom: theme.spacing(2),
 }));
 
@@ -39,32 +40,65 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const AlbumPage = () => {
+  const params = useParams()
+
   const [album, setAlbum] = useState([]);
   const [albumMemories, setAlbumMemories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [nextPageImages, setNextPageImages] = useState([]); // 추가: 다음 페이지의 이미지들을 저장할 상태
-
+  const BACK_URL = 'http://congraduation.me/backapi'
+  const [isauthorized, setIsauthorized] = useState(false)
+  const [memoryarray , setMemoryarray] = useState([])
   const itemsPerPage = 6;
   const navigate = useNavigate()
 
+  console.log(localStorage)
+  console.log(window.location.href)
+  console.log(params.PK)
+
   useEffect(() => {
-    axios.get('https://jsonplaceholder.typicode.com/photos/1')
+    axios.get(`https://congraduation.me/backapi/albums/${params.PK}`)
          .then(response => {
            console.log('Album Data:', response.data);
+           
            setAlbum(response.data);
          });
+    axios.get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
+    .then(response => {
+      console.log('Album Memories Data:', response.data);
+      setAlbumMemories(response.data);
+      if (typeof(response.data) === typeof([])) {
+        setMemoryarray(response.data)
+        
+      }
+    }); 
+
+    if (typeof(localStorage.getItem('accesToken')) === typeof("")) {
+      
+      axios.get(`https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`, { headers: { 'accessToken': localStorage.accessToken}} )
+      .then(response => {
+        console.log('성공')
+        if (typeof(response) === typeof(true)) {
+          setIsauthorized(response)
+          console.log(isauthorized)
+        }
+      })
+    }
+    
   }, []);
 
-  useEffect(() => {
-    axios.get('https://jsonplaceholder.typicode.com/photos')
-         .then(response => {
-           console.log('Album Memories Data:', response.data);
-           setAlbumMemories(response.data);
-         });
-  }, []);
-
+  // useEffect(() => {
+  //   axios.get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
+  //        .then(response => {
+  //          console.log('Album Memories Data:', response.data);
+  //          setAlbumMemories(response.data);
+  //        });
+  // }, []);
+  
+  
+  
   function AlbumMemoriesCountByAlbumId(albumMemories, albumId) {
     const albumMemoriesWithAlbumId = albumMemories.filter((albumMemory) => albumMemory.albumId === albumId);
     return albumMemoriesWithAlbumId.length;
@@ -82,8 +116,10 @@ const AlbumPage = () => {
   const displayedAlbumMemories = filteredAlbumMemories.slice(startIndex, endIndex);
 
   const handleImageClick = (imageUrl, index) => {
-    setSelectedImageIndex(index);
-    setOpenModal(true);
+    console.log(imageUrl)
+    console.log(index)
+    // setSelectedImageIndex(index);
+    // setOpenModal(true);
   }
 
   const handleCloseModal = () => {
@@ -133,7 +169,7 @@ const AlbumPage = () => {
       </div>
       
       <div>
-        {album.id === 1 && <SettingsSharpIcon onClick={() => gotoSetting()}/>}
+        {album.id === params.PK && <SettingsSharpIcon onClick={() => gotoSetting()}/>}
       </div>
 
       {album.thumbnailUrl ? (
@@ -143,15 +179,15 @@ const AlbumPage = () => {
       )}
 
       <div>
-        <StyledTypography>{count} 개 도착</StyledTypography>
+        <StyledTypography>{memoryarray.length} 개 도착</StyledTypography>
       </div>
       {/* <BasicGrid /> */}
 
       <Grid container spacing={2}>
-        {displayedAlbumMemories.map((val, index) => (
+        {memoryarray.map((val, index) => (
           <Grid item xs={4} key={index}>
             <StyledPaper>
-              <StyledImg src={val.thumbnailUrl} alt={`Memory ${index + 1}`} onClick={() => handleImageClick(val.url, index)} />
+              <StyledImg src={val.imageUrl} alt={`Memory ${index + 1}`} onClick={() => handleImageClick(val.memoryPk, index)} />
             </StyledPaper>
           </Grid>
         ))}
