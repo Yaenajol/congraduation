@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import "./style.css"; // 이 CSS 파일에는 아래에 제공된 스타일이 포함될 것입니다.
+import "./style.css"; 
 import GridLayout from "react-grid-layout";
 import CropOriginal from "@mui/icons-material/CropOriginal";
 import "/node_modules/react-grid-layout/css/styles.css";
@@ -31,7 +31,7 @@ const MemoryUpload = () => {
 
   const handleGridItemClick = (key) => {
     setSelectedGridItem(key);
-    fileInputRef.current.click();
+    // fileInputRef.current.click();
     setSelectedImage(null)
     setOpenModal(true)
     // navigate('/albums/drag')
@@ -46,33 +46,15 @@ const MemoryUpload = () => {
   };
 
   const handleImageChange = (e) => {
-    const MAX_HEIGHT = 100;
     const file = e.target.files[0];
     if (file && selectedGridItem) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const img = new Image();
-        img.onload = () => {
-          // 이미지의 너비와 높이를 확인하고 조정
-          const aspectRatio = img.width / img.height;
-          let newWidth;
-          let newHeight;
-          if (img.height > MAX_HEIGHT) {
-            newHeight = MAX_HEIGHT;
-            newWidth = MAX_HEIGHT * aspectRatio;
-          } else {
-            newWidth = img.width;
-            newHeight = img.height;
-          }
-          // 여기에 캔버스를 사용하여 이미지 크기 조정 로직 추가
-          // ...
-          setImages((prevImages) => ({
-            ...prevImages,
-            [selectedGridItem]: reader.result, // 또는 조정된 이미지 데이터
-          }));
-          setSelectedImage(reader.result)
-        };
-        img.src = reader.result;
+        setImages((prevImages) => ({
+          ...prevImages,
+          [selectedGridItem]: reader.result // 이미지 데이터 직접 저장
+        }));
+        setSelectedImage(reader.result)
       };
       reader.readAsDataURL(file);
     }
@@ -238,8 +220,8 @@ const MemoryUpload = () => {
         onClose={handleCloseModal}
         fullWidth={true}
       >
-        <DragPage selectedImage={selectedImage} onUpdateImage={updateImage}/>
-
+        <DragPage/>
+        {/* selectedImage={selectedImage} onUpdateImage={updateImage} */}
 
 
       </Dialog>

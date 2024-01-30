@@ -1,85 +1,234 @@
-import React, { useState } from "react";
-import Main from "../assets/sample.jpg";
-import { Resizable } from "re-resizable";
-import Draggable from "react-draggable";
-import html2canvas from "html2canvas";
+import React, { useState, useRef } from 'react';
+import {ReactCrop, centerCrop, makeAspectCrop, convertToPixelCrop} from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
+import { canvasPreview } from './canvasPreview';
+import { useDebounceEffect } from './useDebounceEffect';
 
-const DragPage = ( { selectedImage, onUpdateImage }) => {
-  const cropBoxSize = 150;
-  const modalBox = 500;
-
-  const showCropImage = () => {
-    html2canvas(document.querySelector("#cropBox")).then((canvas) => {
-      let canvas2 = document.getElementById("croppedBox");
-      let context = canvas2.getContext("2d");
-      let newImage = new Image();
-      newImage.src = canvas.toDataURL();
-      newImage.onload = () => {
-        context.drawImage(
-          newImage,
-          canvas.width / 2 - cropBoxSize / 2,
-          canvas.height / 2 - cropBoxSize / 2,
-          cropBoxSize,
-          cropBoxSize,
-          0,
-          0,
-          cropBoxSize,
-          cropBoxSize
-        );
-        onUpdateImage(canvas2.toDataURL())
-      };
-    });
-  };
-  return (
-    <div>
-      <h2>draggable</h2>
-      <div
-        id="cropBox"
-        style={{
-          border: "1px solid green",
-          width: `${modalBox}px`,
-          height: `${modalBox}px`,
-          overflow: "auto",
-          position: "relative",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          className="cropBox"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            margin: `-${cropBoxSize / 2}px 0 0 -${cropBoxSize / 2}px`,
-            border: "3px solid green",
-            width: `${cropBoxSize}px`,
-            height: `${cropBoxSize}px`,
-            zIndex: "3",
-            pointerEvents: "none",
-          }}
-        ></div>
-        <Draggable scale={2}>
-          <Resizable
-            defaultSize={{
-              width: 100,
-              height: 100,
-            }}
-            style={{
-              backgroundImage: `url(${selectedImage})`,
-              backgroundSize: "contain",
-              backgroundRepeat: "no-repeat",
-            }}
-            lockAspectRatio={true}
-          ></Resizable>
-        </Draggable>
-      </div>
-      
-      <button onClick={showCropImage}>완료</button>
-      <canvas id="croppedBox"></canvas>
-    </div>
+function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
+  return centerCrop(
+    makeAspectCrop(
+      {
+        unit: '%',
+        width: 90,
+      },
+      aspect,
+      mediaWidth,
+      mediaHeight,
+    ),
+    mediaWidth,
+    mediaHeight
   );
-};
+}
 
-export default DragPage;
+export default function App() {
+  const [imgSrc, setImgSrc] = useState('');
+  const previewCanvasRef = useRef(null);
+  const imgRef = useRef(null);
+  const hiddenAnchorRef = useRef(null);
+  const blobUrlRef = useRef('');
+  const [crop, setCrop] = useState();
+  const [completedCrop, setCompletedCrop] = useState();
+  const [scale, setScale] = useState(1);
+  const [rotate, setRotate] = useState(0);
+  const [aspect, setAspect] = useState(16 / 9);
+
+  // ... (rest of the code remains same as in your TS file)
+  function onSelectFile(e) {
+    if (e.target.files && e.target.files.length > 0) {
+      setCrop(undefined) // Makes crop preview update between images.
+      const reader = new FileReader()
+      reader.addEventListener('load', () =>
+        setImgSrc(reader.result?.toString() || ''),
+      )
+      reader.readAsDataURL(e.target.files[0])
+    }
+  }
+
+  function onImageLoad(e) {
+    if (aspect) {
+      const { width, height } = e.currentTarget
+      setCrop(centerAspectCrop(width, height, aspect))
+    }
+  }
+
+  async function onDownloadCropClick() {
+    const image = imgRef.current
+    const previewCanvas = previewCanvasRef.current
+    if (!image || !previewCanvas || !completedCrop) {
+      throw new Error('Crop canvas does not exist')
+    }
+
+    // This will size relative to the uploaded image
+    // size. If you want to size according to what they
+    // are looking at on screen, remove scaleX + scaleY
+    const scaleX = image.naturalWidth / image.width
+    const scaleY = image.naturalHeight / image.height
+
+    const offscreen = new OffscreenCanvas(
+      completedCrop.width * scaleX,
+      completedCrop.height * scaleY,
+    )
+    const ctx = offscreen.getContext('2d')
+    if (!ctx) {
+      throw new Error('No 2d context')
+    }
+
+    ctx.drawImage(
+      previewCanvas,
+      0,
+      0,
+      previewCanvas.width,
+      previewCanvas.height,
+      0,
+      0,
+      offscreen.width,
+      offscreen.height,
+    )
+    // You might want { type: "image/jpeg", quality: <0 to 1> } to
+    // reduce image size
+    const blob = await offscreen.convertToBlob({
+      type: 'image/png',
+    })
+
+    if (blobUrlRef.current) {
+      URL.revokeObjectURL(blobUrlRef.current)
+    }
+    blobUrlRef.current = URL.createObjectURL(blob)
+
+    if (hiddenAnchorRef.current) {
+      hiddenAnchorRef.current.href = blobUrlRef.current
+      hiddenAnchorRef.current.click()
+    }
+  }
+
+  useDebounceEffect(
+    async () => {
+      if (
+        completedCrop?.width &&
+        completedCrop?.height &&
+        imgRef.current &&
+        previewCanvasRef.current
+      ) {
+        // We use canvasPreview as it's much faster than imgPreview.
+        canvasPreview(
+          imgRef.current,
+          previewCanvasRef.current,
+          completedCrop,
+          scale,
+          rotate,
+        )
+      }
+    },
+    100,
+    [completedCrop, scale, rotate],
+  )
+
+  function handleToggleAspectClick() {
+    if (aspect) {
+      setAspect(undefined)
+    } else {
+      setAspect(16 / 9)
+
+      if (imgRef.current) {
+        const { width, height } = imgRef.current
+        const newCrop = centerAspectCrop(width, height, 16 / 9)
+        setCrop(newCrop)
+        // Updates the preview
+        setCompletedCrop(convertToPixelCrop(newCrop, width, height))
+      }
+    }
+  }
+
+  return (
+    <div className="App">
+      <div className="Crop-Controls">
+        <input type="file" accept="image/*" onChange={onSelectFile} />
+        <div>
+          <label htmlFor="scale-input">Scale: </label>
+          <input
+            id="scale-input"
+            type="number"
+            step="0.1"
+            value={scale}
+            disabled={!imgSrc}
+            onChange={(e) => setScale(Number(e.target.value))}
+          />
+        </div>
+        <div>
+          <label htmlFor="rotate-input">Rotate: </label>
+          <input
+            id="rotate-input"
+            type="number"
+            value={rotate}
+            disabled={!imgSrc}
+            onChange={(e) =>
+              setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))
+            }
+          />
+        </div>
+        <div>
+          <button onClick={handleToggleAspectClick}>
+            Toggle aspect {aspect ? 'off' : 'on'}
+          </button>
+        </div>
+      </div>
+      {!!imgSrc && (
+        <ReactCrop
+          crop={crop}
+          onChange={(_, percentCrop) => setCrop(percentCrop)}
+          onComplete={(c) => setCompletedCrop(c)}
+          aspect={aspect}
+          minWidth={100}
+          minHeight={100}
+          // circularCrop
+        >
+          <img
+            ref={imgRef}
+            alt="Crop me"
+            src={imgSrc}
+            style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+            onLoad={onImageLoad}
+          />
+        </ReactCrop>
+      )}
+      {!!completedCrop && (
+        <>
+          <div>
+            <canvas
+              ref={previewCanvasRef}
+              style={{
+                border: '1px solid black',
+                objectFit: 'contain',
+                width: completedCrop.width,
+                height: completedCrop.height,
+              }}
+            />
+          </div>
+          <div>
+            <button onClick={onDownloadCropClick}>Download Crop</button>
+            <div style={{ fontSize: 12, color: '#666' }}>
+              If you get a security error when downloading try opening the
+              Preview in a new tab (icon near top right).
+            </div>
+            <a
+              href="#hidden"
+              ref={hiddenAnchorRef}
+              download
+              style={{
+                position: 'absolute',
+                top: '-200vh',
+                visibility: 'hidden',
+              }}
+            >
+              Hidden download
+            </a>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+
+
+// ... (rest of the App component remains the same)

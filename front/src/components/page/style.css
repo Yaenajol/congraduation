@@ -37,7 +37,8 @@
 .image-upload img {
   width: 100%; /* 너비를 컨테이너에 맞춤 */
   height: 100%; /* 높이를 컨테이너에 맞춤 */
-  object-fit: fill; 
+  object-fit: cover; 
+  object-position: center;
 }
 
 .plus-icon {
