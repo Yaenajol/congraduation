@@ -1,14 +1,17 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import "./style.css"; 
 import GridLayout from "react-grid-layout";
 import CropOriginal from "@mui/icons-material/CropOriginal";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import { TextField, Button, Box, Typography, Container } from '@mui/material';
+import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import myImg from "./myImg.png";
-import { useNavigate } from "react-router-dom";
 import {Dialog} from "@mui/material";
 import DragPage from "../page/DragPage";
+import { isLoginAtom } from "../store/atom";
+import axios from "axios";
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
@@ -20,8 +23,28 @@ const MemoryUpload = () => {
   const [message, setMessage] = useState("");
   const isReadyToSubmit =
     Object.values(images).every((img) => img !== null) && nickname && message;
+  
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const params = useParams()
   const navigate = useNavigate()
 
+  useEffect(()=> {
+    if (isLogin) {
+      if (params.PK) {
+        axios.get(
+          `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
+          { headers: { accessToken: localStorage.accessToken } }
+        )
+        .then((response) => {
+          if (response.data === true) {
+
+            navigate(`/albums/${params.PK}`)
+          }
+        })
+    } else {
+      navigate('/')
+    }
+  }})
   //모달
   const [openModal, setOpenModal] = useState(false);
   const handleCloseModal = () => {
@@ -109,38 +132,73 @@ const MemoryUpload = () => {
         imageSize + frameThickness
       );
     });
-
-    const mergedImageDataURL = canvas.toDataURL("image/jpeg");
+    const dataURLtoFile = (dataurl, filename) => {
+      let arr = dataurl.split(","),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[arr.length - 1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    }
+    const mergedImageDataURL = canvas.toDataURL("image/png");
+    const blobBin = atob(mergedImageDataURL.split(",")[1])
+    const array = []
+    for (let i = 0; i < blobBin.length; i++) {
+      array.push(blobBin.charCodeAt(i))
+    }
+    // const file = new File([new Uint8Array(array)], 'sample.png' ,{type: 'image/png'})
+    const file = dataURLtoFile(mergedImageDataURL, 'sample.png')
     setMergedImage(mergedImageDataURL);
+    console.log(mergedImageDataURL)
+    // 합쳐진 이미지를 백엔드로 전송하는 코드
+    if (isReadyToSubmit) {
+      try {
+          const payload = {
+              albumPk: params.PK,
+              nickname,
+              content: message,
+          }
+          console.log(payload)
+          const formdata = new FormData()
+          formdata.append('image', file)
+          formdata.append('data', new Blob([JSON.stringify(payload)] , { type: 'application/json'}))
+
+          axios.post('https://congraduation.me/backapi/memories', formdata, {
+            headers : {
+              'accessToken' : localStorage.getItem('accessToken')
+              // 'Content-Type': 'multipart/form-data',
+            },
+          }).then (response => {
+            console.log(response.data)
+            
+
+          })
+          .catch(error => {
+            console.log('실패')
+          }) 
+           
+          
+          
+          
+          
+          // if (response.ok) {
+          //     console.log('성공')
+          //     // 앨범페이지로 다시 리다이렉션
+          // } else {
+          //     console.log(response)
+          //     console.log('실패')
+          // }
+      } catch (error) {
+          console.log('전송 중 실패', error)
+          console.log(error.data)
+      }
+    }
   };
-  // 합쳐진 이미지를 백엔드로 전송하는 코드
-  //   if (isReadyToSubmit) {
-  //     try {
-  //         const payload = {
-  //             image : mergedImageDataURL,
-  //             nickname,
-  //             message,
-  //         }
-
-  //         const response = await fetch("백주소 ", {
-  //             method: 'POST',
-  //             body: JSON.stringify(payload),
-  //             headers: {
-  //                 'Content-Type': 'application/json'
-  //             }
-  //         })
-
-  //         if (response.ok) {
-  //             console.log('성공')
-  //             // 앨범페이지로 다시 리다이렉션
-  //         } else {
-  //             console.log('실패')
-  //         }
-  //     } catch (error) {
-  //         console.log('전송 중 실패', error)
-  //     }
-  //   }
-
+  
+    
   return (
     <div className="memory-upload">
       <div className="title">Memory</div>
@@ -220,7 +278,7 @@ const MemoryUpload = () => {
         onClose={handleCloseModal}
         fullWidth={true}
       >
-        <DragPage/>
+        <DragPage selectedGridItem={selectedGridItem} setImages={setImages} setOpenModal={setOpenModal} />
         {/* selectedImage={selectedImage} onUpdateImage={updateImage} */}
 
 

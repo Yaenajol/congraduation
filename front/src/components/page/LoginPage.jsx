@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { useNavigate, useParams } from 'react-router-dom'
-
+import { isLoginAtom } from "../store/atom";
 import "./AllPage.css";
 
 // 내부 경로
@@ -13,21 +14,20 @@ function HomePage() {
   const LoginHandler = () => {
     window.location.href = "https://congraduation.me/backapi/kakao/redirect";
   };
-
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  console.log(isLogin)
   const params  = useParams()
   console.log(params)
-  useEffect(() => {
-    
-    console.log(localStorage)
-    console.log(localStorage.getItem('albumPK'))
-    console.log(localStorage.getItem('accessToken'))
-    if (typeof(localStorage.getItem('albumPK')) === typeof("") && typeof(localStorage.getItem('accessToken')) === typeof("") ) {
-      console.log('hi')
-      console.log(params)
-      navigate(`/albums/${localStorage.albumPK}`)
-  }
-  },[])
   
+  // if (isLogin) {
+  //   navigate(`/albums/${localStorage.albumPK}`)
+  // }
+  useEffect(() => {
+    if (isLogin) {
+      navigate(`/albums/${localStorage.albumPK}`)
+    }
+  },[])
+  console.log(isLogin)
  
 
   return (

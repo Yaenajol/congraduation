@@ -21,3 +21,10 @@ export const albumState = atom({
         expiredAt : closeDate,
     },
 });
+
+export const isLoginAtom = atom({
+    key: 'isLogin',
+    default: false, 
+})
+
+

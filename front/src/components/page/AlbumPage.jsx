@@ -6,6 +6,8 @@ import SettingsSharpIcon from "@mui/icons-material/SettingsSharp";
 import { styled } from "@mui/material/styles";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 import "./AlbumPage.css";
+import { isLoginAtom } from "../store/atom";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 
 import MenuButton from '../../components/button/MenuButton'
 
@@ -57,7 +59,7 @@ const AlbumPage = () => {
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   console.log(localStorage);
   console.log(window.location.href);
   console.log(params.PK);
@@ -80,9 +82,8 @@ const AlbumPage = () => {
         }
       });
     console.log(typeof localStorage.getItem("accessToken") === typeof "");
-    if (typeof localStorage.getItem("accessToken") === typeof "") {
+    if (isLogin) {
       console.log("check");
-
       axios
         .get(
           `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
@@ -189,8 +190,15 @@ const AlbumPage = () => {
     navigate("/abums/setting");
   };
   const gotoAddMemory = () => {
-    console.log(isauthorized);
-    navigate("/albums/edit");
+    console.log(isLogin)
+    if (!isLogin) {
+      console.log(isLoginAtom)
+      navigate('/')
+    } else {
+      
+      navigate(`/albums/${params.PK}/edit`);
+    }
+    
   };
 
   const dialogtest = "dfsdfsdfdsfsdfdsfsdfsdf";

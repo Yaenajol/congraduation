@@ -9,7 +9,8 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
     makeAspectCrop(
       {
         unit: '%',
-        width: 90,
+        width: 50,
+        height: 50,
       },
       aspect,
       mediaWidth,
@@ -20,7 +21,7 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   );
 }
 
-export default function App() {
+export default function App({selectedGridItem, setImages, setOpenModal}) {
   const [imgSrc, setImgSrc] = useState('');
   const previewCanvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -30,7 +31,7 @@ export default function App() {
   const [completedCrop, setCompletedCrop] = useState();
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
-  const [aspect, setAspect] = useState(16 / 9);
+  const [aspect, setAspect] = useState(1/1);
 
   // ... (rest of the code remains same as in your TS file)
   function onSelectFile(e) {
@@ -52,6 +53,15 @@ export default function App() {
   }
 
   async function onDownloadCropClick() {
+
+    const updateImage = (imageData) => {
+      setImages((prevImages) => ({
+        ...prevImages,
+        [selectedGridItem]: imageData, // 선택된 그리드 아이템에 이미지 데이터 업데이트
+      }));
+      
+    };
+    console.log(selectedGridItem)
     const image = imgRef.current
     const previewCanvas = previewCanvasRef.current
     if (!image || !previewCanvas || !completedCrop) {
@@ -95,10 +105,13 @@ export default function App() {
     }
     blobUrlRef.current = URL.createObjectURL(blob)
 
-    if (hiddenAnchorRef.current) {
-      hiddenAnchorRef.current.href = blobUrlRef.current
-      hiddenAnchorRef.current.click()
-    }
+    updateImage(blobUrlRef.current)
+
+    // if (hiddenAnchorRef.current) {
+    //   hiddenAnchorRef.current.href = blobUrlRef.current
+    //   hiddenAnchorRef.current.click()
+    // }
+    setOpenModal(false)
   }
 
   useDebounceEffect(
@@ -127,7 +140,7 @@ export default function App() {
     if (aspect) {
       setAspect(undefined)
     } else {
-      setAspect(16 / 9)
+      setAspect(1/1)
 
       if (imgRef.current) {
         const { width, height } = imgRef.current
@@ -143,7 +156,8 @@ export default function App() {
     <div className="App">
       <div className="Crop-Controls">
         <input type="file" accept="image/*" onChange={onSelectFile} />
-        <div>
+        {/* 사진 스케일 */}
+        {/* <div>
           <label htmlFor="scale-input">Scale: </label>
           <input
             id="scale-input"
@@ -153,8 +167,9 @@ export default function App() {
             disabled={!imgSrc}
             onChange={(e) => setScale(Number(e.target.value))}
           />
-        </div>
-        <div>
+        </div> */}
+        {/* 사진 회전  */}
+        {/* <div>
           <label htmlFor="rotate-input">Rotate: </label>
           <input
             id="rotate-input"
@@ -165,12 +180,13 @@ export default function App() {
               setRotate(Math.min(180, Math.max(-180, Number(e.target.value))))
             }
           />
-        </div>
-        <div>
+        </div> */}
+        {/* 크롭박스 비율이 바뀜 */}
+        {/* <div>
           <button onClick={handleToggleAspectClick}>
             Toggle aspect {aspect ? 'off' : 'on'}
           </button>
-        </div>
+        </div> */}
       </div>
       {!!imgSrc && (
         <ReactCrop
@@ -180,6 +196,7 @@ export default function App() {
           aspect={aspect}
           minWidth={100}
           minHeight={100}
+          locked={false}
           // circularCrop
         >
           <img
@@ -205,10 +222,9 @@ export default function App() {
             />
           </div>
           <div>
-            <button onClick={onDownloadCropClick}>Download Crop</button>
+            <button onClick={onDownloadCropClick}>완료!</button>
             <div style={{ fontSize: 12, color: '#666' }}>
-              If you get a security error when downloading try opening the
-              Preview in a new tab (icon near top right).
+              
             </div>
             <a
               href="#hidden"
@@ -229,6 +245,3 @@ export default function App() {
   )
 }
 
-
-
-// ... (rest of the App component remains the same)
