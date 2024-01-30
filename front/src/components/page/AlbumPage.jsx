@@ -113,7 +113,7 @@ const AlbumPage = () => {
 
   // Setting page 로 이동하는 기능
   const gotoSetting = () => {
-    navigate('/albums/setting')
+    navigate(`/albums/${params.PK}/setting`)  // 이러면 안되는데 수정 필요할 듯
   }
 
   const RoundedRectangle = () => {
@@ -138,10 +138,11 @@ const AlbumPage = () => {
     );
   };
 
+  // 유저 이미지 아이콘 버튼
   const UserImgButton = () => {
     const handleClick = () => {
-      //여기에 세팅 기능 구현, 조건 등도 넣어봐야 할 듯?
-  
+      //여기에 세팅 dialog 가게 하고, 세팅 설정하자
+      gotoSetting();
     };
   
     return (
