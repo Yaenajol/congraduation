@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import "./AllPage.css";
 
 // 내부 경로
-import Main from "../assets/Main.jpg";
+import Main from "../images/Main.jpg";
 // import KakaoLoginButton from "../button/KakaoLoginButton";
 // import Title from "../text/Title";
 
