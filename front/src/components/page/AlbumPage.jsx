@@ -1,38 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
-import {styled } from '@mui/material/styles';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import axios from "axios";
+import { Paper,Grid,Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions,} from "@mui/material";
+import SettingsSharpIcon from "@mui/icons-material/SettingsSharp";
+import { styled } from "@mui/material/styles";
+import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
+import "./AlbumPage.css";
+
+import MenuButton from '../../components/button/MenuButton'
 
 const StyledContainer = styled(Container)(({ theme }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   marginTop: theme.spacing(4),
   // backgroundColor: '#FFFFB5',
   backgroundImage: 'url("../background.png")', // 배경 이미지 추가
-  backgroundSize: 'cover', // 배경 이미지를 화면에 꽉 채우도록 설정
+  backgroundSize: "cover", // 배경 이미지를 화면에 꽉 채우도록 설정
 }));
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
   padding: theme.spacing(2),
-  textAlign: 'center',
+  textAlign: "center",
   color: theme.palette.text.secondary,
 }));
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
-  
   marginBottom: theme.spacing(2),
 }));
 
-const StyledImg = styled('img')({
-  maxWidth: '100%',
-  height: 'auto',
-  marginTop: '8px',
-  cursor: 'pointer',
+const StyledImg = styled("img")({
+  maxWidth: "100%",
+  height: "auto",
+  marginTop: "8px",
+  cursor: "pointer",
 });
 
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -40,7 +43,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 
 const AlbumPage = () => {
-  const params = useParams()
+  const params = useParams();
 
   const [album, setAlbum] = useState([]);
   const [albumMemories, setAlbumMemories] = useState([]);
@@ -48,45 +51,55 @@ const AlbumPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [nextPageImages, setNextPageImages] = useState([]); // 추가: 다음 페이지의 이미지들을 저장할 상태
-  const BACK_URL = 'http://congraduation.me/backapi'
-  const [isauthorized, setIsauthorized] = useState(false)
-  const [memoryarray , setMemoryarray] = useState([])
+  const [isauthorized, setIsauthorized] = useState(false);
+  const [memoryarray, setMemoryarray] = useState([]);
+  const BACK_URL = "http://congraduation.me/backapi";
   const itemsPerPage = 6;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  console.log(localStorage)
-  console.log(window.location.href)
-  console.log(params.PK)
+  console.log(localStorage);
+  console.log(window.location.href);
+  console.log(params.PK);
 
   useEffect(() => {
-    axios.get(`https://congraduation.me/backapi/albums/${params.PK}`)
-         .then(response => {
-           console.log('Album Data:', response.data);
-           
-           setAlbum(response.data);
-         });
-    axios.get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
-    .then(response => {
-      console.log('Album Memories Data:', response.data);
-      setAlbumMemories(response.data);
-      if (typeof(response.data) === typeof([])) {
-        setMemoryarray(response.data)
-        
-      }
-    }); 
+    axios
+      .get(`https://congraduation.me/backapi/albums/${params.PK}`)
+      .then((response) => {
+        console.log("Album Data:", response.data);
 
-    if (typeof(localStorage.getItem('accesToken')) === typeof("")) {
-      
-      axios.get(`https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`, { headers: { 'accessToken': localStorage.accessToken}} )
-      .then(response => {
-        console.log('성공')
-        if (typeof(response) === typeof(true)) {
-          setIsauthorized(response)
-          console.log(isauthorized)
+        setAlbum(response.data);
+      });
+    axios
+      .get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
+      .then((response) => {
+        console.log("Album Memories Data:", response.data);
+        setAlbumMemories(response.data);
+        if (typeof response.data === typeof []) {
+          setMemoryarray(response.data);
         }
-      })
+      });
+    console.log(typeof localStorage.getItem("accessToken") === typeof "");
+    if (typeof localStorage.getItem("accessToken") === typeof "") {
+      console.log("check");
+
+      axios
+        .get(
+          `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
+          { headers: { accessToken: localStorage.accessToken } }
+        )
+        .then((response) => {
+          console.log("성공");
+          console.log(response.data);
+          console.log(typeof response.data === typeof true);
+
+          if (typeof response.data === typeof true) {
+            setIsauthorized(response.data);
+
+            console.log("108:", +isauthorized);
+          }
+        });
     }
-    
   }, []);
 
   // useEffect(() => {
@@ -96,11 +109,11 @@ const AlbumPage = () => {
   //          setAlbumMemories(response.data);
   //        });
   // }, []);
-  
-  
-  
+
   function AlbumMemoriesCountByAlbumId(albumMemories, albumId) {
-    const albumMemoriesWithAlbumId = albumMemories.filter((albumMemory) => albumMemory.albumId === albumId);
+    const albumMemoriesWithAlbumId = albumMemories.filter(
+      (albumMemory) => albumMemory.albumId === albumId
+    );
     return albumMemoriesWithAlbumId.length;
   }
 
@@ -108,27 +121,32 @@ const AlbumPage = () => {
 
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-  }
+  };
 
-  const filteredAlbumMemories = albumMemories.filter((val) => val.albumId === 1);
+  const filteredAlbumMemories = albumMemories.filter(
+    (val) => val.albumId === 1
+  );
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedAlbumMemories = filteredAlbumMemories.slice(startIndex, endIndex);
+  const displayedAlbumMemories = filteredAlbumMemories.slice(
+    startIndex,
+    endIndex
+  );
 
   const handleImageClick = (imageUrl, index) => {
-    console.log(imageUrl)
-    console.log(index)
-    // setSelectedImageIndex(index);
-    // setOpenModal(true);
-  }
+    console.log(imageUrl);
+    console.log(index);
+    setSelectedImageIndex(index);
+    setOpenModal(true);
+  };
 
   const handleCloseModal = () => {
     setOpenModal(false);
     setSelectedImageIndex(null);
-  }
+  };
 
   const handleNextImage = () => {
-    setSelectedImageIndex(prevIndex => {
+    setSelectedImageIndex((prevIndex) => {
       const nextIndex = prevIndex + 1;
       if (nextIndex < displayedAlbumMemories.length) {
         return nextIndex;
@@ -137,16 +155,19 @@ const AlbumPage = () => {
         const nextPage = currentPage + 1;
         const nextStartIndex = (nextPage - 1) * itemsPerPage;
         const nextEndIndex = nextStartIndex + itemsPerPage;
-        const nextImages = filteredAlbumMemories.slice(nextStartIndex, nextEndIndex);
+        const nextImages = filteredAlbumMemories.slice(
+          nextStartIndex,
+          nextEndIndex
+        );
         setNextPageImages(nextImages);
         setCurrentPage(nextPage);
         return prevIndex;
       }
     });
-  }
+  };
 
   const handlePrevImage = () => {
-    setSelectedImageIndex(prevIndex => {
+    setSelectedImageIndex((prevIndex) => {
       const newIndex = prevIndex - 1;
       if (newIndex >= 0) {
         return newIndex;
@@ -154,22 +175,39 @@ const AlbumPage = () => {
         return prevIndex;
       }
     });
-  }
+  };
 
+  const handlerCopyClipBoard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("링크가 복사됐습니다!");
+    } catch (err) {
+      console.log("error :", err);
+    }
+  };
   const gotoSetting = () => {
-    navigate('/albums/setting')
-  }
+    navigate("/abums/setting");
+  };
+  const gotoAddMemory = () => {
+    console.log(isauthorized);
+    navigate("/albums/edit");
+  };
+
+  const dialogtest = "dfsdfsdfdsfsdfdsfsdfsdf";
+
   return (
     <StyledContainer>
       <StyledTypography variant="h4">Album Page</StyledTypography>
-      
-      <div className='flex-direction-row'>
+
+      <div className="flex-direction-row">
         <div>D - {album.id}</div>
         <div>{album.title}</div>
       </div>
-      
+
       <div>
-        {album.id === params.PK && <SettingsSharpIcon onClick={() => gotoSetting()}/>}
+        {album.id === params.PK && (
+          <SettingsSharpIcon onClick={() => gotoSetting()} />
+        )}
       </div>
 
       {album.thumbnailUrl ? (
@@ -177,7 +215,9 @@ const AlbumPage = () => {
       ) : (
         <StyledTypography>기본 이미지 나오게 설정</StyledTypography>
       )}
-
+      <div>
+        <MenuButton/>
+      </div>
       <div>
         <StyledTypography>{memoryarray.length} 개 도착</StyledTypography>
       </div>
@@ -187,7 +227,11 @@ const AlbumPage = () => {
         {memoryarray.map((val, index) => (
           <Grid item xs={4} key={index}>
             <StyledPaper>
-              <StyledImg src={val.imageUrl} alt={`Memory ${index + 1}`} onClick={() => handleImageClick(val.memoryPk, index)} />
+              <StyledImg
+                src={val.imageUrl}
+                alt={`Memory ${index + 1}`}
+                onClick={() => handleImageClick(val.memoryPk, index)}
+              />
             </StyledPaper>
           </Grid>
         ))}
@@ -197,44 +241,100 @@ const AlbumPage = () => {
         page={currentPage}
         onChange={handlePageChange}
       />
+      <div>
+        {isauthorized === true ? (
+          <StyledButton
+            variant="contained"
+            color="primary"
+            onClick={() =>
+              handlerCopyClipBoard(`congraduation.me/${location.pathname}`)
+            }
+            // onClick={() => {
+            //   window.location.href = "https://www.naver.com";
+            // }}
+          >
+            공유하러 가기
+          </StyledButton>
+        ) : (
+          <StyledButton
+            onClick={() => gotoAddMemory()}
+            variant="contained"
+            color="primary"
+          >
+            메모리 추가하기
+          </StyledButton>
+        )}
+      </div>
 
-      <StyledButton
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          window.location.href = "https://www.naver.com";
-        }}
+      <Dialog
+        className="dialogborder"
+        open={openModal}
+        onClose={handleCloseModal}
       >
-        공유하러 가기
-      </StyledButton>
-
-      <Dialog open={openModal} onClose={handleCloseModal}>
-        <DialogTitle>이미지 상세보기</DialogTitle>
-        <DialogContent>
+        {/* <DialogTitle>이미지 상세보기</DialogTitle> */}
+        <DialogContent className="test imgcenter">
           {selectedImageIndex !== null && (
-            <div>
-              <StyledImg src={displayedAlbumMemories[selectedImageIndex].url} alt={`Memory ${selectedImageIndex + 1}`} style={{ maxWidth: '100%' }} />
-              {/* 추가: 다음 페이지의 이미지들 표시 */}
-              {nextPageImages.map((image, index) => (
-                <StyledImg key={index} src={image.url} alt={`Memory ${index + itemsPerPage + 1}`} style={{ maxWidth: '100%', display: 'block', marginTop: '8px' }} />
-              ))}
+            <div className="dialogContentContainer">
+              <div className="dialogImageContainer">
+                <StyledImg
+                  className="dialogImage size"
+                  src={memoryarray[selectedImageIndex].imageUrl}
+                  alt={`Memory ${selectedImageIndex + 1}`}
+                  // style={{ maxWidth: "100%" }}
+                />
+              </div>
+
+              <div className="dialogTextContainer">
+                {/* 추가: 다음 페이지의 이미지들 표시 */}
+                {nextPageImages.map((image, index) => (
+                  <StyledImg
+                    key={index}
+                    src={image.url}
+                    alt={`Memory ${index + itemsPerPage + 1}`}
+                    className="dialogImage"
+                    style={{
+                      // maxWidth: "100%",
+                      display: "block",
+                      marginTop: "8px",
+                    }}
+                  />
+                ))}
+                <p className="dialogText nickname"></p>
+                <p className="dialogText nickname">check nickname</p>
+                <textarea
+                  name=""
+                  id=""
+                  cols="30"
+                  rows="10"
+                  disabled={true}
+                  value={dialogtest}
+                ></textarea>
+              </div>
             </div>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handlePrevImage} disabled={selectedImageIndex === 0} color="primary">
+          <Button
+            onClick={handlePrevImage}
+            disabled={selectedImageIndex === 0}
+            color="primary"
+          >
             이전
           </Button>
           <Button onClick={handleCloseModal} color="primary">
             닫기
           </Button>
-          <Button onClick={handleNextImage} disabled={selectedImageIndex === displayedAlbumMemories.length - 1} color="primary">
+          <Button
+            onClick={handleNextImage}
+            disabled={selectedImageIndex === displayedAlbumMemories.length - 1}
+            color="primary"
+          >
             다음
           </Button>
         </DialogActions>
       </Dialog>
     </StyledContainer>
   );
-}
+};
 
-export default AlbumPage
+export default AlbumPage;

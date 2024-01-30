@@ -6,20 +6,43 @@ import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import { TextField, Button, Box, Typography, Container } from '@mui/material';
 import myImg from "./myImg.png";
+import { useNavigate } from "react-router-dom";
+import {Dialog} from "@mui/material";
+import DragPage from "../page/DragPage";
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
   const fileInputRef = useRef(null);
   const [selectedGridItem, setSelectedGridItem] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
   const [mergedImage, setMergedImage] = useState(null);
   const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
   const isReadyToSubmit =
     Object.values(images).every((img) => img !== null) && nickname && message;
+  const navigate = useNavigate()
+
+  //모달
+  const [openModal, setOpenModal] = useState(false);
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    // setSelectedImageIndex(null);
+  };
 
   const handleGridItemClick = (key) => {
     setSelectedGridItem(key);
     fileInputRef.current.click();
+    setSelectedImage(null)
+    setOpenModal(true)
+    // navigate('/albums/drag')
+
+  };
+  const updateImage = (imageData) => {
+    setImages((prevImages) => ({
+      ...prevImages,
+      [selectedGridItem]: imageData, // 선택된 그리드 아이템에 이미지 데이터 업데이트
+    }));
+    setOpenModal(false); // 모달 닫기
   };
 
   const handleImageChange = (e) => {
@@ -47,6 +70,7 @@ const MemoryUpload = () => {
             ...prevImages,
             [selectedGridItem]: reader.result, // 또는 조정된 이미지 데이터
           }));
+          setSelectedImage(reader.result)
         };
         img.src = reader.result;
       };
@@ -144,7 +168,7 @@ const MemoryUpload = () => {
             className="image-upload"
             key={key}
             onClick={() => handleGridItemClick(key)}
-            style={{ backgroundImage: `url(${myImg})` }}
+            // style={{ backgroundImage: `url(${myImg})` }}
           >
             {images[key] ? (
               <img
@@ -173,12 +197,16 @@ const MemoryUpload = () => {
       <TextField
         className="input-field"
         variant="filled"
-        
+        multiline
+        rows={4} // 표시되는 기본 줄 수 
         type="text"
         label="메시지"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         style={{ marginBottom : "10px"}}
+        inputProps={{
+          maxLength: 200  // 한줄에 20자 들어감 
+        }}
       />
 
       <div className="input-row">
@@ -190,6 +218,10 @@ const MemoryUpload = () => {
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           style= {{ flex : 1}}
+          // 글자수 제한
+          inputProps={{
+            maxLength: 11
+          }}
         />
 
         <button
@@ -201,6 +233,16 @@ const MemoryUpload = () => {
           사진 전송
         </button>
       </div>
+      <Dialog
+        open={openModal}
+        onClose={handleCloseModal}
+        fullWidth={true}
+      >
+        <DragPage selectedImage={selectedImage} onUpdateImage={updateImage}/>
+
+
+
+      </Dialog>
 
       {mergedImage && message && nickname && (
         <div>

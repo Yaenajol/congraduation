@@ -26,8 +26,8 @@
   background: #f5f3f3; /* 이미지 업로드 배경색 */
   border: 1px dashed #555; /* 점선 테두리 */
   border-radius: 8px; /* 둥근 모서리 */
-  width: 150px; /* 이미지 업로드 영역 너비 */
-  height: 150px; /* 이미지 업로드 영역 높이 */
+  width: 170px; /* 이미지 업로드 영역 너비 */
+  height: 170px; /* 이미지 업로드 영역 높이 */
   display: flex;
   align-items: center;
   justify-content: center;
