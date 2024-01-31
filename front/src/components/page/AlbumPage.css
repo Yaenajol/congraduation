@@ -1,0 +1,46 @@
+.test {
+  border: black 1px solid;
+}
+
+.imgcenter {
+  text-align: center;
+}
+
+.size {
+  width : 100%
+  /* height : 100% */
+}
+
+.nickname {
+  text-align: left;
+}
+
+
+.dialogContentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items:  center;
+  max-height: 80vh;     /* 뷰포트 높이의 80%를 최대 높이로 설정 */
+  overflow: auto;       /* 내용이 넘칠 경우 스크롤바 표시 */
+}
+
+.dialogImageContainer {
+  width: 100%;
+  max-height: 50vh;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+}
+.dialogImage {
+  max-width: 100%; /* 컨테이너 너비에 맞춤 */
+  max-height: 100%; /* 뷰포트 높이의 50%를 최대 높이로 설정 */
+  object-fit: contain; /* 비율 유지하며 컨테이너 안에 맞춤 */
+}
+
+
+.dialogTextContainer {
+  width: 100%; /* 텍스트 상단 여백 */
+}
+
+
