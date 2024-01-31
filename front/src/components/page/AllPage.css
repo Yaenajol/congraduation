@@ -1,0 +1,134 @@
+
+/* @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap'); */
+
+@font-face {
+  font-family: 'Cafe24Ssurround';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+body {  
+  background-color: rgb(18, 1, 104);
+  /* font-family: 'Cafe24Ssurround'; */
+
+}
+
+/* YourComponent.css */
+/*  */
+
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  /* border: solid 1px; color: #000; */
+  background-color: rgba(255, 239, 182, 0.88);
+  width: 768px;
+  min-height: 1400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imagebox {
+  background-image: url(./flowerschool.png);
+  width: 100%;
+  max-width: 800px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.kakaobutton {
+  width: 50%;
+  height: 20px;
+  max-width: 400px;
+  padding: 15px 20px;
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  align-items: center;
+  border-radius: 1rem;
+  position: relative;
+  background-color: rgb(245, 225, 75);
+  color: rgb(55, 31, 31);
+  /* font-size: 1.5rem; */
+}
+
+.kakaoballoon {
+  width: 1.25rem;
+  position: absolute;
+  left: 1rem;
+}
+
+.csstitle {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    color: rgba(45, 25, 229, 0.849);
+    text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff;
+    font-family: 'Cafe24Ssurround';
+
+    /* letter-spacing: -1px;   */
+
+}
+.instatext {
+  font-family: 'Cafe24Ssurround';
+  color: white;
+  /* text-shadow: -1.5px -1.5px 0 #050000, 1.5px -1.5px 0 #050000, -1.5px 1.5px 0 #050000, 1.5px 1.5px 0 #050000; */
+  margin-top: 5px;
+  margin-bottom: 3px;
+
+}
+
+.settingbutton {
+
+}
+
+.loginimage1 {
+  width: 30vw;
+  height: 50vw;
+  transform: rotate(-20deg); /* 왼쪽으로  30도 회전*/
+  right: 30px;
+}
+
+.loginimage2 {
+  width: 30vw;
+  height: 50vw;
+  transform: rotate(20deg);
+  right: 30px;
+}
+/* 미디어 쿼리 */
+@media all and (max-width: 769px) {
+  .box{
+    width: 100%;
+  }
+  .container {
+    
+  }
+
+  .kakaobutton {
+    /* width: 70%; */
+  }
+
+  .csstitle {
+
+  }
+
+  .imagebox {
+
+  }
+}
