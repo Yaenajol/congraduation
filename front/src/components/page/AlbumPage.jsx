@@ -23,7 +23,11 @@ import UserImgButton from "../button/UserImgButton";
 import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
 import moment from 'moment'
 import MenuButton from "../../components/button/MenuButton";
+
 import { isLoginAtom } from "../store/atom";
+import { lookingPkAtom } from "../store/atom";
+import { albumPageMainImgAtom } from "../store/atom";
+
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
@@ -44,13 +48,18 @@ const AlbumPage = () => {
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const location = useLocation();
+
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom)
+  const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom)
+
   const date = moment(album.openAt)
   const [specificMemory, setSpecificMemory] = useState("")
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(null);
 
   useEffect(() => {
+    setLookingPk(params.PK)
     // 특정 앨범 조회
     axios
       .get(`https://congraduation.me/backapi/albums/${params.PK}`)
@@ -59,6 +68,7 @@ const AlbumPage = () => {
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
+        setAlbumPageMainImg(response.data.coverUrl)
       });
 
     // 앨범의 특정 메모리 조회
@@ -88,8 +98,11 @@ const AlbumPage = () => {
             console.log(isauthorized);
           }
         });
-    }
+    } 
   }, []);
+
+  // lookingpk 확인
+  console.log('looking pk : ' + lookingPk)
 
   // 페이지 전환 기능
   const handlePageChange = (event, value) => {
@@ -202,11 +215,12 @@ const AlbumPage = () => {
         }}
       >
         <AlbumProfileImage
-          imageUrl={imageUrl}
+          imageUrl={albumPageMainImg}
           setImageUrl={setImageUrl}
           albumPk={params.PK}
+          isClickable={isauthorized}
         />
-        <StyledTypography>{album.nickname} 의 앨범</StyledTypography>
+        <div>{album.nickname} 의 앨범</div>
       </div>
       <StyledTypography>
         {albumOpenAt === null ? (
@@ -216,9 +230,9 @@ const AlbumPage = () => {
         )}
         <div>{album.title}</div>
       </StyledTypography>
-      <StyledTypography>
+      <div>
         {memoryarray.length}장의 메모리가 도착했어요!
-      </StyledTypography>
+      </div>
       <div>
         <MenuButton />
       </div>

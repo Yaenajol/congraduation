@@ -81,12 +81,12 @@ const SettingsPage = () => {
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 15px' }}>
-          <StyledTypography>계정 설정</StyledTypography>
+          <div>계정 설정</div>
           <HomeIcon fontSize='large' onClick={gotoAlbumPage} />
         </div>
         <div >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 15px' }}>
-            <StyledTypography variant="h6" gutterBottom>{album.nickname}님</StyledTypography>
+            <div variant="h6" gutterBottom>{album.nickname} 님</div>
             {album.imageUrl ? (
               <StyledImg src={album.imageUrl} alt="Album Cover" />
             ) : (
