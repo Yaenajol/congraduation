@@ -12,13 +12,11 @@ import com.ssafy.backend.model.response.AlbumMemoryResponseDto;
 import com.ssafy.backend.model.response.AlbumResponseDto;
 import com.ssafy.backend.repository.AlbumRepository;
 import com.ssafy.backend.repository.MemberRepository;
-import com.ssafy.backend.repository.MemoryRepository;
 import com.ssafy.backend.util.ImageUtil;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -67,7 +65,6 @@ public class AlbumService {
     Album album=optAlbum.get();
 
     List<Memory> memoryList=album.getMemoryList();
-    System.out.println(memoryList);
 
     List<AlbumMemoryResponseDto> albumMemoryList=new ArrayList<>();
 
@@ -89,6 +86,7 @@ public class AlbumService {
             .build());
       }
     }
+
     return albumMemoryList;
   }
 
