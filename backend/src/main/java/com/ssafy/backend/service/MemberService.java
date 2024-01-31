@@ -8,9 +8,11 @@ import com.ssafy.backend.domain.Member;
 import com.ssafy.backend.exception.CustomException;
 import com.ssafy.backend.exception.errorcode.AlbumErrorCode;
 import com.ssafy.backend.jwt.JwtService;
+import com.ssafy.backend.model.response.AlbumResponseDto;
 import com.ssafy.backend.model.response.KakaoTokenDto;
 import com.ssafy.backend.model.response.KakaoInfoDto;
 import com.ssafy.backend.model.response.LoginResponseDto;
+import com.ssafy.backend.model.response.MyAlbumResponseDto;
 import com.ssafy.backend.repository.AlbumRepository;
 import com.ssafy.backend.repository.MemberRepository;
 import java.io.BufferedReader;
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import javax.swing.text.html.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -42,6 +45,9 @@ public class MemberService {
   private MemberRepository memberRepository;
   @Autowired
   private AlbumRepository albumRepository;
+
+  @Autowired
+  private ImageService imageService;
   @Autowired
   private JwtService jwtService;
 
@@ -199,5 +205,21 @@ public class MemberService {
     } else {
       return false;
     }
+  }
+
+  public MyAlbumResponseDto getMyAlbumByPk(String memberPk) {
+    Album album = albumRepository.findByMemberPk(memberPk);
+
+    String coverUrl=null;
+    if(album.getCoverImageName()!=null){//현재 저장된 이미지가 존재할 경우는 presignedUrl을 발급 후 저장
+      coverUrl=imageService.getPresingendURL(album.getCoverImageName());
+    }
+    return MyAlbumResponseDto.builder()
+        .albumPk(album.getPk()).
+        nickname(album.getMember().getNickname())
+        .title(album.getTitle())
+        .graduationPlace(album.getGraduationPlace())
+        .coverUrl(coverUrl)
+        .openAt(album.getOpenAt()).build();
   }
 }
