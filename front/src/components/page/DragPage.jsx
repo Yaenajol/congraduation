@@ -156,6 +156,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
     <div className="App">
       <div className="Crop-Controls">
         <input type="file" accept="image/*" onChange={onSelectFile} />
+
         {/* 사진 스케일 */}
         {/* <div>
           <label htmlFor="scale-input">Scale: </label>
@@ -168,6 +169,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
             onChange={(e) => setScale(Number(e.target.value))}
           />
         </div> */}
+
         {/* 사진 회전  */}
         {/* <div>
           <label htmlFor="rotate-input">Rotate: </label>
@@ -181,12 +183,14 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
             }
           />
         </div> */}
+
         {/* 크롭박스 비율이 바뀜 */}
         {/* <div>
           <button onClick={handleToggleAspectClick}>
             Toggle aspect {aspect ? 'off' : 'on'}
           </button>
         </div> */}
+        
       </div>
       {!!imgSrc && (
         <ReactCrop

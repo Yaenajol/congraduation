@@ -132,6 +132,7 @@ const MemoryUpload = () => {
         imageSize + frameThickness
       );
     });
+
     const dataURLtoFile = (dataurl, filename) => {
       let arr = dataurl.split(","),
       mime = arr[0].match(/:(.*?);/)[1],
@@ -143,6 +144,7 @@ const MemoryUpload = () => {
       }
       return new File([u8arr], filename, { type: mime });
     }
+
     const mergedImageDataURL = canvas.toDataURL("image/png");
     const blobBin = atob(mergedImageDataURL.split(",")[1])
     const array = []
@@ -173,27 +175,14 @@ const MemoryUpload = () => {
             },
           }).then (response => {
             console.log(response.data)
-            
-
+            navigate(`/albums/${params.PK}`)
           })
           .catch(error => {
-            console.log('실패')
+            console.log(error)
           }) 
-           
-          
-          
-          
-          
-          // if (response.ok) {
-          //     console.log('성공')
-          //     // 앨범페이지로 다시 리다이렉션
-          // } else {
-          //     console.log(response)
-          //     console.log('실패')
-          // }
+
       } catch (error) {
           console.log('전송 중 실패', error)
-          console.log(error.data)
       }
     }
   };
@@ -284,7 +273,7 @@ const MemoryUpload = () => {
 
       </Dialog>
 
-      {mergedImage && message && nickname && (
+      {/* {mergedImage && message && nickname && (
         <div>
           <h2>합성 이미지</h2>
           <p>별명 : {nickname}</p>
@@ -298,7 +287,7 @@ const MemoryUpload = () => {
             />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

@@ -55,14 +55,10 @@ const AlbumPage = () => {
   const [nextPageImages, setNextPageImages] = useState([]); // 추가: 다음 페이지의 이미지들을 저장할 상태
   const [isauthorized, setIsauthorized] = useState(false);
   const [memoryarray, setMemoryarray] = useState([]);
-  const BACK_URL = "http://congraduation.me/backapi";
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
-  console.log(localStorage);
-  console.log(window.location.href);
-  console.log(params.PK);
 
   useEffect(() => {
     axios
@@ -83,17 +79,13 @@ const AlbumPage = () => {
       });
     console.log(typeof localStorage.getItem("accessToken") === typeof "");
     if (isLogin) {
-      console.log("check");
       axios
         .get(
           `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
           { headers: { accessToken: localStorage.accessToken } }
         )
         .then((response) => {
-          console.log("성공");
           console.log(response.data);
-          console.log(typeof response.data === typeof true);
-
           if (typeof response.data === typeof true) {
             setIsauthorized(response.data);
 
@@ -103,13 +95,7 @@ const AlbumPage = () => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   axios.get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
-  //        .then(response => {
-  //          console.log('Album Memories Data:', response.data);
-  //          setAlbumMemories(response.data);
-  //        });
-  // }, []);
+
 
   function AlbumMemoriesCountByAlbumId(albumMemories, albumId) {
     const albumMemoriesWithAlbumId = albumMemories.filter(

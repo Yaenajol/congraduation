@@ -6,12 +6,29 @@ import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
 import { MenuItem as BaseMenuItem, menuItemClasses } from '@mui/base/MenuItem';
 import { styled } from '@mui/system';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
-
+import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
+import { isLoginAtom } from "../store/atom";
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function MenuIntroduction() {
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const navigate = useNavigate()
+  const params = useParams()
+
   const createHandleMenuClick = (menuItem) => {
     return () => {
-      console.log(`Clicked on ${menuItem}`);
+      if (menuItem === 'Log out') {
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('albumPK')
+        setIsLogin(false)
+        console.log(`Clicked on ${menuItem}`);
+        navigate('/')
+      } else if (menuItem === 'Profile') {
+        navigate(`/albums/${params.PK}/setting`)
+      } else if (menuItem === 'Inquiry') {
+        console.log('아직 개발 안함')
+      }
+      
     };
   };
 
@@ -21,11 +38,11 @@ export default function MenuIntroduction() {
       <AccessAlarmIcon/>
       </MenuButton>
       <Menu slots={{ listbox: Listbox }}>
-        <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
-        <MenuItem onClick={createHandleMenuClick('Language settings')}>
-          Language settings
+        <MenuItem onClick={createHandleMenuClick('Profile')}>앨범 설정</MenuItem>
+        <MenuItem onClick={createHandleMenuClick('Inquiry')}>
+          1:1 문의
         </MenuItem>
-        <MenuItem onClick={createHandleMenuClick('Log out')}>Log out</MenuItem>
+        <MenuItem onClick={createHandleMenuClick('Log out')}>로그 아웃</MenuItem>
       </Menu>
     </Dropdown>
   );
