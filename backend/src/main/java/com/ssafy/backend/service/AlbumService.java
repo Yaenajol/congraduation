@@ -75,6 +75,7 @@ public class AlbumService {
       for(Memory memory:memoryList ){
         albumMemoryList.add(AlbumMemoryResponseDto.builder()
             .memoryPk(memory.getPk())
+            .nickname(memory.getNickname())
             .imageUrl(imageService.getPresingendURL(memory.getThumbnailBlurImageName()))
             .build());
       }
@@ -82,6 +83,7 @@ public class AlbumService {
       for(Memory memory:memoryList ){//공개일 이후일 경우에는 썸네일 이미지로
         albumMemoryList.add(AlbumMemoryResponseDto.builder()
             .memoryPk(memory.getPk())
+            .nickname(memory.getNickname())
             .imageUrl(imageService.getPresingendURL(memory.getThumbnailImageName()))
             .build());
       }
