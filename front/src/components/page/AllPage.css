@@ -1,17 +1,26 @@
 
 /* @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap'); */
 
+/* 눈누 더잠실체 폰트크기 700 */
 @font-face {
-  font-family: 'Cafe24Ssurround';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
-  font-weight: normal;
+  font-family: 'TheJamsil5Bold';  
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* 눈누 더잠실체 폰트크기 300 */
+@font-face {
+  font-family: 'TheJamsil2Light';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil2Light.woff2') format('woff2');
+  font-weight: 300;
   font-style: normal;
 }
 
 
+
 body {  
   background-color: rgb(18, 1, 104);
-  /* font-family: 'Cafe24Ssurround'; */
 
 }
 
@@ -78,15 +87,15 @@ body {
     line-height: 2.5rem;
     margin-top: 0.5rem;
     margin-bottom: 0.25rem;
-    color: rgba(45, 25, 229, 0.849);
-    text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff;
-    font-family: 'Cafe24Ssurround';
+    color: rgba(255, 255, 255);
+    /* text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff; */
+    font-family: 'TheJamsil5Bold';  
 
     /* letter-spacing: -1px;   */
 
 }
 .instatext {
-  font-family: 'Cafe24Ssurround';
+  font-family: 'TheJamsil2Light';
 
   color: white;
   /* text-shadow: -1.5px -1.5px 0 #050000, 1.5px -1.5px 0 #050000, -1.5px 1.5px 0 #050000, 1.5px 1.5px 0 #050000; */
@@ -112,6 +121,13 @@ body {
   transform: rotate(20deg);
   right: 30px;
 }
+
+.logo {
+  width: 200px;
+  height: 170px;
+  justify-content: center;
+}
+
 /* 미디어 쿼리 */
 @media all and (max-width: 769px) {
   .box{
