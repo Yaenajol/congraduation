@@ -3,6 +3,8 @@ import * as React from 'react';
 import { Dropdown } from '@mui/base/Dropdown';
 import { Menu } from '@mui/base/Menu';
 import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
+import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
+
 import { MenuItem as BaseMenuItem, menuItemClasses } from '@mui/base/MenuItem';
 import { styled } from '@mui/system';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
@@ -34,8 +36,8 @@ export default function MenuIntroduction() {
 
   return (
     <Dropdown>
-      <MenuButton>
-      <AccessAlarmIcon/>
+      <MenuButton >
+      <DehazeRoundedIcon style={{ backgroundColor: 'transparent'}}/>
       </MenuButton>
       <Menu slots={{ listbox: Listbox }}>
         <MenuItem onClick={createHandleMenuClick('Profile')}>앨범 설정</MenuItem>

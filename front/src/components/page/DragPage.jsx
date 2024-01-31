@@ -3,6 +3,9 @@ import {ReactCrop, centerCrop, makeAspectCrop, convertToPixelCrop} from 'react-i
 import 'react-image-crop/dist/ReactCrop.css';
 import { canvasPreview } from './canvasPreview';
 import { useDebounceEffect } from './useDebounceEffect';
+import "./style.css"; 
+import InputFileUpload from '../button/UploadButton';
+import MemoryAdd from '../button/MemoryAdd'
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -154,9 +157,10 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
 
   return (
     <div className="App">
-      <div className="Crop-Controls">
-        <input type="file" accept="image/*" onChange={onSelectFile} />
-
+      <div className="upload">
+        <InputFileUpload  onChange={onSelectFile}/>
+        {/* <input type="file"  accept="image/*" onChange={onSelectFile} /> */}
+        
         {/* 사진 스케일 */}
         {/* <div>
           <label htmlFor="scale-input">Scale: </label>
@@ -192,8 +196,10 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
         </div> */}
 
       </div>
+      <div className='upload'>
       {!!imgSrc && (
         <ReactCrop
+          
           crop={crop}
           onChange={(_, percentCrop) => setCrop(percentCrop)}
           onComplete={(c) => setCompletedCrop(c)}
@@ -204,6 +210,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
           // circularCrop
         >
           <img
+          
             ref={imgRef}
             alt="Crop me"
             src={imgSrc}
@@ -212,9 +219,11 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
           />
         </ReactCrop>
       )}
+      </div>
+      
       {!!completedCrop && (
         <>
-          <div>
+          <div className="upload">
             <canvas
               ref={previewCanvasRef}
               style={{
@@ -225,8 +234,9 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
               }}
             />
           </div>
-          <div>
-            <button onClick={onDownloadCropClick}>완료!</button>
+          <div className="upload">
+            
+            <MemoryAdd onClick={onDownloadCropClick} ></MemoryAdd>
             <div style={{ fontSize: 12, color: '#666' }}>
               
             </div>
