@@ -2,7 +2,9 @@ package com.ssafy.backend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.backend.jwt.JwtService;
+import com.ssafy.backend.model.response.AlbumResponseDto;
 import com.ssafy.backend.model.response.LoginResponseDto;
+import com.ssafy.backend.model.response.MyAlbumResponseDto;
 import com.ssafy.backend.service.MemberService;
 import io.jsonwebtoken.Claims;
 import java.util.Date;
@@ -53,5 +55,11 @@ public class MemberController {
     String memberPk=jwtService.parseJwtToken(accessToken);
     return new ResponseEntity<Boolean>(memberService.checkAuthorizationToAlbum(albumPk,memberPk),
         HttpStatus.OK);
+  }
+
+  @GetMapping("/members/myAlbum")
+  public ResponseEntity<MyAlbumResponseDto> myAlbum(@RequestHeader(value = "accessToken",required = false) String accessToken) {
+    String memberPk=jwtService.parseJwtToken(accessToken);
+    return new ResponseEntity<MyAlbumResponseDto>(memberService.getMyAlbumByPk(memberPk),HttpStatus.OK);
   }
 }
