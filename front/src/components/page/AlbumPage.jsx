@@ -202,7 +202,7 @@ console.log(index)
         {albumOpenAt === null ? (
           <div>졸업일자를 설정해주세요.</div>
         ) : (
-          <div>D <Dday/></div>
+          <div>D - <Dday/></div>
         )}
         <div>{album.title}</div>
       </StyledTypography>
