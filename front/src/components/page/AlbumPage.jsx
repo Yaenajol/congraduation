@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@mui/material';
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import StyledButton from '../styledComponents/StyledButton';
 import StyledContainer from '../styledComponents/StyledContainer';
@@ -15,6 +15,8 @@ import MenuButton from '../../components/button/MenuButton'
 import { isLoginAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 
 const AlbumPage = () => {
@@ -33,8 +35,6 @@ const AlbumPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
-
-
 
   useEffect(() => {
     // 특정 앨범 조회
@@ -70,13 +70,64 @@ const AlbumPage = () => {
       })
     }
   }, []);
-  // 쓰진 않고 있음 memory~~ 대체중
-  // function AlbumMemoriesCountByAlbumId(albumMemories, albumId) {
-  //   const albumMemoriesWithAlbumId = albumMemories.filter((albumMemory) => albumMemory.albumId === albumId);
-  //   return albumMemoriesWithAlbumId.length;
-  // }
 
-  // const count = AlbumMemoriesCountByAlbumId(albumMemories, 1);
+  const DateButton = () => {
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(null);
+  
+    const handleButtonClick = () => {
+      setShowDatePicker(true);
+    };
+  
+    const handleDateChange = (date) => {
+      setSelectedDate(date);
+      setShowDatePicker(false);
+    };
+
+    const [graduationDate, setGraduationDate] = useState(null);
+  
+    const handleSaveSettings = async () => {
+      try {
+  
+        const grDate = {
+          graduationDate: graduationDate,
+        };
+  
+        const accessToken = localStorage.getItem('accessToken');
+  
+        axios.put(`https://congraduation.me/backapi/albums/${params.PK}/graduationDate`, grDate, {
+          headers: {
+            'accessToken': accessToken,
+          },
+        }).then(response => {
+          console.log(response.data);
+        }).catch(error => {
+          console.log('실패');
+        })
+  
+      } catch (error) {
+        console.error('전송 실패 :', error);
+      }
+    };
+
+    return (
+      <>
+        <StyledButton onClick={handleButtonClick}>D-day 설정</StyledButton>
+        {showDatePicker && (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="날짜 선택"
+              value={selectedDate}
+              onChange={handleDateChange}
+              renderInput={(params) => (
+                <TextField {...params} variant="outlined" fullWidth margin="normal" />
+              )}
+            />
+          </LocalizationProvider>
+        )}
+      </>
+    );
+  };
 
   // 페이지 전환 기능
   const handlePageChange = (event, value) => {
@@ -175,8 +226,6 @@ const AlbumPage = () => {
     );
   };
   
-  const fileInput = useRef(null)
-
   // 유저 이미지 아이콘 버튼
   const UserImgButton = () => {
     const [albumCoverPreview, setAlbumCoverPreview] = useState(null); // 미리보기 이미지 상태 추가
@@ -221,7 +270,6 @@ const AlbumPage = () => {
     );
   };
 
-
   return (
     <StyledContainer>
       <div>
@@ -230,7 +278,8 @@ const AlbumPage = () => {
         </RoundedRectangle>
       </div>
       <StyledTypography>
-        <div>D - {album.openAt}</div>
+        {/* <div>D - {album.openAt}</div> */}
+        <DateButton/>
         <div>{album.title}</div>
       </StyledTypography>
       <StyledTypography>
