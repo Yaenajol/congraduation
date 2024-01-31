@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { useNavigate } from "react-router-dom";
 import { isLoginAtom } from "../store/atom";
+import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
 
 function RedirectPage() {
@@ -11,7 +12,8 @@ function RedirectPage() {
   const code = new URL(window.location.href);
   const kakaoCode = code.searchParams.get("code");
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
-
+  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom)
+  
   useEffect(() => {
     setAuthCode(kakaoCode); // 인가 코드 상태 업데이트
     sendAuthCodeToBackend(kakaoCode); // 백엔드에 인가 코드 전송
@@ -43,8 +45,13 @@ function RedirectPage() {
       //    .then(response => {
       //      console.log('Album Data:', response.data);    
       //    });
-      console.log(isLogin)
-      navigate(`/albums/${result.albumPk}`);
+      if (lookingPk) {
+        console.log('초대받은 경우')
+        navigate(`/albums/${lookingPk}`)
+      } else {
+        navigate(`/albums/${result.albumPk}`);
+        //아직 설정안했지만 setting 페이지로 가야함
+      }
     } catch (error) {
       console.error("There was a problem sending the auth code:", error);
     }

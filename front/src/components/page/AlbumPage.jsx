@@ -11,9 +11,11 @@ import StyledTypography from '../styledComponents/StyledTypography';
 import UserImgButton from '../button/UserImgButton';
 import userAltImage from '../images/userAltImage.png'; // 이미지 파일의 경로를 import 합니다.
 import moment from 'moment'
-import MenuButton from '../../components/button/MenuButton'
+import MenuButton from "../../components/button/MenuButton";
 import { isLoginAtom } from "../store/atom";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
+import { lookingPkAtom } from "../store/atom";
+import { albumPageMainImgAtom } from "../store/atom";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 import '../page/AlbumPage.css'
 import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
@@ -35,53 +37,63 @@ const AlbumPage = () => {
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const location = useLocation();
+
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom)
+  const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom)
+
   const date = moment(album.openAt)
   const [specificMemory, setSpecificMemory] = useState("")
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(null);
 
   useEffect(() => {
+    setLookingPk(params.PK)
     // 특정 앨범 조회
     axios
       .get(`https://congraduation.me/backapi/albums/${params.PK}`)
       .then(response => {
         console.log('Album Data:', response.data);
 
-      setAlbum(response.data);
-      setImageUrl(response.data.coverUrl);
-      setalbumOpenAt(response.data.openAt);
-  });
+        setAlbum(response.data);
+        setImageUrl(response.data.coverUrl);
+        setalbumOpenAt(response.data.openAt);
+        setAlbumPageMainImg(response.data.coverUrl)
+      });
 
-// 앨범의 특정 메모리 조회
+    // 앨범의 특정 메모리 조회
     axios
-    .get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
-    .then(response => {
-      console.log('Album Memories Data:', response.data);
-      setAlbumMemories(response.data);
-      if (typeof (response.data) === typeof ([])) {
-        setMemoryarray(response.data)
-      }
-    });
+      .get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
+      .then(response => {
+        console.log('Album Memories Data:', response.data);
+        setAlbumMemories(response.data);
+        if (typeof (response.data) === typeof ([])) {
+          setMemoryarray(response.data)
+        }
+      });
 
-// accessToken 이 있을 때
-if (isLogin) {
-  // 유저의 앨범 접근 권한 조회를 한다.
-  axios
-    .get
-      (`https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
-      { headers: { accessToken: localStorage.accessToken } }
-      )
-    .then(response => {
-      console.log(response.data)
-      // 만약 접근한 유저의 권한이 true 이면
-      if (typeof (response.data) === typeof (true)) {
-        setIsauthorized(response.data)  // 상태를 바꿔준다.
-        console.log(isauthorized)
-      }
-    })
-  }
+    // accessToken 이 있을 때
+    if (isLogin) {
+      // 유저의 앨범 접근 권한 조회를 한다.
+      axios
+        .get
+        (`https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
+          { headers: { accessToken: localStorage.accessToken } }
+        )
+        .then(response => {
+          console.log(response.data)
+          // 만약 접근한 유저의 권한이 true 이면
+          if (typeof (response.data) === typeof (true)) {
+            setIsauthorized(response.data)  // 상태를 바꿔준다.
+            console.log(isauthorized)
+          }
+
+        });
+    }
   }, []);
+
+  // lookingpk 확인
+  console.log('looking pk : ' + lookingPk)
 
   // 페이지 전환 기능
   const handlePageChange = (event, value) => {
@@ -110,16 +122,16 @@ if (isLogin) {
           setSpecificMemory(response.data)
           // console.log(response.data)
         })
-        
+
       setOpenModal(true); // 모달 opne 상태 true로
 
-} else {
-  alert('공개일 아님')
-}
-console.log(imageUrl)
-console.log(index)
-// setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
-// setOpenModal(true); // 모달 opne 상태 true로
+    } else {
+      alert('공개일 아님')
+    }
+    console.log(imageUrl)
+    console.log(index)
+    // setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
+    // setOpenModal(true); // 모달 opne 상태 true로
   }
 
   // 다이어리(모달)을 끄는 기능
@@ -176,122 +188,113 @@ console.log(index)
 
   // 유저 이미지 아이콘 버튼
   return (
-    <StyledContainer>
-      <div
-        style={{
-          marginTop: '30px',
-          width: '40vh', // 너비
-          height: '30vh', // 높이
-          borderRadius: '20px', // 모서리 반경
-          backgroundColor: 'rgba(255, 255, 255, 0.5)', // 희미한 흰색 배경
-          boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', // 그림자
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <AlbumProfileImage
-          imageUrl={imageUrl}
-          setImageUrl={setImageUrl}
-          albumPk={params.PK}
-        />
-        <StyledTypography>{album.nickname} 의 앨범</StyledTypography>
-      </div>
-      <StyledTypography>
-        {albumOpenAt === null ? (
-          <div>졸업일자를 설정해주세요.</div>
-        ) : (
-          <div>D - <Dday/></div>
-        )}
-        <div>{album.title}</div>
-      </StyledTypography>
-      <StyledTypography>
-        {memoryarray.length}장의 메모리가 도착했어요!
-      </StyledTypography>
-      <div>
-        <MenuButton />
-      </div>
-      <Grid container spacing={1}>
-        {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-          <Grid item xs={4} key={index}>
-            <StyledPaper>
-              <StyledImg
-                src={val.imageUrl}
-                alt={`Memory ${startIndex + index + 1}`}
-                onClick={() =>
-                  handleImageClick(val.memoryPk, startIndex + index)
-                }
-              />
-            </StyledPaper>
-          </Grid>
-        ))}
-      </Grid>
-      <Pagination
-        count={Math.ceil(memoryarray.length / itemsPerPage)}
-        page={currentPage}
-        onChange={handlePageChange}
-      />
-      <div>
-        {isauthorized === true ? (
-          <StyledButton
-            variant="contained"
-            color="primary"
-            onClick={() =>
-              handlerCopyClipBoard(`congraduation.me/${location.pathname}`)
-            }
-            // onClick={() => {
-            //   window.location.href = "https://www.naver.com";
-            // }}
-          >
-            공유하러 가기
-          </StyledButton>
-        ) : (
-          <StyledButton
-            onClick={() => gotoAddMemory()}
-            variant="contained"
-            color="primary"
-          >
-            메모리 추가하기
-          </StyledButton>
-        )}
-      </div>
-
-      <Dialog open={openModal} onClose={handleCloseModal}>
-        {/* <DialogTitle>이미지 상세보기</DialogTitle> */}
-        <DialogContent>
-          {selectedImageIndex !== null && (
-            <StyledImg
-              src={memoryarray[selectedImageIndex]?.imageUrl}
-              alt={`Memory ${selectedImageIndex + 1}`}
-              style={{ maxWidth: "100%" }}
-            />
-           
-          )}
-          <p>{memoryarray[selectedImageIndex]?.nickname}</p>
+    <div style={{ display: "flex", justifyContent: "center"}}>
+      <StyledContainer>
+        <div style={{marginLeft:"1rem"}}>
+          <StyledTypography>
+            {albumOpenAt === null ? (
+              <div>졸업일자를 설정해주세요.</div>
+            ) : (
+              <div style={{ color: "white", fontWeight: "bolder" }}>D - <span class="memorysize">{album.openAt}</span></div>
+            )}
+          </StyledTypography>
+          <StyledTypography style={{ color: "white" }}>
+            <span class="memorysize">{memoryarray.length}장</span>의 메모리가 도착했어요!
+          </StyledTypography>
+        </div>
+        
+        <div class="aligncenter">
+          <AlbumProfileImage
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
+            albumPk={params.PK}
+            isClickable={isauthorized}
+          />
+          <StyledTypography>{album.nickname} 의 {album.title}</StyledTypography>
           
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={handlePrevImage}
-            disabled={selectedImageIndex === 0}
-            color="primary"
-          >
-            이전
-          </Button>
-          <Button onClick={handleCloseModal} color="primary">
-            닫기
-          </Button>
-          <Button
-            onClick={handleNextImage}
-            disabled={selectedImageIndex === memoryarray.length - 1}
-            color="primary"
-          >
-            다음
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </StyledContainer>
+          <div>
+            <MenuButton />
+          </div>
+        </div>
+        <div className='gridAlignCenter'>
+          <Grid container spacing={2}>
+            {albumMemories.slice(startIndex, endIndex).map((val, index) => (
+              <Grid item xs={4} key={index}>
+                {/* <StyledPaper> */}
+                <StyledImg
+                  style={{ backgroundColor: "white", padding: "1px" }}
+                  src={val.imageUrl}
+                  alt={`Memory ${startIndex + index + 1}`}
+                  onClick={() =>
+                    handleImageClick(val.memoryPk, startIndex + index)
+                  }
+                />
+                {/* </StyledPaper> */}
+              </Grid>
+            ))}
+          </Grid>
+        </div>
+        <div class="aligncenter">
+        <Pagination
+          count={Math.ceil(memoryarray.length / itemsPerPage)}
+          page={currentPage}
+          onChange={handlePageChange}
+        />
+        </div>
+        <div class="aligncenter">
+          {isauthorized === true ? (
+            <button class="button"
+              onClick={() =>
+                handlerCopyClipBoard(`congraduation.me/${location.pathname}`)
+              }
+            >
+              공유하러 가기
+            </button>
+          ) : (
+            <button class="button"
+              onClick={() => gotoAddMemory()}
+            >
+              메모리 추가하기
+            </button>
+          )}
+        </div>
+
+        <Dialog open={openModal} onClose={handleCloseModal}>
+          {/* <DialogTitle>이미지 상세보기</DialogTitle> */}
+          <DialogContent>
+            {selectedImageIndex !== null && (
+              <StyledImg
+                src={memoryarray[selectedImageIndex]?.imageUrl}
+                alt={`Memory ${selectedImageIndex + 1}`}
+                style={{ maxWidth: "100%" }}
+              />
+
+            )}
+            <p>{memoryarray[selectedImageIndex]?.nickname}</p>
+
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={handlePrevImage}
+              disabled={selectedImageIndex === 0}
+              color="primary"
+            >
+              이전
+            </Button>
+            <Button onClick={handleCloseModal} color="primary">
+              닫기
+            </Button>
+            <Button
+              onClick={handleNextImage}
+              disabled={selectedImageIndex === memoryarray.length - 1}
+              color="primary"
+            >
+              다음
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </StyledContainer>
+    </div>
   );
 };
 

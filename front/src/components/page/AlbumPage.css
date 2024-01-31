@@ -1,3 +1,9 @@
+.aligncenter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .test {
   border: black 1px solid;
 }
@@ -16,11 +22,6 @@
   text-align: left;
 }
 
-.memorysize {
-  color: #00cbff;
-  font-weight: bolder;
-  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff
-}
 
 .dialogContentContainer {
   display: flex;
@@ -48,9 +49,26 @@
   width: 100%; /* 텍스트 상단 여백 */
 }
 
+/* 앨범 편집 */
+.editAlbum {
+  position: absolute;
+  right: 2vh;
+  top:2vh;
+  /* right: 25vh; */
+  /* left: 20vh; */
+  /* top: */
+}
+
+/* 강조 */
+.memorysize {
+  color: #00cbff;
+  font-weight: bolder;
+  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff
+}
+
 /* 버튼 관련*/
 .button {
-  width: 40vh;
+  width: 30vw;
   height: 6vh;
   font-size: 16px;
   font-weight: 600;
@@ -60,7 +78,7 @@
   text-align:center;
   border: 1px solid white;
   background-size: 300% 100%;
-
+  
   border-radius: 50px;
   background-color: rgb(255, 253, 211);
   /* moz-transition: all .4s ease-in-out;
@@ -71,17 +89,17 @@
   box-shadow: 0 4px 0 rgba(115, 115, 115, 0.75); */
  }
 
-.button:hover {
+/* .button:hover {
   background-position: 100% 0;
   moz-transition: all .4s ease-in-out;
   -o-transition: all .4s ease-in-out;
   -webkit-transition: all .4s ease-in-out;
   transition: all .4s ease-in-out;
-}
+} */
 
-.button:focus {
+/* .button:focus {
   outline: none;
-} 
+}  */
 
 /* .button {
   color: black;
@@ -98,4 +116,9 @@
 /* 메모리 리스트 */
 .memoryList {
   margin: 5vh;
+}
+
+/* grid 가운데정렬 */
+.gridAlignCenter {
+  text-align: center;
 }

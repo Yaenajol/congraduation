@@ -12,8 +12,10 @@ import backgroundImage from '../images/background.png'
 import {Dialog} from "@mui/material";
 import DragPage from "../page/DragPage";
 import { isLoginAtom } from "../store/atom";
+import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
 import StyledContainer from "../styledComponents/StyledContainer";
+import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
@@ -27,6 +29,8 @@ const MemoryUpload = () => {
     Object.values(images).every((img) => img !== null) && nickname && message;
   
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom)
+
   const params = useParams()
   const navigate = useNavigate()
 
@@ -170,7 +174,8 @@ const MemoryUpload = () => {
           formdata.append('image', file)
           formdata.append('data', new Blob([JSON.stringify(payload)] , { type: 'application/json'}))
 
-          axios.post('https://congraduation.me/backapi/memories', formdata, {
+          axios.post('https://congraduation.me/backapi/memories', formdata, 
+          {
             headers : {
               'accessToken' : localStorage.getItem('accessToken')
               // 'Content-Type': 'multipart/form-data',
@@ -191,7 +196,7 @@ const MemoryUpload = () => {
   
     
   return (
-    <StyledContainer>
+    <StyledMemoryPage>
       <div className="title">Memory</div>
       <div className="image-grid">
         {["a", "b", "c", "d"].map((key) => (
@@ -276,7 +281,7 @@ const MemoryUpload = () => {
 
       </Dialog>
 
-    </StyledContainer>
+    </StyledMemoryPage>
   );
 };
 
