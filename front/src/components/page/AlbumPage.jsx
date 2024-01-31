@@ -108,6 +108,7 @@ if (isLogin) {
           setSpecificMemory(response.data)
           // console.log(response.data)
         })
+        
       setOpenModal(true); // 모달 opne 상태 true로
 
 } else {
@@ -138,7 +139,7 @@ console.log(index)
 
   // 다이어리(모달) 내에서 이전 이미지를 보여주는 함수
   const handlePrevImage = () => {
-    setSelectedImageIndex((prevIndex) => {
+    setSelectedImageIndex(prevIndex => {
       if (prevIndex > 0) {
         return prevIndex - 1;
       }
@@ -158,22 +159,22 @@ console.log(index)
 
   // Setting page 로 이동하는 기능
   const gotoSetting = () => {
-    navigate(`/albums/${params.PK}/setting`); // 이러면 안되는데 수정 필요할 듯
-  };
+    navigate(`/albums/${params.PK}/setting`)  // 이러면 안되는데 수정 필요할 듯
+  }
 
   const gotoAddMemory = () => {
-    console.log(isLogin);
+    console.log(isLogin)
     if (!isLogin) {
       console.log(isLoginAtom);
-      navigate('/');
+      navigate("/");
     } else {
-  navigate(`/albums/${params.PK}/edit`);
-}
+      navigate(`/albums/${params.PK}/edit`);
+    }
   };
 
-    return (
-
-<StyledContainer>
+  // 유저 이미지 아이콘 버튼
+  return (
+    <StyledContainer>
       <div
         style={{
           marginTop: '30px',
@@ -193,105 +194,102 @@ console.log(index)
           setImageUrl={setImageUrl}
           albumPk={params.PK}
         />
-        <StyledTypography>{album.nickname} 의 {album.title}</StyledTypography>
+        <StyledTypography>{album.nickname} 의 앨범</StyledTypography>
       </div>
-  <StyledTypography>
-  {albumOpenAt === null ? (
+      <StyledTypography>
+        {albumOpenAt === null ? (
           <div>졸업일자를 설정해주세요.</div>
         ) : (
           <div>D - {album.openAt}</div>
         )}
-  </StyledTypography>
-  <StyledTypography>
-    <span class="memorysize">{memoryarray.length}장</span>
-    <span>의 메모리가 도착했어요!</span>
-  </StyledTypography>
-  <div>
-    <MenuButton />
-  </div>
-  <div class="memoryList">
-  <Grid container spacing={3}>
-    {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-      <Grid item xs={4} key={index}>
-        <StyledPaper>
-          <StyledImg src={val.imageUrl} alt={`Memory ${startIndex + index + 1}`} onClick={() => handleImageClick(val.memoryPk, startIndex + index)} />
-        </StyledPaper>
+        <div>{album.title}</div>
+      </StyledTypography>
+      <StyledTypography>
+        {memoryarray.length}장의 메모리가 도착했어요!
+      </StyledTypography>
+      <div>
+        <MenuButton />
+      </div>
+      <Grid container spacing={1}>
+        {albumMemories.slice(startIndex, endIndex).map((val, index) => (
+          <Grid item xs={4} key={index}>
+            <StyledPaper>
+              <StyledImg
+                src={val.imageUrl}
+                alt={`Memory ${startIndex + index + 1}`}
+                onClick={() =>
+                  handleImageClick(val.memoryPk, startIndex + index)
+                }
+              />
+            </StyledPaper>
+          </Grid>
+        ))}
       </Grid>
-    ))}
-  </Grid>
-  </div>
-  <Pagination
-    count={Math.ceil(memoryarray.length / itemsPerPage)}
-    page={currentPage}
-    onChange={handlePageChange}
-  />
-  <div>
-    {isauthorized === true ? (
-      <button class="button"
-      onClick={() =>
-        handlerCopyClipBoard(`congraduation.me/${location.pathname}`)
-      }>링크 공유하기</button>
-      // <StyledButton
-      //   // variant="contained"
-      //   // color="info"
-      //   onClick={() =>
-      //     handlerCopyClipBoard(`congraduation.me/${location.pathname}`)
-      //   }
-      //   // onClick={() => {
-      //   //   window.location.href = "https://www.naver.com";
-      //   // }}
-      // >
-      //   링크 공유
-      // </StyledButton>
-    ) : (
-      <button class="button" onClick={() => gotoAddMemory()}>메모리 추가하기</button>
-      // <StyledButton
-      //   onClick={() => gotoAddMemory()}
-      //   variant="contained"
-      //   color="info"
-      // >
-      //   메모리 추가하기
-      // </StyledButton>
-    )}
-  </div>
-
-  <Dialog
-    open={openModal}
-    onClose={handleCloseModal}
-  >
-    {/* <DialogTitle>이미지 상세보기</DialogTitle> */}
-    <DialogContent>
-      {selectedImageIndex !== null && (
-        <StyledImg
-          src={memoryarray[selectedImageIndex]?.imageUrl}
-          alt={`Memory ${selectedImageIndex + 1}`}
-          style={{ maxWidth: '100%' }}
-        />
-
-      )}
-      <p>{memoryarray[selectedImageIndex]?.nickname}</p>
-
-    </DialogContent>
-    <DialogActions>
-      <Button
-        onClick={handlePrevImage}
-        disabled={selectedImageIndex === 0}
-        color="primary"
-      >
-        이전
-      </Button>
-      <Button onClick={handleCloseModal} color="primary">
-        닫기
-      </Button>
-      <Button onClick={handleNextImage} 
-            disabled={selectedImageIndex === memoryarray.length - 1} 
+      <Pagination
+        count={Math.ceil(memoryarray.length / itemsPerPage)}
+        page={currentPage}
+        onChange={handlePageChange}
+      />
+      <div>
+        {isauthorized === true ? (
+          <StyledButton
+            variant="contained"
             color="primary"
-            >
-        다음
-      </Button>
-    </DialogActions>
-  </Dialog>
-</StyledContainer>
+            onClick={() =>
+              handlerCopyClipBoard(`congraduation.me/${location.pathname}`)
+            }
+            // onClick={() => {
+            //   window.location.href = "https://www.naver.com";
+            // }}
+          >
+            공유하러 가기
+          </StyledButton>
+        ) : (
+          <StyledButton
+            onClick={() => gotoAddMemory()}
+            variant="contained"
+            color="primary"
+          >
+            메모리 추가하기
+          </StyledButton>
+        )}
+      </div>
+
+      <Dialog open={openModal} onClose={handleCloseModal}>
+        {/* <DialogTitle>이미지 상세보기</DialogTitle> */}
+        <DialogContent>
+          {selectedImageIndex !== null && (
+            <StyledImg
+              src={memoryarray[selectedImageIndex]?.imageUrl}
+              alt={`Memory ${selectedImageIndex + 1}`}
+              style={{ maxWidth: "100%" }}
+            />
+           
+          )}
+          <p>{memoryarray[selectedImageIndex]?.nickname}</p>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handlePrevImage}
+            disabled={selectedImageIndex === 0}
+            color="primary"
+          >
+            이전
+          </Button>
+          <Button onClick={handleCloseModal} color="primary">
+            닫기
+          </Button>
+          <Button
+            onClick={handleNextImage}
+            disabled={selectedImageIndex === memoryarray.length - 1}
+            color="primary"
+          >
+            다음
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </StyledContainer>
   );
 };
 
