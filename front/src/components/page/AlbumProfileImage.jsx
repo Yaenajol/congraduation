@@ -38,8 +38,9 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk }) {
         <StyledImg
           src={imageUrl}
           alt="User Alt Image"
-          width={"100px"}
-          height={"100px"}
+          width={"130rem"}
+          // height={"70rem"}
+          style={{borderRadius:"50%", marginTop:"30px"}}
           onClick={() => {
             fileInput.current.click();
           }}
