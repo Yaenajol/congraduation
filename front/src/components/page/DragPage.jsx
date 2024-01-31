@@ -190,7 +190,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
             Toggle aspect {aspect ? 'off' : 'on'}
           </button>
         </div> */}
-        
+
       </div>
       {!!imgSrc && (
         <ReactCrop
