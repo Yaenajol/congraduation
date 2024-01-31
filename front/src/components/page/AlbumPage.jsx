@@ -21,11 +21,12 @@ import StyledPaper from "../styledComponents/StyledPaper";
 import StyledTypography from "../styledComponents/StyledTypography";
 import UserImgButton from "../button/UserImgButton";
 import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
-
+import moment from 'moment'
 import MenuButton from "../../components/button/MenuButton";
 import { isLoginAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
+import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
 import AlbumProfileImage from "./AlbumProfileImage";
 
 const AlbumPage = () => {
@@ -43,7 +44,9 @@ const AlbumPage = () => {
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const location = useLocation();
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const date = moment(album.openAt)
+  const [specificMemory, setSpecificMemory] = useState("")
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(null);
 
@@ -99,17 +102,34 @@ const AlbumPage = () => {
   ); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
   const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  const displayedAlbumMemories = filteredAlbumMemories.slice(
-    startIndex,
-    endIndex
-  ); // 첫 인덱스와 끝 인덱스를 통해 슬라이스 작업
+  const displayedAlbumMemories = filteredAlbumMemories.slice(startIndex, endIndex); // 첫 인덱스와 끝 인덱스를 통해 슬라이스 작업
+
 
   const handleImageClick = (imageUrl, index) => {
-    console.log(imageUrl);
-    console.log(index);
-    setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
-    setOpenModal(true); // 모달 opne 상태 true로
-  };
+    const now = moment();
+    setSelectedImageIndex(index);
+    console.log(now)
+    console.log(date)
+    console.log(albumMemories[index].memoryPk)
+    if (now >= date) {
+      axios.get(`https://congraduation.me/backapi/memories/${albumMemories[index].memoryPk}`, {
+        headers : { accessToken: localStorage.accessToken }
+      })
+      .then(response => {
+        console.log(response.data)
+        setSpecificMemory(response.data)
+        // console.log(response.data)
+      })
+      setOpenModal(true); // 모달 opne 상태 true로
+
+    } else {
+      alert('공개일 아님')
+    }
+    console.log(imageUrl)
+    console.log(index)
+    // setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
+    // setOpenModal(true); // 모달 opne 상태 true로
+  }
 
   // 다이어리(모달)을 끄는 기능
   const handleCloseModal = () => {
@@ -256,7 +276,10 @@ const AlbumPage = () => {
               alt={`Memory ${selectedImageIndex + 1}`}
               style={{ maxWidth: "100%" }}
             />
+           
           )}
+          <p>{memoryarray[selectedImageIndex]?.nickname}</p>
+          
         </DialogContent>
         <DialogActions>
           <Button
