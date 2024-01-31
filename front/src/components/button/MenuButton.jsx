@@ -37,7 +37,7 @@ export default function MenuIntroduction() {
   return (
     <Dropdown>
       <MenuButton >
-      <DehazeRoundedIcon style={{ backgroundColor: 'transparent'}}/>
+      <DehazeRoundedIcon/>
       </MenuButton>
       <Menu slots={{ listbox: Listbox }}>
         <MenuItem onClick={createHandleMenuClick('Profile')}>앨범 설정</MenuItem>
