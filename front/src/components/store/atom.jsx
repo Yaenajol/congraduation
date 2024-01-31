@@ -28,3 +28,12 @@ export const isLoginAtom = atom({
 })
 
 
+export const lookingPkAtom = atom({
+    key: 'lookingPk',
+    default : null,
+})
+
+export const albumPageMainImgAtom = atom({
+    key: 'albumPageMainImg',
+    default : null,
+})

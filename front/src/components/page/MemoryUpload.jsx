@@ -7,11 +7,15 @@ import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
 import { TextField, Button, Box, Typography, Container } from '@mui/material';
 import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
-import myImg from "./myImg.png";
+import MemoryAdd from '../button/MemoryAdd'
+import backgroundImage from '../images/background.png'
 import {Dialog} from "@mui/material";
 import DragPage from "../page/DragPage";
 import { isLoginAtom } from "../store/atom";
+import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
+import StyledContainer from "../styledComponents/StyledContainer";
+import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
@@ -25,6 +29,8 @@ const MemoryUpload = () => {
     Object.values(images).every((img) => img !== null) && nickname && message;
   
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom)
+
   const params = useParams()
   const navigate = useNavigate()
 
@@ -168,7 +174,8 @@ const MemoryUpload = () => {
           formdata.append('image', file)
           formdata.append('data', new Blob([JSON.stringify(payload)] , { type: 'application/json'}))
 
-          axios.post('https://congraduation.me/backapi/memories', formdata, {
+          axios.post('https://congraduation.me/backapi/memories', formdata, 
+          {
             headers : {
               'accessToken' : localStorage.getItem('accessToken')
               // 'Content-Type': 'multipart/form-data',
@@ -189,7 +196,7 @@ const MemoryUpload = () => {
   
     
   return (
-    <div className="memory-upload">
+    <StyledMemoryPage>
       <div className="title">Memory</div>
       <div className="image-grid">
         {["a", "b", "c", "d"].map((key) => (
@@ -220,12 +227,12 @@ const MemoryUpload = () => {
       />
 
       <br />
-      <br />
-      <br />
+     
 
       <TextField
+        // id="outlined-multiline-flexible"
         className="input-field"
-        variant="filled"
+        // variant="filled"
         multiline
         rows={4} // 표시되는 기본 줄 수 
         type="text"
@@ -234,61 +241,47 @@ const MemoryUpload = () => {
         onChange={(e) => setMessage(e.target.value)}
         style={{ marginBottom : "10px"}}
         inputProps={{
-          maxLength: 200  // 한줄에 20자 들어감 
+          maxLength: 200,  // 한줄에 20자 들어감 
         }}
+        
       />
 
-      <div className="input-row">
+      
         <TextField
           className="input-field"
           type="text"
           label="별명"
-          variant="filled"
+          // variant="filled"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
-          style= {{ flex : 1}}
+          // style= {{ flex : 1}}
+          
           // 글자수 제한
           inputProps={{
-            maxLength: 11
+            maxLength: 15
           }}
         />
 
-        <button
+        <MemoryAdd
           className="submit-button"
           onClick={handleSubmit}
           disabled={!isReadyToSubmit}
           style= {{ flex: 0}}
         >
-          사진 전송
-        </button>
-      </div>
+        </MemoryAdd>
+      
       <Dialog
         open={openModal}
         onClose={handleCloseModal}
         fullWidth={true}
       >
         <DragPage selectedGridItem={selectedGridItem} setImages={setImages} setOpenModal={setOpenModal} />
-        {/* selectedImage={selectedImage} onUpdateImage={updateImage} */}
+        
 
 
       </Dialog>
 
-      {/* {mergedImage && message && nickname && (
-        <div>
-          <h2>합성 이미지</h2>
-          <p>별명 : {nickname}</p>
-          <p>메시지: {message}</p>
-          <div className="polaroid">
-            <img
-              className="test"
-              src={mergedImage}
-              alt="Merged"
-              style={{ maxWidth: "40%" }}
-            />
-          </div>
-        </div>
-      )} */}
-    </div>
+    </StyledMemoryPage>
   );
 };
 

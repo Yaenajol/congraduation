@@ -1,8 +1,15 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import {ReactCrop, centerCrop, makeAspectCrop, convertToPixelCrop} from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import { canvasPreview } from './canvasPreview';
 import { useDebounceEffect } from './useDebounceEffect';
+import "./style.css"; 
+import InputFileUpload from '../button/UploadButton';
+import MemoryAdd from '../button/MemoryAdd'
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import { albumPageMainImgAtom } from "../store/atom";
+import axios from 'axios';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -32,6 +39,8 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
   const [aspect, setAspect] = useState(1/1);
+  const params = useParams()
+  const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom)
 
   // ... (rest of the code remains same as in your TS file)
   function onSelectFile(e) {
@@ -52,7 +61,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
     }
   }
 
-  async function onDownloadCropClick() {
+  async function onDownloadCropClick(page) {
 
     const updateImage = (imageData) => {
       setImages((prevImages) => ({
@@ -61,8 +70,9 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
       }));
       
     };
-    console.log(selectedGridItem)
+    
     const image = imgRef.current
+    
     const previewCanvas = previewCanvasRef.current
     if (!image || !previewCanvas || !completedCrop) {
       throw new Error('Crop canvas does not exist')
@@ -104,16 +114,46 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
       URL.revokeObjectURL(blobUrlRef.current)
     }
     blobUrlRef.current = URL.createObjectURL(blob)
-
+    
     updateImage(blobUrlRef.current)
-
+    console.log(blobUrlRef.current)
     // if (hiddenAnchorRef.current) {
     //   hiddenAnchorRef.current.href = blobUrlRef.current
     //   hiddenAnchorRef.current.click()
     // }
+    if (page !== 'edit') {
+      setAlbumPageMainImg(blobUrlRef.current)
+      const formdata = new FormData()
+      formdata.append('image', blob, 'image.png')
+      try {
+        const response = await axios.put(
+          `https://congraduation.me/backapi/albums/${params.PK}/coverImage`, 
+          formdata,  
+          {
+            headers : {
+              accessToken : localStorage.getItem('accessToken')
+              // 'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        // 요청 성공시의 처리, 예를 들어 상태 업데이트 또는 사용자에게 알림
+        console.log('Image updated successfully:', response.data);
+      } catch (error) {
+        // 에러 처리, 예를 들어 에러 메시지 출력
+        console.error('Failed to update image:', error);
+      }
+      // axios.put(
+      //   `https://congraduation.me/backapi/albums/${params.PK}/coverIamge`, 
+      //   formdata,  
+      //   {
+      //     headers : {
+      //       accessToken : localStorage.getItem('accessToken')
+      //     }
+      // })
+    }
     setOpenModal(false)
   }
-
+  
   useDebounceEffect(
     async () => {
       if (
@@ -154,9 +194,10 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
 
   return (
     <div className="App">
-      <div className="Crop-Controls">
-        <input type="file" accept="image/*" onChange={onSelectFile} />
-
+      <div className="upload">
+        <InputFileUpload  onChange={onSelectFile}/>
+        {/* <input type="file"  accept="image/*" onChange={onSelectFile} /> */}
+        
         {/* 사진 스케일 */}
         {/* <div>
           <label htmlFor="scale-input">Scale: </label>
@@ -190,10 +231,12 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
             Toggle aspect {aspect ? 'off' : 'on'}
           </button>
         </div> */}
-        
+
       </div>
+      <div className='upload'>
       {!!imgSrc && (
         <ReactCrop
+          
           crop={crop}
           onChange={(_, percentCrop) => setCrop(percentCrop)}
           onComplete={(c) => setCompletedCrop(c)}
@@ -204,6 +247,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
           // circularCrop
         >
           <img
+          
             ref={imgRef}
             alt="Crop me"
             src={imgSrc}
@@ -212,9 +256,11 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
           />
         </ReactCrop>
       )}
+      </div>
+      
       {!!completedCrop && (
         <>
-          <div>
+          <div className="upload">
             <canvas
               ref={previewCanvasRef}
               style={{
@@ -225,8 +271,9 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
               }}
             />
           </div>
-          <div>
-            <button onClick={onDownloadCropClick}>완료!</button>
+          <div className="upload">
+            
+            <MemoryAdd onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
             <div style={{ fontSize: 12, color: '#666' }}>
               
             </div>
