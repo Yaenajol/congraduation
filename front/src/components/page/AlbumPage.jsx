@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
@@ -174,14 +174,33 @@ const AlbumPage = () => {
         </div>
     );
   };
+  
+  const fileInput = useRef(null)
 
   // 유저 이미지 아이콘 버튼
   const UserImgButton = () => {
-    const handleClick = () => {
-      //여기에 세팅 dialog 가게 하고, 세팅 설정하자
-      gotoSetting();
+    const [albumCoverPreview, setAlbumCoverPreview] = useState(null); // 미리보기 이미지 상태 추가
+
+    const handleFileChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setAlbumCoverPreview(reader.result); // 선택한 파일의 미리보기 이미지를 설정
+        };
+        reader.readAsDataURL(file);
+      }
+      // 여기서 파일을 처리할 수 있는 코드 추가
     };
-  
+
+    const handleClick = () => {
+      // input 요소를 클릭하여 파일 선택 창 열기
+      const inputElement = document.createElement('input');
+      inputElement.type = 'file';
+      inputElement.accept = 'image/*';
+      inputElement.onchange = handleFileChange; // 파일 선택 시 handleFileChange 함수 실행
+      inputElement.click();
+    };
     return (
       <button 
         onClick={handleClick}
@@ -202,15 +221,9 @@ const AlbumPage = () => {
     );
   };
 
+
   return (
     <StyledContainer>
-      <StyledTypography variant="h4">Album Page</StyledTypography>
-      
-      <div className='flex-direction-row'>
-        <div>D - {album.id}</div>
-        <div>{album.title}</div>
-      </div>
-      
       <div>
         <RoundedRectangle>
           <UserImgButton/>
