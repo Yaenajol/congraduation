@@ -18,6 +18,8 @@ import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAuto
 import '../page/AlbumPage.css'
 import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
 import AlbumProfileImage from "./AlbumProfileImage";
+import Dday from './Dday';
+
 const AlbumPage = () => {
   const params = useParams();
 
@@ -200,7 +202,7 @@ console.log(index)
         {albumOpenAt === null ? (
           <div>졸업일자를 설정해주세요.</div>
         ) : (
-          <div>D - {album.openAt}</div>
+          <div>D <Dday/></div>
         )}
         <div>{album.title}</div>
       </StyledTypography>

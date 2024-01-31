@@ -7,7 +7,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import StyledImg from '../styledComponents/StyledImg';
 import StyledTypography from '../styledComponents/StyledTypography';
 import userAltImage from '../images/userAltImage.png'; // 이미지 파일의 경로를 import 합니다.
-
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 
 const SettingsPage = () => {
 
@@ -22,12 +25,16 @@ const SettingsPage = () => {
     const [album, setAlbum] = useState({}); // 객체 형태로 변경
     const params = useParams();
     const navigate = useNavigate();
+    const [graduationDate, setGraduationDate] = useState(dayjs(new Date()));
 
     useEffect(() => {
       axios.get(`https://congraduation.me/backapi/albums/${params.PK}`)
         .then(response => {
           console.log('Album Data:', response.data);
           setAlbum(response.data);
+          setNickname(response.data.nickname);
+          setGraduationPlace(response.data.graduationPlace);
+          setTitle(response.data.title);
         })
         .catch(error => {
           console.error('Error fetching album data:', error);
@@ -38,7 +45,7 @@ const SettingsPage = () => {
       navigate(`/albums/${params.PK}`);
     }
 
-    const handleSaveSettings = async () => {
+    const handleSaveAlbumSettings = async () => {
       try {
         const userInfo = {
           nickname: nickname,
@@ -64,6 +71,44 @@ const SettingsPage = () => {
       }
     };
 
+    const handleSaveGraduationDateSettings = async () => {
+      
+      try {
+        if(!window.confirm("확정 시, 수정 불가합니다.")){
+           return;
+        }
+  
+        const accessToken = localStorage.getItem('accessToken');
+        const dateFormat = dayjs(graduationDate).format("YYYYMMDD");
+        console.log("데이트포맷 : " + dateFormat)
+          const payload = {
+              graduationDate: dateFormat
+          }
+          console.log(payload)
+          axios.put(`https://congraduation.me/backapi/albums/${params.PK}/graduationDate`, payload, {
+            headers : {
+              'accessToken' : localStorage.getItem('accessToken'),
+              'Content-Type': 'application/json',
+            },
+        }).then(response => {
+          console.log(response.data);
+          // window.location.reload();
+          gotoAlbumPage();
+        }).catch(error => {
+          console.log('실패' + error);
+        })
+  
+      } catch (error) {
+        console.error('전송 실패 :', error);
+      }
+    };
+
+    
+    
+    // console.log("현재 날짜는 " + dateFormat);
+
+    console.log(album)
+
     return (
       <div
         style={{
@@ -71,8 +116,8 @@ const SettingsPage = () => {
           marginBottom: '80px',
           marginLeft: '20px',
           marginRight: '20px',
-          width: '250px', // 너비
-          height: '500px', // 높이
+          width: '300px', // 너비
+          height: '600px', // 높이
           borderRadius: '10px', // 모서리 반경
           backgroundColor: 'rgba(255, 255, 255, 1)', // 희미한 흰색 배경
           boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', // 그림자
@@ -87,47 +132,46 @@ const SettingsPage = () => {
         <div >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 15px' }}>
             <StyledTypography variant="h6" gutterBottom>{album.nickname}님</StyledTypography>
-            {album.imageUrl ? (
-              <StyledImg src={album.imageUrl} alt="Album Cover" />
-            ) : (
-              <StyledImg src={userAltImage} alt="User Alt Image" width={'30px'} height={'30px'} />
-            )}
           </div>
-          <Box>
-            <div>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'center', padding: '0 15px', marginTop: '10px'}}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start' }}>
               <div>Nickname</div>
               <TextField
-                label="Nickname"
                 id="outlined-size-small"
-                defaultValue={album.nickname}
-                size="small"
+                value={nickname}
+                // size="normal"
+                width="100%S"
                 onChange={(e) => setNickname(e.target.value)}
-                margin="normal"
+                margin="dense"
               />
             </div>
-            <div>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start' }}>
               <div>Graduation Place</div>
               <TextField
-                label={album.graduationPlace}
-                variant="outlined"
-                fullWidth
+                id="outlined-size-small"
                 value={graduationPlace}
+                size="normal"
                 onChange={(e) => setGraduationPlace(e.target.value)}
-                margin="normal"
+                margin="dense"
               />
             </div>
-            <div>
-              <div>Title</div>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start' }}>
+              <div>Title</div>  
               <TextField
-                label={album.title}
-                variant="outlined"
-                fullWidth
+                id="outlined-size-small"
                 value={title}
+                size="normal"
                 onChange={(e) => setTitle(e.target.value)}
-                margin="normal"
+                margin="dense"
               />
             </div>
-            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Box textAlign="center" marginTop={2}>
+              <Button variant="contained" color="primary" onClick={handleSaveAlbumSettings}>
+                Save
+              </Button>
+            </Box>
+            {album.openAt === null ? <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'center', marginTop: '30px' }}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Graduation Date"
                 value={graduationDate}
@@ -136,13 +180,14 @@ const SettingsPage = () => {
                   <TextField {...params} variant="outlined" fullWidth margin="normal" />
                 )}
               />
-            </LocalizationProvider> */}
+            </LocalizationProvider>
             <Box textAlign="center" marginTop={2}>
-              <Button variant="contained" color="primary" onClick={handleSaveSettings}>
+              <Button variant="contained" color="primary" onClick={handleSaveGraduationDateSettings}>
                 Save
               </Button>
             </Box>
-          </Box>
+            </div> : <div/>} 
+          </div>
         </div>
       </div>
     );
