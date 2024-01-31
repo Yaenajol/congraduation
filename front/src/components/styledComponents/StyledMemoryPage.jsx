@@ -6,10 +6,8 @@ import background2 from '../images/background2.png';
 const StyledContainer = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
-    // alignItems: 'center',
-    backgroundPosition: 'center top',
-    backgroundRepeat: 'no-repeat',
-    width:'42rem',
+    alignItems: 'center',
+    marginTop: theme.spacing(2),
     backgroundImage: `url(${background2})`, // 배경 이미지 추가
     backgroundSize: 'cover', // 배경 이미지를 화면에 꽉 채우도록 설정
 }));

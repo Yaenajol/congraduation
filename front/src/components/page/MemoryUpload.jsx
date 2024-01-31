@@ -15,6 +15,7 @@ import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
 import StyledContainer from "../styledComponents/StyledContainer";
+import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
@@ -195,7 +196,7 @@ const MemoryUpload = () => {
   
     
   return (
-    <StyledContainer>
+    <StyledMemoryPage>
       <div className="title">Memory</div>
       <div className="image-grid">
         {["a", "b", "c", "d"].map((key) => (
@@ -280,7 +281,7 @@ const MemoryUpload = () => {
 
       </Dialog>
 
-    </StyledContainer>
+    </StyledMemoryPage>
   );
 };
 

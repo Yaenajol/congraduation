@@ -4,7 +4,8 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { useNavigate, useParams } from 'react-router-dom'
 import { isLoginAtom } from "../store/atom";
 import "./AllPage.css";
-import StyledContainer from "../styledComponents/StyledContainer";
+// import StyledContainer from "../styledComponents/StyledContainer";
+import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import loginimage1 from "../images/loginimage1.jpg"
 import loginimage2 from "../images/loginimage2.jpg"
 
@@ -36,7 +37,7 @@ function HomePage() {
  
 
   return (
-    <StyledContainer>
+    <StyledMemoryPage>
         <br></br>
         <br></br>
         <br></br>
@@ -72,7 +73,7 @@ function HomePage() {
         <br></br>
         <br></br>
 
-    </StyledContainer>
+    </StyledMemoryPage>
   );
 }
 

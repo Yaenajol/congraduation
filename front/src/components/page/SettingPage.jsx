@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { TextField, Button, Box } from '@mui/material';
 import axios from 'axios';
-import StyledContainer from '../styledComponents/StyledContainer';
+// import StyledContainer from '../styledComponents/StyledContainer';
+import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import HomeIcon from '@mui/icons-material/Home';
 import StyledImg from '../styledComponents/StyledImg';
 import StyledTypography from '../styledComponents/StyledTypography';
@@ -149,9 +150,9 @@ const SettingsPage = () => {
   };
 
   return (
-    <StyledContainer>
+    <StyledMemoryPage>
       <RoundedRectangle />
-    </StyledContainer>
+    </StyledMemoryPage>
   );
 };
 
