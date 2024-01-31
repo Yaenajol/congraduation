@@ -87,13 +87,6 @@ const AlbumPage = () => {
         });
     }
   }, []);
-  // 쓰진 않고 있음 memory~~ 대체중
-  // function AlbumMemoriesCountByAlbumId(albumMemories, albumId) {
-  //   const albumMemoriesWithAlbumId = albumMemories.filter((albumMemory) => albumMemory.albumId === albumId);
-  //   return albumMemoriesWithAlbumId.length;
-  // }
-
-  // const count = AlbumMemoriesCountByAlbumId(albumMemories, 1);
 
   // 페이지 전환 기능
   const handlePageChange = (event, value) => {
