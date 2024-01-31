@@ -8,10 +8,9 @@
   color: white; /* 글자색 */
 }
 
-
 .title {
   margin-bottom: 20px;
-  font-family: 'NPSfontBold';
+  font-family: "NPSfontBold";
   font-size: 41px;
 }
 
@@ -31,13 +30,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
 
 .image-upload img {
   width: 100%; /* 너비를 컨테이너에 맞춤 */
   height: 100%; /* 높이를 컨테이너에 맞춤 */
-  object-fit: cover; 
+  object-fit: cover;
   object-position: center;
 }
 
@@ -62,7 +60,7 @@
   gap: 10px; /* 요소들 사이의 간격 */
 }
 .submit-button {
-  white-space:  nowrap;
+  white-space: nowrap;
   padding: 20px 20px;
   border-radius: 8px;
   border: none;
@@ -80,9 +78,7 @@
   background: #666;
 }
 
-.test { 
-  border-radius: 0%; 
+.test {
+  border-radius: 0%;
   /* 합성 이미지 테스트용  */
 }
-
-
