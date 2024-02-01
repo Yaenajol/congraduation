@@ -11,6 +11,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
     // marginTop: theme.spacing(2),
     backgroundImage: `url(${background2})`, // 배경 이미지 추가
     backgroundSize: 'cover', // 배경 이미지를 화면에 꽉 채우도록 설정
+    height:'auto'
 }));
 
 export default StyledContainer;

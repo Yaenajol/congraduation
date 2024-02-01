@@ -46,9 +46,9 @@ const AlbumPage = () => {
   const [specificMemory, setSpecificMemory] = useState("")
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(null);
-
+  console.log(lookingPk);
   useEffect(() => {
-    
+    console.log("======================="+isLogin)
     setLookingPk(params.PK)
     console.log(params.PK)
     // 특정 앨범 조회
@@ -80,7 +80,7 @@ const AlbumPage = () => {
       axios
         .get
         (`https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
-          { headers: { accessToken: localStorage.accessToken } }
+          { headers: { accessToken: sessionStorage.accessToken } }
         )
         .then(response => {
           console.log('check' + response.data)
@@ -120,7 +120,7 @@ const AlbumPage = () => {
     console.log(albumMemories[index].memoryPk)
     if (now >= date) {
       axios.get(`https://congraduation.me/backapi/memories/${albumMemories[index].memoryPk}`, {
-        headers: { accessToken: localStorage.accessToken }
+        headers: { accessToken: sessionStorage.accessToken }
       })
         .then(response => {
           console.log(response.data)
@@ -191,7 +191,7 @@ const AlbumPage = () => {
     if (!isLogin) {
       console.log(isLoginAtom);
       console.log(params.PK)
-      localStorage.setItem('lookingPk', params.PK)
+      sessionStorage.setItem('lookingPk', params.PK)
       navigate("/");
       
     } else {

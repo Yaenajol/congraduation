@@ -20,7 +20,7 @@ export default function MenuIntroduction({zin}) {
   const createHandleMenuClick = (menuItem) => {
     return () => {
       if (menuItem === 'Log out') {
-        localStorage.removeItem('accessToken')
+        sessionStorage.removeItem('accessToken')
         setIsLogin(false)
         navigate('/')
       } else if (menuItem === 'Profile' ) {

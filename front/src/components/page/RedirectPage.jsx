@@ -37,7 +37,7 @@ function RedirectPage() {
       console.log(result);
       setData(result); // 응답 데이터를 상태에 저장
       
-      localStorage.setItem( 'accessToken' , result.accessToken)
+      sessionStorage.setItem( 'accessToken' , result.accessToken)
       setIsLogin(true)
     
       // axios.get(`https://congraduation.me/backapi/albums/${result.albumPk}`)
@@ -45,11 +45,12 @@ function RedirectPage() {
       //      console.log('Album Data:', response.data);    
       //    });
       
-      const localpk = localStorage.getItem('lookingPk')
+      const localpk = sessionStorage.getItem('lookingPk')
       if (localpk) {
         console.log('초대받은 경우')
         navigate(`/albums/${localpk}`)
       } else {
+        
         navigate(`/myalbum`);
         //아직 설정안했지만 setting 페이지로 가야함
       }

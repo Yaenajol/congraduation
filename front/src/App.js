@@ -18,7 +18,7 @@ import { isLoginAtom } from "./components/store/atom";
 function App() {
   const setIsLogin = useSetRecoilState(isLoginAtom)
 
-  const accessToken = localStorage.getItem('accessToken')
+  const accessToken = sessionStorage.getItem('accessToken')
   if (typeof(accessToken) === typeof("")) {
     setIsLogin(true)
   }
@@ -28,7 +28,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path='/albums/:PK' element={<AlbumPage />} />
-        <Route path="/albums/:PK/setting" element={<SettingsPage />} />
+        <Route path="/myalbum/setting" element={<SettingsPage />} />
         <Route path="/albums/:PK/edit" element={<MemoryUpload />} />
         <Route path="/kakao/oauth" element={<RedirectPage />} />
         <Route path="/albums/drag" element={<DragPage/>} />

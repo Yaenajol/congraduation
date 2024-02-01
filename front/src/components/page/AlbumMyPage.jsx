@@ -45,8 +45,9 @@ const AlbumMypage = () => {
   const date = moment(album.openAt)
   const [specificMemory, setSpecificMemory] = useState("")
   const [imageUrl, setImageUrl] = useState(userAltImage);
-  const [albumOpenAt, setalbumOpenAt] = useState(null);
-
+  const [albumOpenAt, setalbumOpenAt] = useState(undefined);
+  
+ 
   useEffect(() => {
 
     if (!isLogin) {
@@ -55,13 +56,17 @@ const AlbumMypage = () => {
     }
     axios
       .get(`https://congraduation.me/backapi/members/myAlbum`,
-      { headers: { accessToken: localStorage.accessToken }})
+      { headers: { accessToken: sessionStorage.accessToken }})
       .then(response => {
         console.log('Album Data:', response.data);
         
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
+        if (response.data.openAt === null ) {
+          console.log(response.data)
+          navigate('/myalbum/setting', { state : response.data})
+        }
         setAlbumPageMainImg(response.data.coverUrl)
         return response.data.albumPk
       }).then((albumPk)=>{
@@ -78,6 +83,7 @@ const AlbumMypage = () => {
     
   },[])
 
+  
   const filteredAlbumMemories = albumMemories.filter((val) => val.albumPk === params.PK); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
   const startIndex = (currentPage - 1) * itemsPerPage;  // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
@@ -91,7 +97,7 @@ const AlbumMypage = () => {
     console.log(albumMemories[index].memoryPk)
     if (now >= date) {
       axios.get(`https://congraduation.me/backapi/memories/${albumMemories[index].memoryPk}`, {
-        headers: { accessToken: localStorage.accessToken }
+        headers: { accessToken: sessionStorage.accessToken }
       })
         .then(response => {
           console.log(response.data)
