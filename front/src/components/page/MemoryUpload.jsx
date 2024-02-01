@@ -271,6 +271,7 @@ const MemoryUpload = () => {
         </MemoryAdd>
       
       <Dialog
+        // style={{ height: '0%'}}
         open={openModal}
         onClose={handleCloseModal}
         fullWidth={true}

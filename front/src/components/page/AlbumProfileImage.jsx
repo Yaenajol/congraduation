@@ -15,6 +15,7 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
   // const [customcallback, setCustomcallback] = useState()
 
   
+  
 
   const handleCloseModal = async () => {
     setImgSrc()
@@ -114,10 +115,7 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
         onClose={handleCloseModal}
         fullWidth={true}
       >
-        <DragPage  setImages={setImageUrl} setOpenModal={setOpenModal} />
-        
-
-
+        <DragPage albumPk={albumPk} setImages={setImageUrl} setOpenModal={setOpenModal} />
       </Dialog>
       
       

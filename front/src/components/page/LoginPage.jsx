@@ -31,7 +31,7 @@ function HomePage() {
   // }
   useEffect(() => {
     if (isLogin) {
-      navigate(`/albums/${sessionStorage.albumPK}`)
+      navigate(`/myalbum`)
     }
   },[])
   console.log(isLogin)

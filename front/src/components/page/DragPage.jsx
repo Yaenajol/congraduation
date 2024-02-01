@@ -28,7 +28,7 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   );
 }
 
-export default function App({selectedGridItem, setImages, setOpenModal}) {
+export default function App({selectedGridItem, setImages, setOpenModal, albumPk}) {
   const [imgSrc, setImgSrc] = useState('');
   const previewCanvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -127,7 +127,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
       formdata.append('image', blob, 'image.png')
       try {
         const response = await axios.put(
-          `https://congraduation.me/backapi/albums/${params.PK}/coverImage`, 
+          `https://congraduation.me/backapi/albums/${albumPk}/coverImage`, 
           formdata,  
           {
             headers : {
@@ -138,6 +138,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
         );
         // 요청 성공시의 처리, 예를 들어 상태 업데이트 또는 사용자에게 알림
         console.log('Image updated successfully:', response.data);
+        setImages(response.data)
       } catch (error) {
         // 에러 처리, 예를 들어 에러 메시지 출력
         console.error('Failed to update image:', error);
@@ -194,7 +195,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
 
   return (
     <div className="App">
-      <div className="upload">
+      <div className="upload" >
         <InputFileUpload  onChange={onSelectFile}/>
         {/* <input type="file"  accept="image/*" onChange={onSelectFile} /> */}
         

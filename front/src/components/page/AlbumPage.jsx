@@ -179,7 +179,9 @@ const AlbumPage = () => {
   };
   const gotomyAlbum = () => {
     
-    navigate('/myalbum')
+    sessionStorage.removeItem('lookingPk', params.PK)
+
+    navigate('/')
   }
   // Setting page 로 이동하는 기능
   const gotoSetting = () => {

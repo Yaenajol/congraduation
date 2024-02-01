@@ -82,7 +82,8 @@ const AlbumMypage = () => {
       });
     
   },[])
-
+  
+  console.log(album)
   
   const filteredAlbumMemories = albumMemories.filter((val) => val.albumPk === params.PK); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
   const startIndex = (currentPage - 1) * itemsPerPage;  // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
@@ -176,13 +177,13 @@ const AlbumMypage = () => {
           <AlbumProfileImage
             imageUrl={imageUrl}
             setImageUrl={setImageUrl}
-            albumPk={params.PK}
-            isClickable={isauthorized}
+            albumPk={album.albumPk}
+            isClickable={true}
           />
           <StyledTypography>{album.nickname} 의 {album.title}</StyledTypography>
           
           <div>
-            <MenuButton />
+            <MenuButton zin={false}/>
           </div>
         </div>
         <div style={{ height : '15%'}} className='gridAlignCenter'>
