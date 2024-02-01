@@ -21,7 +21,8 @@ import '../page/AlbumPage.css'
 import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
 import AlbumProfileImage from "./AlbumProfileImage";
 
-const AlbumPage = () => {
+const AlbumMypage = () => {
+
   const params = useParams();
 
   const [album, setAlbum] = useState([]);
@@ -31,7 +32,7 @@ const AlbumPage = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [nextPageImages, setNextPageImages] = useState([]); // 추가: 다음 페이지의 이미지들을 저장할 상태
   const BACK_URL = 'http://congraduation.me/backapi';
-
+  const [isauthorized, setIsauthorized] = useState(false);
   const [memoryarray, setMemoryarray] = useState([]);
   const itemsPerPage = 6;
   const navigate = useNavigate();
@@ -47,70 +48,41 @@ const AlbumPage = () => {
   const [albumOpenAt, setalbumOpenAt] = useState(null);
 
   useEffect(() => {
-    
-    setLookingPk(params.PK)
-    console.log(params.PK)
-    // 특정 앨범 조회
+
+    if (!isLogin) {
+      navigate('/')
+      return
+    }
     axios
-      .get(`https://congraduation.me/backapi/albums/${params.PK}`)
+      .get(`https://congraduation.me/backapi/members/myAlbum`,
+      { headers: { accessToken: localStorage.accessToken }})
       .then(response => {
         console.log('Album Data:', response.data);
-        console.log(location.pathname)
+        
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
         setAlbumPageMainImg(response.data.coverUrl)
-      });
-
-    // 앨범의 특정 메모리 조회
-    axios
-      .get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
-      .then(response => {
-        console.log('Album Memories Data:', response.data);
-        setAlbumMemories(response.data);
-        if (typeof (response.data) === typeof ([])) {
-          setMemoryarray(response.data)
-        }
-      });
-
-    // accessToken 이 있을 때
-    if (isLogin) {
-      // 유저의 앨범 접근 권한 조회를 한다.
-      axios
-        .get
-        (`https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
-          { headers: { accessToken: localStorage.accessToken } }
-        )
+        return response.data.albumPk
+      }).then((albumPk)=>{
+        axios
+        .get(`https://congraduation.me/backapi/albums/${albumPk}/memories`)
         .then(response => {
-          console.log('check' + response.data)
-          // 만약 접근한 유저의 권한이 true 이면
-          if (typeof (response.data) === typeof (true)) {
-            if(response.data===true){
-              navigate("/myalbum")
-            }
-            
-           
+          setAlbumMemories(response.data);
+          if (typeof (response.data) === typeof ([])) {
+            setMemoryarray(response.data)
           }
-
+          console.log(response.data)
         });
-    }
-  }, []);
+      });
+    
+  },[])
 
-  // lookingpk 확인
-  console.log('looking pk : ' + lookingPk)
-
-  // 페이지 전환 기능
-  const handlePageChange = (event, value) => {
-    setCurrentPage(value);
-  };
-
-  //6개씩 보이게 적용
   const filteredAlbumMemories = albumMemories.filter((val) => val.albumPk === params.PK); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
   const startIndex = (currentPage - 1) * itemsPerPage;  // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  const displayedAlbumMemories = filteredAlbumMemories.slice(startIndex, endIndex); // 첫 인덱스와 끝 인덱스를 통해 슬라이스 작업
+  const displayedAlbumMemories = filteredAlbumMemories.slice(startIndex, endIndex);
 
-  // 비동기 처리 해야됨
   const handleImageClick = (imageUrl, index) => {
     const now = moment();
     setSelectedImageIndex(index);
@@ -137,8 +109,21 @@ const AlbumPage = () => {
     // setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
     // setOpenModal(true); // 모달 opne 상태 true로
   }
-
-  // 다이어리(모달)을 끄는 기능
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+  };
+  const handlerCopyClipBoard = async (text) => {
+    try {
+      console.log(text)
+      const domain = window.location.origin
+      const address = `${domain}/albums/${text}`
+      await navigator.clipboard.writeText(address);
+      alert("링크가 복사됐습니다!");
+      console.log(text)
+    } catch (err) {
+      console.log("error :", err);
+    }
+  };
   const handleCloseModal = () => {
     setOpenModal(false);  // 모달 open 상태 false로
     setSelectedImageIndex(null);  // 선택된 이미지 인덱스를 null로 상태 변경
@@ -164,41 +149,7 @@ const AlbumPage = () => {
       return prevIndex; // 이미지 인덱스가 0보다 작을 때는 현재 인덱스를 반환
     });
   };
-
-  // 링크 주소 저장 기능
-  const handlerCopyClipBoard = async (text) => {
-    try {
-      console.log(text)
-      await navigator.clipboard.writeText(text);
-      alert("링크가 복사됐습니다!");
-      console.log(text)
-    } catch (err) {
-      console.log("error :", err);
-    }
-  };
-  const gotomyAlbum = () => {
-    
-    navigate('/myalbum')
-  }
-  // Setting page 로 이동하는 기능
-  const gotoSetting = () => {
-    navigate(`/albums/${params.PK}/setting`)  // 이러면 안되는데 수정 필요할 듯
-  }
-
-  const gotoAddMemory = () => {
-    console.log(isLogin)
-    if (!isLogin) {
-      console.log(isLoginAtom);
-      console.log(params.PK)
-      localStorage.setItem('lookingPk', params.PK)
-      navigate("/");
-      
-    } else {
-      navigate(`/albums/${params.PK}/edit`);
-    }
-  };
-
-  // 유저 이미지 아이콘 버튼
+  
   return (
     <div style={{ display: "flex", justifyContent: "center"}}>
       <StyledContainer>
@@ -220,12 +171,12 @@ const AlbumPage = () => {
             imageUrl={imageUrl}
             setImageUrl={setImageUrl}
             albumPk={params.PK}
-            isClickable={false}
+            isClickable={isauthorized}
           />
           <StyledTypography>{album.nickname} 의 {album.title}</StyledTypography>
           
           <div>
-            <MenuButton zin={true} />
+            <MenuButton />
           </div>
         </div>
         <div style={{ height : '15%'}} className='gridAlignCenter'>
@@ -254,12 +205,13 @@ const AlbumPage = () => {
         />
         </div>
         <div class="aligncenter">
-            <button class="button"
-                  onClick={() => gotoAddMemory()}
-                >
-              메모리 추가하기
+           <button class="button"
+              onClick={() =>
+                handlerCopyClipBoard(album.albumPk)
+              }
+            >
+              공유하러 가기
             </button>
-            <button onClick={() => gotomyAlbum()}> 내 앨범으로 가기</button>
           
         </div>
 
@@ -300,6 +252,7 @@ const AlbumPage = () => {
       </StyledContainer>
     </div>
   );
-};
+}
 
-export default AlbumPage;
+
+export default AlbumMypage
