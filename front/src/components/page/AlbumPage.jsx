@@ -47,13 +47,15 @@ const AlbumPage = () => {
   const [albumOpenAt, setalbumOpenAt] = useState(null);
 
   useEffect(() => {
+    
     setLookingPk(params.PK)
+    
     // 특정 앨범 조회
     axios
       .get(`https://congraduation.me/backapi/albums/${params.PK}`)
       .then(response => {
         console.log('Album Data:', response.data);
-
+        console.log(location.pathname)
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
@@ -163,8 +165,10 @@ const AlbumPage = () => {
   // 링크 주소 저장 기능
   const handlerCopyClipBoard = async (text) => {
     try {
+      console.log(text)
       await navigator.clipboard.writeText(text);
       alert("링크가 복사됐습니다!");
+      console.log(text)
     } catch (err) {
       console.log("error :", err);
     }
@@ -189,7 +193,7 @@ const AlbumPage = () => {
   return (
     <div style={{ display: "flex", justifyContent: "center"}}>
       <StyledContainer>
-        <div style={{marginLeft:"1rem"}}>
+        <div style={{marginLeft:"1rem" ,height: "20%"}}>
           <StyledTypography>
             {albumOpenAt === null ? (
               <div>졸업일자를 설정해주세요.</div>
@@ -215,13 +219,13 @@ const AlbumPage = () => {
             <MenuButton />
           </div>
         </div>
-        <div className='gridAlignCenter'>
+        <div style={{ height : '15%'}} className='gridAlignCenter'>
           <Grid container spacing={2}>
             {albumMemories.slice(startIndex, endIndex).map((val, index) => (
               <Grid item xs={4} key={index}>
                 {/* <StyledPaper> */}
                 <StyledImg
-                  style={{ backgroundColor: "white", padding: "1px" }}
+                  style={{ backgroundColor: "white", padding: "1px", }}
                   src={val.imageUrl}
                   alt={`Memory ${startIndex + index + 1}`}
                   onClick={() =>
@@ -244,7 +248,7 @@ const AlbumPage = () => {
           {isauthorized === true ? (
             <button class="button"
               onClick={() =>
-                handlerCopyClipBoard(`congraduation.me/${location.pathname}`)
+                handlerCopyClipBoard(window.location.href)
               }
             >
               공유하러 가기

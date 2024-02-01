@@ -19,7 +19,7 @@ function HomePage() {
   const navigate = useNavigate()
   const LoginHandler = () => {
     window.location.href = "https://congraduation.me/backapi/kakao/redirect";
-  };
+  };                                                                    
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   console.log(isLogin)
   const params = useParams()
