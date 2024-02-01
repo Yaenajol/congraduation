@@ -93,7 +93,7 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
           alt="User Alt Image"
           width={"130rem"}
           // height={"70rem"}
-          style={{borderRadius:"50%", marginTop:"30px"}}
+          style={{borderRadius:"50%", marginTop:"40%"}}
           onClick={() => {
             handelopenmodal()
             // onChange()

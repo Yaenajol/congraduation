@@ -12,20 +12,18 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { isLoginAtom } from "../store/atom";
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function MenuIntroduction() {
+export default function MenuIntroduction({zin}) {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   const navigate = useNavigate()
   const params = useParams()
-
+  console.log(zin)
   const createHandleMenuClick = (menuItem) => {
     return () => {
       if (menuItem === 'Log out') {
         localStorage.removeItem('accessToken')
-        localStorage.removeItem('albumPK')
         setIsLogin(false)
-        console.log(`Clicked on ${menuItem}`);
         navigate('/')
-      } else if (menuItem === 'Profile') {
+      } else if (menuItem === 'Profile' ) {
         navigate(`/albums/${params.PK}/setting`)
       } else if (menuItem === 'Inquiry') {
         console.log('아직 개발 안함')
@@ -40,11 +38,12 @@ export default function MenuIntroduction() {
       <DehazeRoundedIcon/>
       </MenuButton>
       <Menu slots={{ listbox: Listbox }}>
-        <MenuItem onClick={createHandleMenuClick('Profile')}>앨범 설정</MenuItem>
+        {!zin ? <MenuItem  onClick={createHandleMenuClick('Profile')}>앨범 설정</MenuItem>: null}
         <MenuItem onClick={createHandleMenuClick('Inquiry')}>
           1:1 문의
         </MenuItem>
-        <MenuItem onClick={createHandleMenuClick('Log out')}>로그 아웃</MenuItem>
+        {isLogin? <MenuItem onClick={createHandleMenuClick('Log out')}>로그 아웃</MenuItem> : null}
+        
       </Menu>
     </Dropdown>
   );
