@@ -196,7 +196,9 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   return (
     <div className="App">
       <div className="upload" >
-        <InputFileUpload  onChange={onSelectFile}/>
+        <InputFileUpload  onChange={onSelectFile} style={{ marginLeft: '5%'}}/>
+        
+        <MemoryAdd onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
         {/* <input type="file"  accept="image/*" onChange={onSelectFile} /> */}
         
         {/* 사진 스케일 */}
@@ -262,7 +264,8 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
       {!!completedCrop && (
         <>
           <div className="upload">
-            <canvas
+            {/* 미리 보기  */}
+            {/* <canvas
               ref={previewCanvasRef}
               style={{
                 border: '1px solid black',
@@ -270,14 +273,14 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
                 width: completedCrop.width,
                 height: completedCrop.height,
               }}
-            />
+            /> */}
           </div>
           <div className="upload">
             
-            <MemoryAdd onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
-            <div style={{ fontSize: 12, color: '#666' }}>
+            {/* <MemoryAdd onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd> */}
+            {/* <div style={{ fontSize: 12, color: '#666' }}>
               
-            </div>
+            </div> */}
             <a
               href="#hidden"
               ref={hiddenAnchorRef}
