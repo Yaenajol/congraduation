@@ -18,11 +18,11 @@ public class MattermostProperties {
 
   private String channel;
   private String pretext;
-  private String color = "#ff5d52";
+  private String color ;
   private String authorName;
   private String authorIcon;
   private String title;
   private String text = "";
-  private String footer = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+  private String footer ;
 
 }
