@@ -11,7 +11,8 @@ const StyledContainer = styled(Box)(({ theme }) => ({
     // alignItems: 'center',
     backgroundPosition: 'center top',
     backgroundRepeat: 'no-repeat',
-    width:'42rem',
+    maxWidth: '1080px',
+    // height:'100vh',
     backgroundImage: `url(${background2})`, // 배경 이미지 추가
     backgroundSize: 'cover', // 배경 이미지를 화면에 꽉 채우도록 설정
 }));

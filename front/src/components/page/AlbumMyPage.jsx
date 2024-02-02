@@ -20,6 +20,7 @@ import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAuto
 import '../page/AlbumPage.css'
 import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
 import AlbumProfileImage from "./AlbumProfileImage";
+import AlbumImage from '../album/AlbumImage';
 
 const AlbumMypage = () => {
 
@@ -46,8 +47,8 @@ const AlbumMypage = () => {
   const [specificMemory, setSpecificMemory] = useState("")
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(undefined);
-  
- 
+
+
   useEffect(() => {
 
     if (!isLogin) {
@@ -56,31 +57,30 @@ const AlbumMypage = () => {
     }
     axios
       .get(`https://congraduation.me/backapi/members/myAlbum`,
-      { headers: { accessToken: sessionStorage.accessToken }})
+        { headers: { accessToken: sessionStorage.accessToken } })
       .then(response => {
         console.log('Album Data:', response.data);
-        
+
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
-        if (response.data.openAt === null ) {
+        if (response.data.openAt === null) {
           console.log(response.data)
-          navigate('/myalbum/setting', { state : response.data})
+          navigate('/myalbum/setting', { state: response.data })
         }
         setAlbumPageMainImg(response.data.coverUrl)
         return response.data.albumPk
-      }).then((albumPk)=>{
+      }).then((albumPk) => {
         axios
-        .get(`https://congraduation.me/backapi/albums/${albumPk}/memories`)
-        .then(response => {
-          setAlbumMemories(response.data);
-          if (typeof (response.data) === typeof ([])) {
-            setMemoryarray(response.data)
-          }
-          console.log(response.data)
-        });
+          .get(`https://congraduation.me/backapi/albums/${albumPk}/memories`)
+          .then(response => {
+            setAlbumMemories(response.data);
+            if (typeof (response.data) === typeof ([])) {
+              setMemoryarray(response.data)
+            }
+            console.log(response.data)
+          });
       });
-    
   },[])
   
   console.log(album)
@@ -156,70 +156,74 @@ const AlbumMypage = () => {
       return prevIndex; // 이미지 인덱스가 0보다 작을 때는 현재 인덱스를 반환
     });
   };
-  
+
   return (
-    <div style={{ display: "flex", justifyContent: "center"}}>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <StyledContainer>
-        <div style={{marginLeft:"1rem" ,height: "20%"}}>
-          <StyledTypography>
-            {albumOpenAt === null ? (
-              <div>졸업일자를 설정해주세요.</div>
-            ) : (
-              <div style={{ color: "white", fontWeight: "bolder" }}>D - <span class="memorysize">{album.openAt}</span></div>
-            )}
-          </StyledTypography>
-          <StyledTypography style={{ color: "white" }}>
-            <span class="memorysize">{memoryarray.length}장</span>의 메모리가 도착했어요!
-          </StyledTypography>
-        </div>
-        
-        <div class="aligncenter">
-          <AlbumProfileImage
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
-            albumPk={album.albumPk}
-            isClickable={true}
-          />
-          <StyledTypography>{album.nickname} 의 {album.title}</StyledTypography>
-          
+        <div class="sortHeader">
           <div>
-            <MenuButton zin={false}/>
+            <StyledTypography>{album.nickname} 의 {album.title}</StyledTypography>
+            <StyledTypography>
+              {albumOpenAt === null ? (
+                <div>졸업일자를 설정해주세요.</div>
+              ) : (
+                <div style={{ color: "white", fontWeight: "bolder" }}>D - <span class="memorysize">{album.openAt}</span></div>
+              )}
+            </StyledTypography>
+            <StyledTypography style={{ color: "white" }}>
+              <span class="memorysize">{memoryarray.length}장</span>의 메모리가 도착했어요!
+            </StyledTypography>
+            <StyledTypography>{album.graduationPlace} 졸업</StyledTypography>
+          </div>
+          <div style={{ textAlign: "end", width: "30%" }}>
+            <AlbumProfileImage
+              imageUrl={imageUrl}
+              setImageUrl={setImageUrl}
+              albumPk={params.PK}
+              isClickable={isauthorized}
+            />
+            <MenuButton />
           </div>
         </div>
-        <div style={{ height : '15%'}} className='gridAlignCenter'>
-          <Grid container spacing={2}>
-            {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-              <Grid item xs={4} key={index}>
-                {/* <StyledPaper> */}
-                <StyledImg
-                  style={{ backgroundColor: "white", padding: "1px", }}
-                  src={val.imageUrl}
-                  alt={`Memory ${startIndex + index + 1}`}
-                  onClick={() =>
-                    handleImageClick(val.memoryPk, startIndex + index)
-                  }
-                />
-                {/* </StyledPaper> */}
-              </Grid>
-            ))}
-          </Grid>
+
+        <div style={{display:"flex"}}>
+          <AlbumImage class="album" />
+          <div class="memoryList">
+
+            <Grid container spacing={2}>
+              {albumMemories.slice(startIndex, endIndex).map((val, index) => (
+                <Grid item xs={5} key={index}>
+                  {/* <StyledPaper> */}
+                  <StyledImg
+                    src={val.imageUrl}
+                    alt={`Memory ${startIndex + index + 1}`}
+                    onClick={() =>
+                      handleImageClick(val.memoryPk, startIndex + index)
+                    }
+                  />
+                  {/* </StyledPaper> */}
+                </Grid>
+              ))}
+            </Grid>
+          </div>
         </div>
+
         <div class="aligncenter">
-        <Pagination
-          count={Math.ceil(memoryarray.length / itemsPerPage)}
-          page={currentPage}
-          onChange={handlePageChange}
-        />
+          <Pagination
+            count={Math.ceil(memoryarray.length / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+          />
         </div>
+
         <div class="aligncenter">
-           <button class="button"
-              onClick={() =>
-                handlerCopyClipBoard(album.albumPk)
-              }
-            >
-              공유하러 가기
-            </button>
-          
+          <button class="button"
+            onClick={() =>
+              handlerCopyClipBoard(album.albumPk)
+            }
+          >
+            공유하러 가기
+          </button>
         </div>
 
         <Dialog open={openModal} onClose={handleCloseModal}>
@@ -234,7 +238,6 @@ const AlbumMypage = () => {
 
             )}
             <p>{memoryarray[selectedImageIndex]?.nickname}</p>
-
           </DialogContent>
           <DialogActions>
             <Button
@@ -256,6 +259,7 @@ const AlbumMypage = () => {
             </Button>
           </DialogActions>
         </Dialog>
+
       </StyledContainer>
     </div>
   );

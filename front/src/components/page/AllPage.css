@@ -128,6 +128,10 @@ body {
   justify-content: center;
 }
 
+.textfield {
+  border-radius: 20px;
+}
+
 /* 미디어 쿼리 */
 @media all and (max-width: 769px) {
   .box{

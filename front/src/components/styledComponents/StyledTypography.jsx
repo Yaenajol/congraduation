@@ -5,6 +5,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     textAlign: 'left',
     fontSize: '20px',
     marginTop: theme.spacing(1),
+    color: 'white'
 }));
 
 export default StyledTypography;
