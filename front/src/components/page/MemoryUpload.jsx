@@ -8,6 +8,7 @@ import "/node_modules/react-resizable/css/styles.css";
 import { TextField, Button, Box, Typography, Container } from '@mui/material';
 import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import MemoryAdd from '../button/MemoryAdd'
+import MemoryAdd1 from '../button/MemoryAdd1'
 import backgroundImage from '../images/background.png'
 import {Dialog} from "@mui/material";
 import DragPage from "../page/DragPage";
@@ -253,20 +254,21 @@ const MemoryUpload = () => {
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
           // style= {{ flex : 1}}
-          
+          style={{ marginBottom: "5%"}}
           // 글자수 제한
           inputProps={{
             maxLength: 15
           }}
         />
 
-        <MemoryAdd
+        <MemoryAdd1
           className="submit-button"
           onClick={handleSubmit}
           disabled={!isReadyToSubmit}
           style= {{ flex: 0}}
+
         >
-        </MemoryAdd>
+        </MemoryAdd1>
       
       <Dialog
         // style={{ height: '0%'}}
