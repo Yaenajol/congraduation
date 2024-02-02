@@ -72,8 +72,8 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
     };
     
     const image = imgRef.current
-    
     const previewCanvas = previewCanvasRef.current
+
     if (!image || !previewCanvas || !completedCrop) {
       throw new Error('Crop canvas does not exist')
     }
@@ -122,6 +122,8 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
     // }
 
     if (page !== 'edit') {
+      console.log(page)
+      console.log(page !== 'edit')
       setAlbumPageMainImg(blobUrlRef.current)
       const formdata = new FormData()
       formdata.append('image', blob, 'image.png')
@@ -132,22 +134,19 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
           {
             headers : {
               accessToken : sessionStorage.getItem('accessToken')
-              // 'Content-Type': 'multipart/form-data',
             },
           }
         );
-        // 요청 성공시의 처리, 예를 들어 상태 업데이트 또는 사용자에게 알림
         console.log('Image updated successfully:', response.data);
         setImages(response.data)
       } catch (error) {
-        // 에러 처리, 예를 들어 에러 메시지 출력
         console.error('Failed to update image:', error);
       }
-     
     }
     setOpenModal(false)
   }
   
+
   useDebounceEffect(
     async () => {
       if (
@@ -169,13 +168,13 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
     100,
     [completedCrop, scale, rotate],
   )
+
   // 토글 버튼
   function handleToggleAspectClick() {
     if (aspect) {
       setAspect(undefined)
     } else {
       setAspect(1/1)
-
       if (imgRef.current) {
         const { width, height } = imgRef.current
         const newCrop = centerAspectCrop(width, height, 16 / 9)
@@ -189,9 +188,10 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   return (
     <div className="App">
       <div className="upload" >
-        <InputFileUpload  onChange={onSelectFile} style={{ marginLeft: '5%'}}/>
-        
-        <MemoryAdd onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
+        <InputFileUpload onChange={onSelectFile} />
+      
+        <MemoryAdd  onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
+      </div>
         
         
         {/* 사진 스케일 */}
@@ -228,10 +228,11 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
           </button>
         </div> */}
 
-      </div>
-      <div className='upload'>
+      
+      <div>
       {!!imgSrc && (
-        <ReactCrop
+        <div className='image-box'>
+          <ReactCrop
           
           crop={crop}
           onChange={(_, percentCrop) => setCrop(percentCrop)}
@@ -242,17 +243,26 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
           locked={false}
           // circularCrop
         >
+        
           <img
-          
             ref={imgRef}
             alt="Crop me"
             src={imgSrc}
-            style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+            style={{ transform: `scale(${scale}) rotsate(${rotate}deg)`   }}
+            
             onLoad={onImageLoad}
           />
+          
+          
         </ReactCrop>
+        </div>
+        
       )}
       </div>
+      
+      
+      
+
       
       {!!completedCrop && (
         <>
@@ -265,10 +275,13 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
                 objectFit: 'contain',
                 width: completedCrop.width,
                 height: completedCrop.height,
+                visibility: 'hidden'
               }}
             />
           </div>
-          <div className="upload">      
+          
+          {/* 히든버튼 */}
+          {/* <div className="upload">      
             <a
               href="#hidden"
               ref={hiddenAnchorRef}
@@ -281,7 +294,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
             >
               Hidden download
             </a>
-          </div>
+          </div> */}
         </>
       )}
     </div>
