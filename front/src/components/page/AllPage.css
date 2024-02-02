@@ -74,6 +74,7 @@ body {
   background-color: rgb(245, 225, 75);
   color: rgb(55, 31, 31);
   /* font-size: 1.5rem; */
+  margin-top: 15%;
 }
 
 .kakaoballoon {
@@ -126,6 +127,8 @@ body {
   width: 200px;
   height: 170px;
   justify-content: center;
+  margin-top: 10%;
+
 }
 
 .textfield {
