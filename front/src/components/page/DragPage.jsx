@@ -131,7 +131,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
           formdata,  
           {
             headers : {
-              accessToken : localStorage.getItem('accessToken')
+              accessToken : sessionStorage.getItem('accessToken')
               // 'Content-Type': 'multipart/form-data',
             },
           }

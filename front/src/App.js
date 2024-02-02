@@ -6,6 +6,7 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import LoginPage from "./components/page/LoginPage";
 import AlbumPage from "./components/page/AlbumPage"
 import MemoryUpload from "./components/page/MemoryUpload"
+import AlbumMyPage from "./components/page/AlbumMyPage";
 
 import RedirectPage from "./components/page/RedirectPage";
 import SettingsPage from "./components/page/SettingPage";
@@ -17,7 +18,7 @@ import { isLoginAtom } from "./components/store/atom";
 function App() {
   const setIsLogin = useSetRecoilState(isLoginAtom)
 
-  const accessToken = localStorage.getItem('accessToken')
+  const accessToken = sessionStorage.getItem('accessToken')
   if (typeof(accessToken) === typeof("")) {
     setIsLogin(true)
   }
@@ -27,11 +28,11 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path='/albums/:PK' element={<AlbumPage />} />
-        <Route path="/albums/:PK/setting" element={<SettingsPage />} />
+        <Route path="/myalbum/setting" element={<SettingsPage />} />
         <Route path="/albums/:PK/edit" element={<MemoryUpload />} />
         <Route path="/kakao/oauth" element={<RedirectPage />} />
         <Route path="/albums/drag" element={<DragPage/>} />
-
+        <Route path="/myalbum" element={<AlbumMyPage/>} />
 
 
         {/* 이부분은 NAVBAR가 보이는 곳 ( 추가하려면 Route안에 주소를 추가하면됨 ) */}
@@ -40,7 +41,7 @@ function App() {
           
         </Route> */}
         
-        
+        {/* 오류페이지 만들어야됨 */}
         <Route path="*" element={<Navigate replace to="/kakao/oauth" />} />
       </Routes>
     </BrowserRouter>

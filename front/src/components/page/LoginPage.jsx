@@ -20,7 +20,7 @@ function HomePage() {
   const navigate = useNavigate()
   const LoginHandler = () => {
     window.location.href = "https://congraduation.me/backapi/kakao/redirect";
-  };
+  };                                                                    
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   console.log(isLogin)
   const params = useParams()
@@ -31,7 +31,7 @@ function HomePage() {
   // }
   useEffect(() => {
     if (isLogin) {
-      navigate(`/albums/${localStorage.albumPK}`)
+      navigate(`/albums/${sessionStorage.albumPK}`)
     }
   },[])
   console.log(isLogin)

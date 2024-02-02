@@ -12,7 +12,6 @@ function RedirectPage() {
   const code = new URL(window.location.href);
   const kakaoCode = code.searchParams.get("code");
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
-  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom)
   
   useEffect(() => {
     setAuthCode(kakaoCode); // 인가 코드 상태 업데이트
@@ -37,19 +36,22 @@ function RedirectPage() {
       const result = await response.json(); // 백엔드에서 보낸 응답을 JSON 형태로 변환
       console.log(result);
       setData(result); // 응답 데이터를 상태에 저장
-      localStorage.setItem( 'albumPK' , result.albumPk)
-      localStorage.setItem( 'accessToken' , result.accessToken)
+      
+      sessionStorage.setItem( 'accessToken' , result.accessToken)
       setIsLogin(true)
     
       // axios.get(`https://congraduation.me/backapi/albums/${result.albumPk}`)
       //    .then(response => {
       //      console.log('Album Data:', response.data);    
       //    });
-      if (lookingPk) {
+      
+      const localpk = sessionStorage.getItem('lookingPk')
+      if (localpk) {
         console.log('초대받은 경우')
-        navigate(`/albums/${lookingPk}`)
+        navigate(`/albums/${localpk}`)
       } else {
-        navigate(`/albums/${result.albumPk}`);
+        
+        navigate(`/myalbum`);
         //아직 설정안했지만 setting 페이지로 가야함
       }
     } catch (error) {
@@ -59,9 +61,9 @@ function RedirectPage() {
 
   return (
     <div>
-      <h1>Auth Code: {authCode}</h1>
+      {/* <h1>Auth Code: {authCode}</h1>
 
-      <pre>{data ? JSON.stringify(data, null, 2) : "Loading..."}</pre>
+      <pre>{data ? JSON.stringify(data, null, 2) : "Loading..."}</pre> */}
     </div>
   );
 }

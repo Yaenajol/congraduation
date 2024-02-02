@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams,useLocation } from 'react-router-dom';
 import { TextField, Button, Box } from '@mui/material';
 import axios from 'axios';
 // import StyledContainer from '../styledComponents/StyledContainer';
@@ -14,39 +14,35 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import "./AllPage.css";
 
+
 const SettingsPage = () => {
 
 
 
-  const RoundedRectangle = () => {
 
-    const [nickname, setNickname] = useState('');
-    const [graduationPlace, setGraduationPlace] = useState('');
-    const [title, setTitle] = useState('');
+
+  const location = useLocation()
+  const albumdata = location.state
+  console.log(location)
+  console.log(albumdata)
+  console.log("세팅페이지" + albumdata)
+  const RoundedRectangle = () => {
+    
+    const [nickname, setNickname] = useState(albumdata.nickname !== null ?  albumdata.nickname: "");
+    const [graduationPlace, setGraduationPlace] = useState(albumdata.graduationPlace !== null ?  albumdata.graduationPlace: "");
+    const [title, setTitle] = useState(albumdata.title !== null ?  albumdata.title: "");
     // const [albumCover, setAlbumCover] = useState(null);
     // const [albumCoverPreview, setAlbumCoverPreview] = useState(null);
     // const [graduationDate, setGraduationDate] = useState(null);
-    const [album, setAlbum] = useState({}); // 객체 형태로 변경
+    // const [album, setAlbum] = useState({}); // 객체 형태로 변경
     const params = useParams();
     const navigate = useNavigate();
     const [graduationDate, setGraduationDate] = useState(dayjs(new Date()));
-
-    useEffect(() => {
-      axios.get(`https://congraduation.me/backapi/albums/${params.PK}`)
-        .then(response => {
-          console.log('Album Data:', response.data);
-          setAlbum(response.data);
-          setNickname(response.data.nickname);
-          setGraduationPlace(response.data.graduationPlace);
-          setTitle(response.data.title);
-        })
-        .catch(error => {
-          console.error('Error fetching album data:', error);
-        });
-    }, [params.PK]); // params.PK 값이 변경될 때마다 useEffect 호출
+    
+    
   
     const gotoAlbumPage = () => {
-      navigate(`/albums/${params.PK}`);
+      navigate(`/myalbum`);
     }
 
     const handleSaveAlbumSettings = async () => {
@@ -57,9 +53,9 @@ const SettingsPage = () => {
           title: title
         };
   
-        const accessToken = localStorage.getItem('accessToken');
+        const accessToken = sessionStorage.getItem('accessToken');
 
-        axios.put(`https://congraduation.me/backapi/albums/${params.PK}`, userInfo, {
+        axios.put(`https://congraduation.me/backapi/albums/${albumdata.albumPk}`, userInfo, {
           headers: {
             'accessToken': accessToken,
           },
@@ -82,16 +78,15 @@ const SettingsPage = () => {
            return;
         }
   
-        const accessToken = localStorage.getItem('accessToken');
+        const accessToken = sessionStorage.getItem('accessToken');
         const dateFormat = dayjs(graduationDate).format("YYYYMMDD");
         console.log("데이트포맷 : " + dateFormat)
           const payload = {
               graduationDate: dateFormat
           }
-          console.log(payload)
-          axios.put(`https://congraduation.me/backapi/albums/${params.PK}/graduationDate`, payload, {
+          axios.put(`https://congraduation.me/backapi/albums/${albumdata.albumPk}/graduationDate`, payload, {
             headers : {
-              'accessToken' : localStorage.getItem('accessToken'),
+              'accessToken' : sessionStorage.getItem('accessToken'),
               'Content-Type': 'application/json',
             },
         }).then(response => {
@@ -111,7 +106,7 @@ const SettingsPage = () => {
     
     // console.log("현재 날짜는 " + dateFormat);
 
-    console.log(album)
+    
 
     return (
       <div
@@ -121,7 +116,7 @@ const SettingsPage = () => {
           marginLeft: '20px',
           marginRight: '20px',
           width: '300px', // 너비
-          height: '600px', // 높이
+          height: 'auto', // 높이
           borderRadius: '10px', // 모서리 반경
           backgroundColor: 'rgba(255, 255, 255, 0.7)', // 희미한 흰색 배경
           boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', // 그림자
@@ -135,7 +130,7 @@ const SettingsPage = () => {
         </div>
         <div >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 15px' }}>
-            <StyledTypography variant="h6" gutterBottom>{album.nickname}님</StyledTypography>
+            <StyledTypography variant="h6" gutterBottom>{nickname}님</StyledTypography>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'center', padding: '0 15px', marginTop: '10px'}}>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start' }}>
@@ -194,7 +189,7 @@ const SettingsPage = () => {
                 Save
               </Button>
             </Box>
-            {album.openAt === null ? <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'center', marginTop: '30px' }}>
+            {albumdata.openAt === null ? <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'center', marginTop: '30px' }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Graduation Date"

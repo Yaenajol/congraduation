@@ -39,7 +39,7 @@ const MemoryUpload = () => {
       if (params.PK) {
         axios.get(
           `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
-          { headers: { accessToken: localStorage.accessToken } }
+          { headers: { accessToken: sessionStorage.accessToken } }
         )
         .then((response) => {
           if (response.data === true) {
@@ -177,7 +177,7 @@ const MemoryUpload = () => {
           axios.post('https://congraduation.me/backapi/memories', formdata, 
           {
             headers : {
-              'accessToken' : localStorage.getItem('accessToken')
+              'accessToken' : sessionStorage.getItem('accessToken')
               // 'Content-Type': 'multipart/form-data',
             },
           }).then (response => {
