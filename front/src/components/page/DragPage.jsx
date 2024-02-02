@@ -78,9 +78,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
       throw new Error('Crop canvas does not exist')
     }
 
-    // This will size relative to the uploaded image
-    // size. If you want to size according to what they
-    // are looking at on screen, remove scaleX + scaleY
+   
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
 
@@ -117,10 +115,12 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
     
     updateImage(blobUrlRef.current)
     console.log(blobUrlRef.current)
+
     // if (hiddenAnchorRef.current) {
     //   hiddenAnchorRef.current.href = blobUrlRef.current
     //   hiddenAnchorRef.current.click()
     // }
+
     if (page !== 'edit') {
       setAlbumPageMainImg(blobUrlRef.current)
       const formdata = new FormData()
@@ -143,14 +143,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
         // 에러 처리, 예를 들어 에러 메시지 출력
         console.error('Failed to update image:', error);
       }
-      // axios.put(
-      //   `https://congraduation.me/backapi/albums/${params.PK}/coverIamge`, 
-      //   formdata,  
-      //   {
-      //     headers : {
-      //       accessToken : localStorage.getItem('accessToken')
-      //     }
-      // })
+     
     }
     setOpenModal(false)
   }
@@ -176,7 +169,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
     100,
     [completedCrop, scale, rotate],
   )
-
+  // 토글 버튼
   function handleToggleAspectClick() {
     if (aspect) {
       setAspect(undefined)
@@ -199,7 +192,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
         <InputFileUpload  onChange={onSelectFile} style={{ marginLeft: '5%'}}/>
         
         <MemoryAdd onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
-        {/* <input type="file"  accept="image/*" onChange={onSelectFile} /> */}
+        
         
         {/* 사진 스케일 */}
         {/* <div>
@@ -265,7 +258,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
         <>
           <div className="upload">
             {/* 미리 보기  */}
-            {/* <canvas
+            <canvas
               ref={previewCanvasRef}
               style={{
                 border: '1px solid black',
@@ -273,14 +266,9 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
                 width: completedCrop.width,
                 height: completedCrop.height,
               }}
-            /> */}
+            />
           </div>
-          <div className="upload">
-            
-            {/* <MemoryAdd onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd> */}
-            {/* <div style={{ fontSize: 12, color: '#666' }}>
-              
-            </div> */}
+          <div className="upload">      
             <a
               href="#hidden"
               ref={hiddenAnchorRef}

@@ -36,18 +36,13 @@ function RedirectPage() {
       const result = await response.json(); // 백엔드에서 보낸 응답을 JSON 형태로 변환
       console.log(result);
       setData(result); // 응답 데이터를 상태에 저장
-      
       sessionStorage.setItem( 'accessToken' , result.accessToken)
       setIsLogin(true)
     
-      // axios.get(`https://congraduation.me/backapi/albums/${result.albumPk}`)
-      //    .then(response => {
-      //      console.log('Album Data:', response.data);    
-      //    });
+      
       
       const localpk = sessionStorage.getItem('lookingPk')
       if (localpk) {
-        console.log('초대받은 경우')
         navigate(`/albums/${localpk}`)
       } else {
         

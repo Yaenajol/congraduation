@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
-import StyledButton from '../styledComponents/StyledButton';
+
 import StyledContainer from '../styledComponents/StyledContainer';
 import StyledImg from '../styledComponents/StyledImg';
-import StyledPaper from '../styledComponents/StyledPaper';
+
 import StyledTypography from '../styledComponents/StyledTypography';
-import UserImgButton from '../button/UserImgButton';
+
 import userAltImage from '../images/userAltImage.png'; // 이미지 파일의 경로를 import 합니다.
 import moment from 'moment'
 import MenuButton from "../../components/button/MenuButton";
@@ -16,9 +15,9 @@ import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import { albumPageMainImgAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
+
 import '../page/AlbumPage.css'
-import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
+
 import AlbumProfileImage from "./AlbumProfileImage";
 import AlbumImage from '../album/AlbumImage';
 
@@ -179,8 +178,8 @@ const AlbumMypage = () => {
             <AlbumProfileImage
               imageUrl={imageUrl}
               setImageUrl={setImageUrl}
-              albumPk={params.PK}
-              isClickable={isauthorized}
+              albumPk={album.albumPk}
+              isClickable={true}
             />
             <MenuButton />
           </div>
@@ -227,7 +226,6 @@ const AlbumMypage = () => {
         </div>
 
         <Dialog open={openModal} onClose={handleCloseModal}>
-          {/* <DialogTitle>이미지 상세보기</DialogTitle> */}
           <DialogContent>
             {selectedImageIndex !== null && (
               <StyledImg

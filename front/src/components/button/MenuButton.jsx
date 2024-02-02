@@ -19,8 +19,6 @@ export default function MenuIntroduction({zin}) {
   const navigate = useNavigate()
   const params = useParams()
   const [settingdata, setSettingdata] = useState("")
-  console.log(zin)
-
   
   useEffect(() => {
     if(!zin){
@@ -29,7 +27,6 @@ export default function MenuIntroduction({zin}) {
       { headers: { accessToken: sessionStorage.accessToken }})
       .then(response => {
         console.log('Album Data:', response.data);
-        
         setSettingdata(response.data)
       })
     }
@@ -37,9 +34,7 @@ export default function MenuIntroduction({zin}) {
 
   const createHandleMenuClick = (menuItem) => {
 
-    
     return () => {
-
       if (menuItem === 'Log out') {
         sessionStorage.removeItem('accessToken')
         setIsLogin(false)
@@ -49,7 +44,6 @@ export default function MenuIntroduction({zin}) {
       } else if (menuItem === 'Inquiry') {
         console.log('아직 개발 안함')
       }
-      
     };
   };
 

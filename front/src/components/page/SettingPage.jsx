@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams,useLocation } from 'react-router-dom';
 import { TextField, Button, Box } from '@mui/material';
 import axios from 'axios';
-// import StyledContainer from '../styledComponents/StyledContainer';
+
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import HomeIcon from '@mui/icons-material/Home';
-import StyledImg from '../styledComponents/StyledImg';
+
 import StyledTypography from '../styledComponents/StyledTypography';
 import userAltImage from '../images/userAltImage.png'; // 이미지 파일의 경로를 import 합니다.
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -16,11 +16,6 @@ import "./AllPage.css";
 
 
 const SettingsPage = () => {
-
-
-
-
-
   const location = useLocation()
   const albumdata = location.state
   console.log(location)
@@ -31,11 +26,6 @@ const SettingsPage = () => {
     const [nickname, setNickname] = useState(albumdata.nickname !== null ?  albumdata.nickname: "");
     const [graduationPlace, setGraduationPlace] = useState(albumdata.graduationPlace !== null ?  albumdata.graduationPlace: "");
     const [title, setTitle] = useState(albumdata.title !== null ?  albumdata.title: "");
-    // const [albumCover, setAlbumCover] = useState(null);
-    // const [albumCoverPreview, setAlbumCoverPreview] = useState(null);
-    // const [graduationDate, setGraduationDate] = useState(null);
-    // const [album, setAlbum] = useState({}); // 객체 형태로 변경
-    const params = useParams();
     const navigate = useNavigate();
     const [graduationDate, setGraduationDate] = useState(dayjs(new Date()));
     
@@ -103,11 +93,6 @@ const SettingsPage = () => {
     };
 
     
-    
-    // console.log("현재 날짜는 " + dateFormat);
-
-    
-
     return (
       <div
         style={{

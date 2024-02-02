@@ -4,17 +4,14 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { useNavigate, useParams } from 'react-router-dom'
 import { isLoginAtom } from "../store/atom";
 import "./AllPage.css";
-// import StyledContainer from "../styledComponents/StyledContainer";
+
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
-import loginimage1 from "../images/loginimage1.jpg"
-import loginimage2 from "../images/loginimage2.jpg"
 import logo from "../images/logo.png"
 
 
 // 내부 경로
 import Main from "../images/Main.jpg";
-// import KakaoLoginButton from "../button/KakaoLoginButton";
-// import Title from "../text/Title";
+
 
 function HomePage() {
   const navigate = useNavigate()
@@ -26,9 +23,7 @@ function HomePage() {
   const params = useParams()
   console.log(params)
   
-  // if (isLogin) {
-  //   navigate(`/albums/${localStorage.albumPK}`)
-  // }
+  
   useEffect(() => {
     if (isLogin) {
       navigate(`/myalbum`)
@@ -55,16 +50,6 @@ function HomePage() {
 
         <img src={logo} className="logo" alt="logo" />
 
-
-        {/* 이미지 2개 겹쳐서 각도 바뀐거 */}
-        {/* <div style={{ position: "relative", left:"45px" }}>
-          <div style={{ position: "absolute", right:"80px" }}>
-            <img src={loginimage1} className="loginimage1" alt="loginimage1"></img>
-
-          </div>
-          <img src={loginimage2} className="loginimage2" alt="loginimage2"></img>
-
-        </div> */}
 
         <br></br>
         <br></br>
