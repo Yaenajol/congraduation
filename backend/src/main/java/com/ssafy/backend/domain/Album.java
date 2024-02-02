@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderBy;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -64,5 +65,6 @@ public class Album {
   private Member member;
 
   @OneToMany(mappedBy = "album")
+  @OrderBy("created_at desc")
   private List<Memory> MemoryList = new ArrayList<>();
 }
