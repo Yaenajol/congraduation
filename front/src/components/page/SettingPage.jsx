@@ -12,9 +12,15 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
+import "./AllPage.css";
 
 
 const SettingsPage = () => {
+
+
+
+
+
   const location = useLocation()
   const albumdata = location.state
   console.log(location)
@@ -112,13 +118,13 @@ const SettingsPage = () => {
           width: '300px', // 너비
           height: 'auto', // 높이
           borderRadius: '10px', // 모서리 반경
-          backgroundColor: 'rgba(255, 255, 255, 1)', // 희미한 흰색 배경
+          backgroundColor: 'rgba(255, 255, 255, 0.7)', // 희미한 흰색 배경
           boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', // 그림자
           display: 'flex',
           flexDirection: 'column', // 세로 방향으로 배치
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 15px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 15px', marginTop:"20px" }}>
           <div>계정 설정</div>
           <HomeIcon fontSize='large' onClick={gotoAlbumPage} />
         </div>
@@ -136,9 +142,17 @@ const SettingsPage = () => {
                 width="100%S"
                 onChange={(e) => setNickname(e.target.value)}
                 margin="dense"
+                sx={{input: {textAlign: "center",}}}
+                // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
+                InputProps={{
+                  style: {
+                    borderRadius: "20px",
+                    backgroundColor:"#ffffff"
+                  }
+                }}
               />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start', marginTop:'15px' }}>
               <div>Graduation Place</div>
               <TextField
                 id="outlined-size-small"
@@ -146,9 +160,15 @@ const SettingsPage = () => {
                 size="normal"
                 onChange={(e) => setGraduationPlace(e.target.value)}
                 margin="dense"
+                // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
+                InputProps={{
+                  style: {
+                    borderRadius: "20px",
+                  }
+                }}              
               />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start', marginTop:'15px' }}>
               <div>Title</div>  
               <TextField
                 id="outlined-size-small"
@@ -156,9 +176,15 @@ const SettingsPage = () => {
                 size="normal"
                 onChange={(e) => setTitle(e.target.value)}
                 margin="dense"
+                // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
+                InputProps={{
+                  style: {
+                    borderRadius: "20px",
+                  }
+                }}            
               />
             </div>
-            <Box textAlign="center" marginTop={2}>
+            <Box textAlign="center" marginTop={15}>
               <Button variant="contained" color="primary" onClick={handleSaveAlbumSettings}>
                 Save
               </Button>
@@ -179,6 +205,8 @@ const SettingsPage = () => {
                 Save
               </Button>
             </Box>
+
+
             </div> : <div/>} 
           </div>
         </div>
