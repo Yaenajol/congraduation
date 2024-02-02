@@ -59,9 +59,8 @@
 
 /* 강조 */
 .memorysize {
-  color: #00cbff;
+  color: white;
   font-weight: bolder;
-  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff
 }
 
 /* 헤더 정렬 */
@@ -89,37 +88,37 @@
   /* margin: 5vh; */
 }
 
-.eachMemmory {
-  /* margin: 5rem; */
-  border: 3px solid aqua;
+/* 메모리 두개씩 정렬 */
+
+
+/* 0번 메모리 */
+.zeroMemory {
+  transform: rotate(10deg);
 }
 
-.eachMemory:hover {
-  animation-name: 움찔움찔;
-  animation-duration: 2s;
-  animation-iteration-count: 3;
+/* 1번 메모리 */
+.firstMemory {
+  transform: rotate(4deg);
 }
 
-@keyframes 움찔움찔 {
-  0% {
-    transform: skewY(10deg);
-  }
+/* 2번 메모리 */
+.secondMemory {
+  transform: rotate(-5deg);
+}
 
-  25% {
-    transform: skewY(-10deg);
-  }
+/* 3번 메모리 */
+.thirdMemory {
+  transform: rotate(1deg);
+}
 
-  50% {
-    transform: skewY(10deg);
-  }
+/* 4번 메모리 */
+.fourthMemory {
+  transform: rotate(-2deg);
+}
 
-  75% {
-    transform: skewY(-10deg);
-  }
-
-  100% {
-    transform: skewY(0deg);
-  }
+/* 5번 메모리 */
+.fifthMemory {
+  transform: rotate(deg);
 }
 
 /*  */

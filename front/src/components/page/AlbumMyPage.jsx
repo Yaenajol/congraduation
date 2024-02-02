@@ -194,7 +194,7 @@ const AlbumMypage = () => {
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
                 <Grid item xs={5} key={index}>
                   {/* <StyledPaper> */}
-                  <StyledImg class="eachMemory"
+                  <StyledImg
                     src={val.imageUrl}
                     alt={`Memory ${startIndex + index + 1}`}
                     onClick={() =>
