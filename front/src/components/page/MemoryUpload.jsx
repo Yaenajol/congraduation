@@ -14,7 +14,6 @@ import DragPage from "../page/DragPage";
 import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
-import StyledContainer from "../styledComponents/StyledContainer";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 
 const MemoryUpload = () => {
@@ -63,7 +62,7 @@ const MemoryUpload = () => {
     // fileInputRef.current.click();
     setSelectedImage(null)
     setOpenModal(true)
-    // navigate('/albums/drag')
+    
 
   };
   const updateImage = (imageData) => {
@@ -157,7 +156,7 @@ const MemoryUpload = () => {
     for (let i = 0; i < blobBin.length; i++) {
       array.push(blobBin.charCodeAt(i))
     }
-    // const file = new File([new Uint8Array(array)], 'sample.png' ,{type: 'image/png'})
+    
     const file = dataURLtoFile(mergedImageDataURL, 'sample.png')
     setMergedImage(mergedImageDataURL);
     console.log(mergedImageDataURL)
@@ -178,7 +177,6 @@ const MemoryUpload = () => {
           {
             headers : {
               'accessToken' : sessionStorage.getItem('accessToken')
-              // 'Content-Type': 'multipart/form-data',
             },
           }).then (response => {
             console.log(response.data)
@@ -271,6 +269,7 @@ const MemoryUpload = () => {
         </MemoryAdd>
       
       <Dialog
+        // style={{ height: '0%'}}
         open={openModal}
         onClose={handleCloseModal}
         fullWidth={true}

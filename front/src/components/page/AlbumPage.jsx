@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
-import StyledButton from '../styledComponents/StyledButton';
+
 import StyledContainer from '../styledComponents/StyledContainer';
 import StyledImg from '../styledComponents/StyledImg';
-import StyledPaper from '../styledComponents/StyledPaper';
+
 import StyledTypography from '../styledComponents/StyledTypography';
-import UserImgButton from '../button/UserImgButton';
+
 import userAltImage from '../images/userAltImage.png'; // 이미지 파일의 경로를 import 합니다.
 import moment from 'moment'
 import MenuButton from "../../components/button/MenuButton";
@@ -16,9 +15,8 @@ import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import { albumPageMainImgAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
+
 import '../page/AlbumPage.css'
-import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
 import AlbumProfileImage from "./AlbumProfileImage";
 import Dday from './Dday';
 
@@ -133,10 +131,7 @@ const AlbumPage = () => {
     } else {
       alert('공개일 아님')
     }
-    console.log(imageUrl)
-    console.log(index)
-    // setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
-    // setOpenModal(true); // 모달 opne 상태 true로
+   
   }
 
   // 다이어리(모달)을 끄는 기능
@@ -179,7 +174,9 @@ const AlbumPage = () => {
   };
   const gotomyAlbum = () => {
     
-    navigate('/myalbum')
+    sessionStorage.removeItem('lookingPk', params.PK)
+
+    navigate('/')
   }
   // Setting page 로 이동하는 기능
   const gotoSetting = () => {
@@ -265,7 +262,6 @@ const AlbumPage = () => {
         </div>
 
         <Dialog open={openModal} onClose={handleCloseModal}>
-          {/* <DialogTitle>이미지 상세보기</DialogTitle> */}
           <DialogContent>
             {selectedImageIndex !== null && (
               <StyledImg

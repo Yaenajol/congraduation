@@ -11,24 +11,39 @@ import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
 import { isLoginAtom } from "../store/atom";
 import { useNavigate, useParams } from 'react-router-dom';
+import { useState,useEffect } from 'react';
+import axios from 'axios';
 
 export default function MenuIntroduction({zin}) {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   const navigate = useNavigate()
   const params = useParams()
-  console.log(zin)
+  const [settingdata, setSettingdata] = useState("")
+  
+  useEffect(() => {
+    if(!zin){
+      axios
+      .get(`https://congraduation.me/backapi/members/myAlbum`,
+      { headers: { accessToken: sessionStorage.accessToken }})
+      .then(response => {
+        console.log('Album Data:', response.data);
+        setSettingdata(response.data)
+      })
+    }
+  },[])
+
   const createHandleMenuClick = (menuItem) => {
+
     return () => {
       if (menuItem === 'Log out') {
         sessionStorage.removeItem('accessToken')
         setIsLogin(false)
         navigate('/')
       } else if (menuItem === 'Profile' ) {
-        navigate(`/albums/${params.PK}/setting`)
+        navigate(`/myalbum/setting` , { state : settingdata})
       } else if (menuItem === 'Inquiry') {
         console.log('아직 개발 안함')
       }
-      
     };
   };
 

@@ -1,9 +1,3 @@
-.aligncenter {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .test {
   border: black 1px solid;
 }
@@ -13,8 +7,8 @@
 }
 
 .size {
-  width : 100%
-  /* height : 100% */
+  width: 100%
+    /* height : 100% */
 }
 
 .nickname {
@@ -26,8 +20,9 @@
 .dialogContentContainer {
   display: flex;
   flex-direction: column;
-  align-items:  center;
-  max-height: 80vh;     /* 뷰포트 높이의 80%를 최대 높이로 설정 /
+  align-items: center;
+  max-height: 80vh;
+  /* 뷰포트 높이의 80%를 최대 높이로 설정 /
   overflow: auto;       / 내용이 넘칠 경우 스크롤바 표시 */
 }
 
@@ -39,21 +34,24 @@
   margin-bottom: 20px;
 
 }
+
 .dialogImage {
-  max-width: 100%; /* 컨테이너 너비에 맞춤 /
+  max-width: 100%;
+  /* 컨테이너 너비에 맞춤 /
   max-height: 100%; / 뷰포트 높이의 50%를 최대 높이로 설정 /
   object-fit: contain; / 비율 유지하며 컨테이너 안에 맞춤 */
 }
 
 .dialogTextContainer {
-  width: 100%; /* 텍스트 상단 여백 */
+  width: 100%;
+  /* 텍스트 상단 여백 */
 }
 
 /* 앨범 편집 */
 .editAlbum {
   position: absolute;
   right: 2vh;
-  top:2vh;
+  top: 2vh;
   /* right: 25vh; */
   /* left: 20vh; */
   /* top: */
@@ -61,10 +59,69 @@
 
 /* 강조 */
 .memorysize {
-  color: #00cbff;
+  color: white;
   font-weight: bolder;
-  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff
 }
+
+/* 헤더 정렬 */
+.sortHeader {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+}
+
+/* 앨범 레이어 설정 */
+.album {
+  position: relative;
+  z-index: 1;
+}
+
+/* 메모리 리스트 */
+.memoryList {
+  position: absolute;
+  z-index: 2;
+  width: 60%;
+  transform: rotate(13deg);
+  top: 34%;
+  left: 20%;
+  /* border: 10px solid pink; */
+  /* margin: 5vh; */
+}
+
+/* 메모리 두개씩 정렬 */
+
+
+/* 0번 메모리 */
+.zeroMemory {
+  transform: rotate(10deg);
+}
+
+/* 1번 메모리 */
+.firstMemory {
+  transform: rotate(4deg);
+}
+
+/* 2번 메모리 */
+.secondMemory {
+  transform: rotate(-5deg);
+}
+
+/* 3번 메모리 */
+.thirdMemory {
+  transform: rotate(1deg);
+}
+
+/* 4번 메모리 */
+.fourthMemory {
+  transform: rotate(-2deg);
+}
+
+/* 5번 메모리 */
+.fifthMemory {
+  transform: rotate(deg);
+}
+
+/*  */
 
 /* 버튼 관련*/
 .button {
@@ -75,10 +132,10 @@
   color: gray;
   cursor: pointer;
   margin: 20px;
-  text-align:center;
+  text-align: center;
   border: 1px solid white;
   background-size: 300% 100%;
-  
+
   border-radius: 50px;
   background-color: rgb(255, 253, 211);
   /* moz-transition: all .4s ease-in-out;
@@ -87,7 +144,7 @@
   transition: all .4s ease-in-out;
   background-image: linear-gradient(to right, #fffdc4, #baffe7, #baffe7, #fffdc4);
   box-shadow: 0 4px 0 rgba(115, 115, 115, 0.75); */
- }
+}
 
 /* .button:hover {
   background-position: 100% 0;
@@ -112,13 +169,3 @@
   margin: 2vh 0vh 3vh;
   box-shadow: 0 5px 5px -5px;
 } */
-
-/* 메모리 리스트 */
-.memoryList {
-  margin: 5vh;
-}
-
-/* grid 가운데정렬 */
-.gridAlignCenter {
-  text-align: center;
-}

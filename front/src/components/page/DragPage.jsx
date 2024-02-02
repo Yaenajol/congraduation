@@ -28,7 +28,7 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   );
 }
 
-export default function App({selectedGridItem, setImages, setOpenModal}) {
+export default function App({selectedGridItem, setImages, setOpenModal, albumPk}) {
   const [imgSrc, setImgSrc] = useState('');
   const previewCanvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -78,9 +78,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
       throw new Error('Crop canvas does not exist')
     }
 
-    // This will size relative to the uploaded image
-    // size. If you want to size according to what they
-    // are looking at on screen, remove scaleX + scaleY
+   
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
 
@@ -117,17 +115,19 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
     
     updateImage(blobUrlRef.current)
     console.log(blobUrlRef.current)
+
     // if (hiddenAnchorRef.current) {
     //   hiddenAnchorRef.current.href = blobUrlRef.current
     //   hiddenAnchorRef.current.click()
     // }
+
     if (page !== 'edit') {
       setAlbumPageMainImg(blobUrlRef.current)
       const formdata = new FormData()
       formdata.append('image', blob, 'image.png')
       try {
         const response = await axios.put(
-          `https://congraduation.me/backapi/albums/${params.PK}/coverImage`, 
+          `https://congraduation.me/backapi/albums/${albumPk}/coverImage`, 
           formdata,  
           {
             headers : {
@@ -138,18 +138,12 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
         );
         // 요청 성공시의 처리, 예를 들어 상태 업데이트 또는 사용자에게 알림
         console.log('Image updated successfully:', response.data);
+        setImages(response.data)
       } catch (error) {
         // 에러 처리, 예를 들어 에러 메시지 출력
         console.error('Failed to update image:', error);
       }
-      // axios.put(
-      //   `https://congraduation.me/backapi/albums/${params.PK}/coverIamge`, 
-      //   formdata,  
-      //   {
-      //     headers : {
-      //       accessToken : localStorage.getItem('accessToken')
-      //     }
-      // })
+     
     }
     setOpenModal(false)
   }
@@ -175,7 +169,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
     100,
     [completedCrop, scale, rotate],
   )
-
+  // 토글 버튼
   function handleToggleAspectClick() {
     if (aspect) {
       setAspect(undefined)
@@ -194,9 +188,11 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
 
   return (
     <div className="App">
-      <div className="upload">
-        <InputFileUpload  onChange={onSelectFile}/>
-        {/* <input type="file"  accept="image/*" onChange={onSelectFile} /> */}
+      <div className="upload" >
+        <InputFileUpload  onChange={onSelectFile} style={{ marginLeft: '5%'}}/>
+        
+        <MemoryAdd onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
+        
         
         {/* 사진 스케일 */}
         {/* <div>
@@ -261,6 +257,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
       {!!completedCrop && (
         <>
           <div className="upload">
+            {/* 미리 보기  */}
             <canvas
               ref={previewCanvasRef}
               style={{
@@ -271,12 +268,7 @@ export default function App({selectedGridItem, setImages, setOpenModal}) {
               }}
             />
           </div>
-          <div className="upload">
-            
-            <MemoryAdd onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
-            <div style={{ fontSize: 12, color: '#666' }}>
-              
-            </div>
+          <div className="upload">      
             <a
               href="#hidden"
               ref={hiddenAnchorRef}

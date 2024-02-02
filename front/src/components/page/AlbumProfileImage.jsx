@@ -12,35 +12,19 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
   const fileInput = useRef(null);
   const [openModal, setOpenModal] = useState(false);
   const [imgSrc, setImgSrc] = useState('');
-  // const [customcallback, setCustomcallback] = useState()
 
-  
 
   const handleCloseModal = async () => {
     setImgSrc()
     setOpenModal(false);
-    // await axios
-    //     .put(
-    //       `https://congraduation.me/backapi/albums/${albumPk}/coverImage`,
-    //       formdata,
-    //       {
-    //         headers: {
-    //           accessToken: localStorage.getItem("accessToken"),
-    //         },
-    //       }
-    //     )
-    //     .then((response) => {
-    //       setImageUrl(response.data);
-    //       setLoading(false);
-    //     });
-    
   };
+
   const handelopenmodal = () => {
     if (isClickable) {
       setOpenModal(true)
     }
-
   }
+  
   const onChange = async (e) => {
     if (e.target.files[0]) {
       let formdata = new FormData();
@@ -50,38 +34,10 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
         setImgSrc(reader.result?.toString() || ''),
       )
       reader.readAsDataURL(e.target.files[0])
-      // setLoading(true);
-      // setOpenModal(true)
     }
   }
   
-  // function onSelectFile(e) {
-  //   if (e.target.files && e.target.files.length > 0) {
-      
-  //     const reader = new FileReader()
-  //     reader.addEventListener('load', () =>
-  //       setImgSrc(reader.result?.toString() || ''),
-  //     )
-  //     reader.readAsDataURL(e.target.files[0])
-  //   }
-  // }
-
-    //   await axios
-    //     .put(
-    //       `https://congraduation.me/backapi/albums/${albumPk}/coverImage`,
-    //       formdata,
-    //       {
-    //         headers: {
-    //           accessToken: localStorage.getItem("accessToken"),
-    //         },
-    //       }
-    //     )
-    //     .then((response) => {
-    //       setImageUrl(response.data);
-    //       setLoading(false);
-    //     });
-    // }
-    
+  
   
   return (
     <div>
@@ -91,33 +47,21 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
         <StyledImg
           src={imageUrl}
           alt="User Alt Image"
-          width={"130rem"}
+          width={"100%"}
           // height={"70rem"}
-          style={{borderRadius:"50%", marginTop:"40%"}}
+          style={{borderRadius:"50%"}}
           onClick={() => {
             handelopenmodal()
-            // onChange()
-            // fileInput.current.click();
           }}
         />
       )}
-      {/* <input
-        type="file"
-        style={{ display: "none" }}
-        accept="image/jpg,image/png,image/jpeg"
-        name="profile_img"
-        onChange={onChange}
-        ref={fileInput}
-      /> */}
+
       <Dialog
         open={openModal}
         onClose={handleCloseModal}
         fullWidth={true}
       >
-        <DragPage  setImages={setImageUrl} setOpenModal={setOpenModal} />
-        
-
-
+        <DragPage albumPk={albumPk} setImages={setImageUrl} setOpenModal={setOpenModal} />
       </Dialog>
       
       
