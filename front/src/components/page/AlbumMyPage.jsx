@@ -81,8 +81,14 @@ const AlbumMypage = () => {
           });
       });
   },[])
-  
-  console.log(album)
+
+  const dday = new Date(album.openAt);
+  const today = new Date();
+  const timeGap = dday.getTime() - today.getTime();
+  console.log("album.openAt : " + album.openAt);
+  console.log("dday : " + dday);
+  console.log("today : " + today);
+  const remainDay = Math.ceil(timeGap/(1000*60*60*24));
   
   const filteredAlbumMemories = albumMemories.filter((val) => val.albumPk === params.PK); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
   const startIndex = (currentPage - 1) * itemsPerPage;  // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
@@ -166,7 +172,9 @@ const AlbumMypage = () => {
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
-                <div style={{ color: "white", fontWeight: "bolder" }}>D - <span class="memorysize">{album.openAt}</span></div>
+                <div style={{ color: "white", fontWeight: "bolder" }}>
+                  D - <span class="memorysize">{remainDay === 0 ? <div>Congraduation!</div> : remainDay}</span>
+                </div>
               )}
             </StyledTypography>
             <StyledTypography style={{ color: "white" }}>
