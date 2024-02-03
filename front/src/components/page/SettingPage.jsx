@@ -94,7 +94,7 @@ const SettingsPage = () => {
 
     
     return (
-      <div
+      <div 
         style={{
           marginTop: '80px',
           marginBottom: '80px',
@@ -103,76 +103,95 @@ const SettingsPage = () => {
           width: '300px', // 너비
           height: 'auto', // 높이
           borderRadius: '10px', // 모서리 반경
-          backgroundColor: 'rgba(255, 255, 255, 0.7)', // 희미한 흰색 배경
-          boxShadow: '0 4px 8px 0 rgba(0,0,0,0.2)', // 그림자
+          backgroundColor: 'rgb(255, 255, 255, 0.7)', // 희미한 흰색 배경
+          boxShadow: '0px 0px 15px 10px rgba(232, 236, 242)', // 그림자
           display: 'flex',
           flexDirection: 'column', // 세로 방향으로 배치
         }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 15px', marginTop:"20px" }}>
-          <div>계정 설정</div>
-          <HomeIcon fontSize='large' onClick={gotoAlbumPage} />
+      >      
+        <div  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 15px', marginTop:"20px",  }}>
+          <div style={{color:'#f2eff7', fontSize: '25px', textShadow:'0px 0px 10px rgb(108, 0, 174)',   fontFamily: 'TheJamsil5Bold' }}>앨범 설정</div>
+          <HomeIcon sx={{ fontSize: 50 }} onClick={gotoAlbumPage} />
         </div>
         <div >
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 15px' }}>
-            <StyledTypography variant="h6" gutterBottom>{nickname}님</StyledTypography>
+            <StyledTypography variant="h6" gutterBottom style={{ color: 'rgb(255, 249, 215)', textShadow:'0px 0px 10px rgb(108, 0, 174)', fontFamily: 'TheJamsil5Bold'}}>{nickname}님</StyledTypography>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'center', padding: '0 15px', marginTop: '10px'}}>
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start' }}>
-              <div>Nickname</div>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'center', padding: '0 15px', marginTop: '10px',color:'rgb(75, 24, 112)' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start'}}>
+              {/* <div className='font700'>Nickname</div> */}
               <TextField
+                label='닉네임'
+                
                 id="outlined-size-small"
                 value={nickname}
                 // size="normal"
                 width="100%S"
                 onChange={(e) => setNickname(e.target.value)}
                 margin="dense"
-                sx={{input: {textAlign: "center",}}}
+                sx={{input: {textAlign: "center",}}}  // 안에 문자 중간정렬
                 // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
                 InputProps={{
                   style: {
                     borderRadius: "20px",
-                    backgroundColor:"#ffffff"
+                    backgroundColor: 'rgb(255, 255, 255, 0.9)',
+                    fontFamily: 'TheJamsil5Bold',
+                    color: 'rgba(74, 16, 102)'
                   }
                 }}
               />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start', marginTop:'15px' }}>
-              <div>Graduation Place</div>
+              {/* <div className='font700'>Graduation Place</div> */}
               <TextField
+                label='졸업 학교'
                 id="outlined-size-small"
                 value={graduationPlace}
-                size="normal"
+                size="medium"
                 onChange={(e) => setGraduationPlace(e.target.value)}
                 margin="dense"
+                sx={{input: {textAlign: "center",}}}  // 안에 문자 중간정렬
                 // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
                 InputProps={{
                   style: {
                     borderRadius: "20px",
+                    backgroundColor: 'rgb(255, 255, 255)',
+                    fontFamily: 'TheJamsil5Bold',
+                    color: 'rgba(74, 16, 102)'
                   }
-                }}              
+                }}             
               />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'start', marginTop:'15px' }}>
-              <div>Title</div>  
+              {/* <div className='font700'>Title</div>   */}
               <TextField
+                label='앨범 이름'
                 id="outlined-size-small"
                 value={title}
                 size="normal"
                 onChange={(e) => setTitle(e.target.value)}
                 margin="dense"
+                sx={{input: {textAlign: "center",}}}  // 안에 문자 중간정렬
                 // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
                 InputProps={{
                   style: {
                     borderRadius: "20px",
+                    backgroundColor: 'rgb(255, 255, 255)',
+                    fontFamily: 'TheJamsil5Bold',
+                    color: 'rgba(74, 16, 102)',
                   }
-                }}            
+                }}           
               />
             </div>
-            <Box textAlign="center" marginTop={15}>
-              <Button variant="contained" color="primary" onClick={handleSaveAlbumSettings}>
+            <Box textAlign="center" marginTop={15} marginBottom={2}>
+              <button className='button'
+                onClick={handleSaveAlbumSettings}
+              > 
+                설정하기
+              </button>
+              {/* <Button variant="contained" color="primary" onClick={handleSaveAlbumSettings}>
                 Save
-              </Button>
+              </Button> */}
             </Box>
             {albumdata.openAt === null ? <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'start', alignItems: 'center', marginTop: '30px' }}>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -185,13 +204,16 @@ const SettingsPage = () => {
                 )}
               />
             </LocalizationProvider>
-            <Box textAlign="center" marginTop={2}>
-              <Button variant="contained" color="primary" onClick={handleSaveGraduationDateSettings}>
+            <Box textAlign="center" marginTop={15} marginBottom={2}>
+              <button className='button'
+                onClick={handleSaveAlbumSettings}
+              > 
+                설정하기
+              </button>
+              {/* <Button variant="contained" color="primary" onClick={handleSaveAlbumSettings}>
                 Save
-              </Button>
+              </Button> */}
             </Box>
-
-
             </div> : <div/>} 
           </div>
         </div>
