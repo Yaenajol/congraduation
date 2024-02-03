@@ -1,24 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import axios from 'axios';
-import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-
-import StyledContainer from '../styledComponents/StyledContainer';
-import StyledImg from '../styledComponents/StyledImg';
-
-import StyledTypography from '../styledComponents/StyledTypography';
-
-import userAltImage from '../images/userAltImage.png'; // 이미지 파일의 경로를 import 합니다.
-import moment from 'moment'
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import axios from "axios";
+import "./albumSlide.scss";
+import {
+  Paper,
+  Grid,
+  Pagination,
+  Container,
+  Button,
+  Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+import SettingsSharpIcon from "@mui/icons-material/SettingsSharp";
+import StyledButton from "../styledComponents/StyledButton";
+import StyledContainer from "../styledComponents/StyledContainer";
+import StyledImg from "../styledComponents/StyledImg";
+import StyledPaper from "../styledComponents/StyledPaper";
+import StyledTypography from "../styledComponents/StyledTypography";
+import UserImgButton from "../button/UserImgButton";
+import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
+import moment from "moment";
 import MenuButton from "../../components/button/MenuButton";
 import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import { albumPageMainImgAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-
-import '../page/AlbumPage.css'
+import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
+import "../page/AlbumPage.css";
+import DehazeRoundedIcon from "@mui/icons-material/DehazeRounded";
 import AlbumProfileImage from "./AlbumProfileImage";
-// import Dday from './Dday';
+import Dday from "./Dday";
 
 const AlbumPage = () => {
   const params = useParams();
@@ -29,46 +43,47 @@ const AlbumPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [nextPageImages, setNextPageImages] = useState([]); // 추가: 다음 페이지의 이미지들을 저장할 상태
-  const BACK_URL = 'http://congraduation.me/backapi';
+  const BACK_URL = "http://congraduation.me/backapi";
 
   const [memoryarray, setMemoryarray] = useState([]);
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
-  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom)
-  const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom)
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
+  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom);
+  const [albumPageMainImg, setAlbumPageMainImg] =
+    useRecoilState(albumPageMainImgAtom);
 
-  const date = moment(album.openAt)
-  const [specificMemory, setSpecificMemory] = useState("")
+  const date = moment(album.openAt);
+  const [specificMemory, setSpecificMemory] = useState("");
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(null);
   console.log(lookingPk);
   useEffect(() => {
-    console.log("======================="+isLogin)
-    setLookingPk(params.PK)
-    console.log(params.PK)
+    console.log("=======================" + isLogin);
+    setLookingPk(params.PK);
+    console.log(params.PK);
     // 특정 앨범 조회
     axios
       .get(`https://congraduation.me/backapi/albums/${params.PK}`)
-      .then(response => {
-        console.log('Album Data:', response.data);
-        console.log(location.pathname)
+      .then((response) => {
+        console.log("Album Data:", response.data);
+        console.log(location.pathname);
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
-        setAlbumPageMainImg(response.data.coverUrl)
+        setAlbumPageMainImg(response.data.coverUrl);
       });
 
     // 앨범의 특정 메모리 조회
     axios
       .get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
-      .then(response => {
-        console.log('Album Memories Data:', response.data);
+      .then((response) => {
+        console.log("Album Memories Data:", response.data);
         setAlbumMemories(response.data);
-        if (typeof (response.data) === typeof ([])) {
-          setMemoryarray(response.data)
+        if (typeof response.data === typeof []) {
+          setMemoryarray(response.data);
         }
       });
 
@@ -76,35 +91,24 @@ const AlbumPage = () => {
     if (isLogin) {
       // 유저의 앨범 접근 권한 조회를 한다.
       axios
-        .get
-        (`https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
+        .get(
+          `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
           { headers: { accessToken: sessionStorage.accessToken } }
         )
-        .then(response => {
-          console.log('check' + response.data)
+        .then((response) => {
+          console.log("check" + response.data);
           // 만약 접근한 유저의 권한이 true 이면
-          if (typeof (response.data) === typeof (true)) {
-            if(response.data===true){
-              navigate("/myalbum")
+          if (typeof response.data === typeof true) {
+            if (response.data === true) {
+              navigate("/myalbum");
             }
-            
-           
           }
-
         });
     }
   }, []);
 
-  const dday = new Date(album.openAt);
-  const today = new Date();
-  const timeGap = dday.getTime() - today.getTime();
-  console.log("album.openAt : " + album.openAt);
-  console.log("dday : " + dday);
-  console.log("today : " + today);
-  const remainDay = Math.ceil(timeGap/(1000*60*60*24));
-
   // lookingpk 확인
-  console.log('looking pk : ' + lookingPk)
+  console.log("looking pk : " + lookingPk);
 
   // 페이지 전환 기능
   const handlePageChange = (event, value) => {
@@ -112,47 +116,59 @@ const AlbumPage = () => {
   };
 
   //6개씩 보이게 적용
-  const filteredAlbumMemories = albumMemories.filter((val) => val.albumPk === params.PK); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
-  const startIndex = (currentPage - 1) * itemsPerPage;  // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
+  const filteredAlbumMemories = albumMemories.filter(
+    (val) => val.albumPk === params.PK
+  ); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
+  const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  const displayedAlbumMemories = filteredAlbumMemories.slice(startIndex, endIndex); // 첫 인덱스와 끝 인덱스를 통해 슬라이스 작업
+  const displayedAlbumMemories = filteredAlbumMemories.slice(
+    startIndex,
+    endIndex
+  ); // 첫 인덱스와 끝 인덱스를 통해 슬라이스 작업
 
   // 비동기 처리 해야됨
   const handleImageClick = (imageUrl, index) => {
     const now = moment();
     setSelectedImageIndex(index);
-    console.log(now)
-    console.log(date)
-    console.log(albumMemories[index].memoryPk)
+    console.log(now);
+    console.log(date);
+    console.log(albumMemories[index].memoryPk);
     if (now >= date) {
-      axios.get(`https://congraduation.me/backapi/memories/${albumMemories[index].memoryPk}`, {
-        headers: { accessToken: sessionStorage.accessToken }
-      })
-        .then(response => {
-          console.log(response.data)
-          setSpecificMemory(response.data)
+      axios
+        .get(
+          `https://congraduation.me/backapi/memories/${albumMemories[index].memoryPk}`,
+          {
+            headers: { accessToken: sessionStorage.accessToken },
+          }
+        )
+        .then((response) => {
+          console.log(response.data);
+          setSpecificMemory(response.data);
           // console.log(response.data)
-        })
+        });
 
       setOpenModal(true); // 모달 opne 상태 true로
-
     } else {
-      alert('공개일 아님')
+      alert("공개일 아님");
     }
-   
-  }
+    console.log(imageUrl);
+    console.log(index);
+    // setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
+    // setOpenModal(true); // 모달 opne 상태 true로
+  };
 
   // 다이어리(모달)을 끄는 기능
   const handleCloseModal = () => {
-    setOpenModal(false);  // 모달 open 상태 false로
-    setSelectedImageIndex(null);  // 선택된 이미지 인덱스를 null로 상태 변경
-  }
+    setOpenModal(false); // 모달 open 상태 false로
+    setSelectedImageIndex(null); // 선택된 이미지 인덱스를 null로 상태 변경
+  };
 
   // 다이어리(모달) 내에서 다음 이미지를 보여주는 함수
   const handleNextImage = () => {
     setSelectedImageIndex((prevIndex) => {
       const nextIndex = prevIndex + 1;
-      if (nextIndex < memoryarray.length) {  // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
+      if (nextIndex < memoryarray.length) {
+        // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
         return nextIndex;
       }
       return prevIndex; // 그 외의 경우에는 이전 인덱스를 반환
@@ -161,7 +177,7 @@ const AlbumPage = () => {
 
   // 다이어리(모달) 내에서 이전 이미지를 보여주는 함수
   const handlePrevImage = () => {
-    setSelectedImageIndex(prevIndex => {
+    setSelectedImageIndex((prevIndex) => {
       if (prevIndex > 0) {
         return prevIndex - 1;
       }
@@ -172,57 +188,110 @@ const AlbumPage = () => {
   // 링크 주소 저장 기능
   const handlerCopyClipBoard = async (text) => {
     try {
-      console.log(text)
+      console.log(text);
       await navigator.clipboard.writeText(text);
       alert("링크가 복사됐습니다!");
-      console.log(text)
+      console.log(text);
     } catch (err) {
       console.log("error :", err);
     }
   };
   const gotomyAlbum = () => {
-    
-    sessionStorage.removeItem('lookingPk', params.PK)
-
-    navigate('/')
-  }
+    navigate("/myalbum");
+  };
   // Setting page 로 이동하는 기능
   const gotoSetting = () => {
-    navigate(`/albums/${params.PK}/setting`)  // 이러면 안되는데 수정 필요할 듯
-  }
+    navigate(`/albums/${params.PK}/setting`); // 이러면 안되는데 수정 필요할 듯
+  };
 
   const gotoAddMemory = () => {
-    console.log(isLogin)
+    console.log(isLogin);
     if (!isLogin) {
       console.log(isLoginAtom);
-      console.log(params.PK)
-      sessionStorage.setItem('lookingPk', params.PK)
+      console.log(params.PK);
+      sessionStorage.setItem("lookingPk", params.PK);
       navigate("/");
-      
     } else {
       navigate(`/albums/${params.PK}/edit`);
     }
   };
+  const getFlipList = () => {
+    const page = parseInt(Math.ceil(albumMemories.length / 6));
+    const pageList = Array.from({ length: page }, () => []);
+    console.log("page " + page);
+    for (let index = 0; index < albumMemories.length; index++) {
+      pageList[parseInt(index / 6)].push(albumMemories[index]);
+    }
+    let flipList = Array.from({ length: page }, () => []);
+    for (let index = 0; index < page; index++) {
+      flipList[index].push(
+        <div className="flip" id={`p${index + 1}`} key={index + 1}>
+          <div className="back">
+            <label for={`c${index + 1}`} className="back-btn">
+              Before
+            </label>
+          </div>
+          <div className="front">
+            {pageList[index].map((memory, mapIndex) => {
+              console.log("console : " + (index * 6 + mapIndex));
+              return (
+                <StyledImg
+                  style={{
+                    backgroundColor: "white",
+                    padding: "1px",
+                    width: "80px",
+                    height: "80px",
+                  }}
+                  src={memory.imageUrl}
+                />
+              );
+            })}
+            <label for={`c${index + 1}`} className="next-btn">
+              NEXT
+            </label>
+          </div>
+        </div>
+      );
+    }
+    console.log(pageList);
+    return (
+      <div className="book">
+        <div className="wrapper">
+          {[...Array(parseInt(page))].map((n, index) => {
+            return (
+              <input
+                className="pageInput"
+                type="checkbox"
+                id={`c${index + 1}`}
+              />
+            );
+          })}
+          <div className="flip-book">{flipList}</div>
+        </div>
+      </div>
+    );
+  };
 
   // 유저 이미지 아이콘 버튼
   return (
-    <div style={{ display: "flex", justifyContent: "center"}}>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <StyledContainer>
-        <div style={{marginLeft:"1rem" ,height: "20%"}}>
+        <div style={{ marginLeft: "1rem", height: "20%" }}>
           <StyledTypography>
             {albumOpenAt === null ? (
               <div>졸업일자를 설정해주세요.</div>
             ) : (
               <div style={{ color: "white", fontWeight: "bolder" }}>
-                D - <span class="memorysize">{remainDay === 0 ? <div>Congraduation!</div> : remainDay}</span>
+                D - <span class="memorysize">{album.openAt}</span>
               </div>
             )}
           </StyledTypography>
           <StyledTypography style={{ color: "white" }}>
-            <span class="memorysize">{memoryarray.length}장</span>의 메모리가 도착했어요!
+            <span class="memorysize">{memoryarray.length}장</span>의 메모리가
+            도착했어요!
           </StyledTypography>
         </div>
-        
+
         <div class="aligncenter">
           <AlbumProfileImage
             imageUrl={imageUrl}
@@ -230,48 +299,25 @@ const AlbumPage = () => {
             albumPk={params.PK}
             isClickable={false}
           />
-          <StyledTypography>{album.nickname} 의 {album.title}</StyledTypography>
-          
+          <StyledTypography>
+            {album.nickname} 의 {album.title}
+          </StyledTypography>
+
           <div>
             <MenuButton zin={true} />
           </div>
         </div>
-        <div style={{ height : '15%'}} className='gridAlignCenter'>
-          <Grid container spacing={2}>
-            {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-              <Grid item xs={4} key={index}>
-                {/* <StyledPaper> */}
-                <StyledImg
-                  style={{ backgroundColor: "white", padding: "1px", }}
-                  src={val.imageUrl}
-                  alt={`Memory ${startIndex + index + 1}`}
-                  onClick={() =>
-                    handleImageClick(val.memoryPk, startIndex + index)
-                  }
-                />
-                {/* </StyledPaper> */}
-              </Grid>
-            ))}
-          </Grid>
-        </div>
+        {getFlipList()}
+
         <div class="aligncenter">
-          <Pagination
-            count={Math.ceil(memoryarray.length / itemsPerPage)}
-            page={currentPage}
-            onChange={handlePageChange}
-          />
-        </div>
-        <div class="aligncenter">
-            <button class="button"
-                  onClick={() => gotoAddMemory()}
-                >
-              메모리 추가하기
-            </button>
-            <button onClick={() => gotomyAlbum()}> 내 앨범으로 가기</button>
-          
+          <button class="button" onClick={() => gotoAddMemory()}>
+            메모리 추가하기
+          </button>
+          <button onClick={() => gotomyAlbum()}> 내 앨범으로 가기</button>
         </div>
 
         <Dialog open={openModal} onClose={handleCloseModal}>
+          {/* <DialogTitle>이미지 상세보기</DialogTitle> */}
           <DialogContent>
             {selectedImageIndex !== null && (
               <StyledImg
@@ -279,10 +325,8 @@ const AlbumPage = () => {
                 alt={`Memory ${selectedImageIndex + 1}`}
                 style={{ maxWidth: "100%" }}
               />
-
             )}
             <p>{memoryarray[selectedImageIndex]?.nickname}</p>
-
           </DialogContent>
           <DialogActions>
             <Button
