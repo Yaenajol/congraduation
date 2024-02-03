@@ -16,6 +16,7 @@ import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import Spinner from "../spinner/Spinner";
+import { isLoginAtom } from "../store/atom";
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
