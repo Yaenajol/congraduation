@@ -17,7 +17,7 @@ import { albumPageMainImgAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
 import AlbumProfileImage from "./AlbumProfileImage";
-import Dday from './Dday';
+// import Dday from './Dday';
 
 import '../page/AlbumPage.css'
 import albumWhite from '../images/albumWhite.png'
@@ -96,6 +96,14 @@ const AlbumPage = () => {
         });
     }
   }, []);
+
+  const dday = new Date(album.openAt);
+  const today = new Date();
+  const timeGap = dday.getTime() - today.getTime();
+  console.log("album.openAt : " + album.openAt);
+  console.log("dday : " + dday);
+  console.log("today : " + today);
+  const remainDay = Math.ceil(timeGap/(1000*60*60*24));
 
   // lookingpk 확인
   console.log('looking pk : ' + lookingPk)
@@ -212,7 +220,9 @@ const AlbumPage = () => {
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
-                <div style={{ color: "white", fontWeight: "bolder" }}>D - <span class="memorysize">{album.openAt}</span></div>
+                <div style={{ color: "white", fontWeight: "bolder" }}>
+                  D - <span class="memorysize">{remainDay === 0 ? <div>Congraduation!</div> : remainDay}</span>
+                </div>
               )}
             </StyledTypography>
             <StyledTypography style={{ color: "white" }}>
@@ -278,7 +288,6 @@ const AlbumPage = () => {
             onChange={handlePageChange}
           />
         </div>
-
         <div class="alignCenter">
           <button class="button-2"
             onClick={() => gotoAddMemory()}

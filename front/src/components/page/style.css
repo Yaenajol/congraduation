@@ -89,8 +89,13 @@
 }
 
 .upload {
-  justify-content: center;
+  justify-content: space-between;
   display: flex;
   margin-bottom: 10%;
-  margin-top: 5%;
+  margin-top: 5%; 
+}
+
+.image-box {
+  display: flex;
+  justify-content: center;
 }

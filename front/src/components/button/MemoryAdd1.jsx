@@ -11,7 +11,7 @@ export default function ButtonColors({onClick, value}) {
     <Box
       sx={{
         // display: 'flex',
-        marginRight: '10%',
+        // marginRight: '10%',
         alignItems: 'center',
         gap: 3,
       }}
