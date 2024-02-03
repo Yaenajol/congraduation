@@ -11,6 +11,7 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { albumPageMainImgAtom } from "../store/atom";
 import axios from 'axios';
 import { data } from 'jquery';
+import Spinner from '../spinner/Spinner';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -42,6 +43,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   const [aspect, setAspect] = useState(1/1);
   const params = useParams()
   const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom)
+  const [isLoading, setIsLoading] = useState(false);
 
   // ... (rest of the code remains same as in your TS file)
   function onSelectFile(e) {
@@ -65,90 +67,97 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   }
 
   async function onDownloadCropClick(page) {
-    
-    const updateImage = (imageData) => {
-      setImages((prevImages) => ({
-        ...prevImages,
-        [selectedGridItem]: imageData, // 선택된 그리드 아이템에 이미지 데이터 업데이트
-      }));
-    };
-    
-    const image = imgRef.current
-    const previewCanvas = previewCanvasRef.current
-    console.log(crop)
-    console.log(completedCrop)
-    console.log(!!crop)
-    console.log(!crop)
-    if (!image || !previewCanvas || !completedCrop) {
-      throw new Error('Crop canvas does not exist')
-    }
-
-   
-    const scaleX = image.naturalWidth / image.width
-    const scaleY = image.naturalHeight / image.height
-
-    const offscreen = new OffscreenCanvas(
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY,
-    )
-    const ctx = offscreen.getContext('2d')
-    if (!ctx) {
-      throw new Error('No 2d context')
-    }
-
-    ctx.drawImage(
-      previewCanvas,
-      0,
-      0,
-      previewCanvas.width,
-      previewCanvas.height,
-      0,
-      0,
-      offscreen.width,
-      offscreen.height,
-    )
-    // You might want { type: "image/jpeg", quality: <0 to 1> } to
-    // reduce image size
-    const blob = await offscreen.convertToBlob({
-      type: 'image/png',
-    })
-
-    if (blobUrlRef.current) {
-      URL.revokeObjectURL(blobUrlRef.current)
-    }
-    blobUrlRef.current = URL.createObjectURL(blob)
-    
-    updateImage(blobUrlRef.current)
-    console.log(blobUrlRef.current)
-
-    // if (hiddenAnchorRef.current) {
-    //   hiddenAnchorRef.current.href = blobUrlRef.current
-    //   hiddenAnchorRef.current.click()
-    // }
-
-    if (page !== 'edit') {
-      console.log(page)
-      console.log(page !== 'edit')
-      setAlbumPageMainImg(blobUrlRef.current)
-      const formdata = new FormData()
-      formdata.append('image', blob, 'image.png')
-      try {
-        const response = await axios.put(
-          `https://congraduation.me/backapi/albums/${albumPk}/coverImage`, 
-          formdata,  
-          {
-            headers : {
-              accessToken : sessionStorage.getItem('accessToken')
-            },
-          }
-        );
-        console.log('Image updated successfully:', response.data);
-        setImages(response.data)
-      } catch (error) {
-        console.error('Failed to update image:', error);
+    setIsLoading(true)
+    try {
+      const updateImage = (imageData) => {
+        setImages((prevImages) => ({
+          ...prevImages,
+          [selectedGridItem]: imageData, // 선택된 그리드 아이템에 이미지 데이터 업데이트
+        }));
+      };
+      
+      const image = imgRef.current
+      const previewCanvas = previewCanvasRef.current
+      console.log(crop)
+      console.log(completedCrop)
+      console.log(!!crop)
+      console.log(!crop)
+      if (!image || !previewCanvas || !completedCrop) {
+        throw new Error('Crop canvas does not exist')
       }
+  
+     
+      const scaleX = image.naturalWidth / image.width
+      const scaleY = image.naturalHeight / image.height
+  
+      const offscreen = new OffscreenCanvas(
+        completedCrop.width * scaleX,
+        completedCrop.height * scaleY,
+      )
+      const ctx = offscreen.getContext('2d')
+      if (!ctx) {
+        throw new Error('No 2d context')
+      }
+  
+      ctx.drawImage(
+        previewCanvas,
+        0,
+        0,
+        previewCanvas.width,
+        previewCanvas.height,
+        0,
+        0,
+        offscreen.width,
+        offscreen.height,
+      )
+      // You might want { type: "image/jpeg", quality: <0 to 1> } to
+      // reduce image size
+      const blob = await offscreen.convertToBlob({
+        type: 'image/png',
+      })
+  
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current)
+      }
+      blobUrlRef.current = URL.createObjectURL(blob)
+      
+      updateImage(blobUrlRef.current)
+      console.log(blobUrlRef.current)
+  
+      // if (hiddenAnchorRef.current) {
+      //   hiddenAnchorRef.current.href = blobUrlRef.current
+      //   hiddenAnchorRef.current.click()
+      // }
+  
+      if (page !== 'edit') {
+        console.log(page)
+        console.log(page !== 'edit')
+        setAlbumPageMainImg(blobUrlRef.current)
+        const formdata = new FormData()
+        formdata.append('image', blob, 'image.png')
+        try {
+          const response = await axios.put(
+            `https://congraduation.me/backapi/albums/${albumPk}/coverImage`, 
+            formdata,  
+            {
+              headers : {
+                accessToken : sessionStorage.getItem('accessToken')
+              },
+            }
+          );
+          console.log('Image updated successfully:', response.data);
+          setImages(response.data)
+        } catch (error) {
+          console.error('Failed to update image:', error);
+        }
+      }
+      setOpenModal(false)
+    } catch(error) {
+      console.log('사진 리사이징 에러')
+    } finally {
+      setIsLoading(false)
     }
-    setOpenModal(false)
+    
   }
   
 
@@ -192,7 +201,9 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
 
   return (
     <div className="App">
+      
       <div className="upload" >
+        
         <InputFileUpload onChange={onSelectFile} />
       
         <MemoryAdd isClickable={imgSrc !== '' && !!crop  && !!crop.width && !!crop.height} onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
@@ -250,7 +261,11 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
           
           // circularCrop
         >
-        
+        {isLoading && (
+          <div>
+            <Spinner/>
+          </div>
+        )}
           <img
             className='img-size'
             ref={imgRef}
@@ -261,7 +276,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
           />
           
           
-        </ReactCrop>
+          </ReactCrop>
         </div>
         
       )}

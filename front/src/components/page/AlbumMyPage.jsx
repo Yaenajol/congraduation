@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
+
 import {
   Paper,
   Grid,
@@ -30,6 +31,7 @@ import AlbumProfileImage from "./AlbumProfileImage";
 
 import "../page/AlbumPage.css";
 import albumWhite from "../images/albumWhite.png";
+
 
 const AlbumMypage = () => {
   const params = useParams();
@@ -125,15 +127,10 @@ const AlbumMypage = () => {
 
       setOpenModal(true); // 모달 opne 상태 true로
     } else {
-      alert("공개일 아님");
+      alert('공개일 아님')
     }
-    console.log(imageUrl);
-    // console.log(index)
-    // setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
-    // setOpenModal(true); // 모달 opne 상태 true로
   };
 
-  const DarkMode = () => {};
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
@@ -216,28 +213,18 @@ const AlbumMypage = () => {
               albumPk={album.albumPk}
               isClickable={true}
             />
-            <MenuButton onClick={() => DarkMode()} zin={false} />
+            <MenuButton zin={false} />
           </div>
         </div>
-
         <div style={{ display: "flex", position: "relative" }}>
-          <img
-            src={albumWhite}
-            alt="album"
-            style={{
-              width: "100%",
-              // height: "auto"
-            }}
-          />
+          <img src={albumWhite} alt="album" style={{
+            width: "100%"
+            // height: "auto"
+          }} />
           <div class="memoryList">
             <Grid container spacing={2}>
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-                <Grid
-                  item
-                  xs={4}
-                  key={index}
-                  style={{ marginLeft: "5%", marginBottom: "3%" }}
-                >
+                <Grid item xs={4} key={index} style={{ marginLeft: "5%", marginBottom: "3%" }}>
                   <StyledImg
                     style={{ transform: `rotate(${rotateArray[index]}deg)` }}
                     src={val.imageUrl}
