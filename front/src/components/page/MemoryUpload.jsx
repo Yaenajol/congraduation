@@ -16,6 +16,7 @@ import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
+import Spinner from "../spinner/Spinner";
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
@@ -30,7 +31,7 @@ const MemoryUpload = () => {
   
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom)
-
+  const [isLoading, setIsLoading] = useState(false);
   const params = useParams()
   const navigate = useNavigate()
 
@@ -197,6 +198,7 @@ const MemoryUpload = () => {
   return (
     <StyledMemoryPage>
       <div className="title">Memory</div>
+      
       <div className="image-grid">
         {["a", "b", "c", "d"].map((key) => (
           <div

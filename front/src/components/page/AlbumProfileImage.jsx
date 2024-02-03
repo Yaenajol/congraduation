@@ -5,6 +5,7 @@ import UploadLoading from "./UploadLoading";
 import DragPage from "../page/DragPage";
 import {Dialog} from "@mui/material";
 import {ReactCrop, centerCrop, makeAspectCrop, convertToPixelCrop} from 'react-image-crop';
+import userAltImage from '../images/userAltImage.png'
 
 function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
   
@@ -45,8 +46,8 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
         <UploadLoading />
       ) : (
         <StyledImg
-          src={imageUrl}
-          alt="User Alt Image"
+          src={imageUrl || userAltImage}
+          alt="userAltImage"
           width={"100%"}
           // height={"70rem"}
           style={{borderRadius:"50%"}}
