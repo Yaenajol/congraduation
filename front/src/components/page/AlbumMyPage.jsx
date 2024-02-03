@@ -23,8 +23,6 @@ import StyledTypography from "../styledComponents/StyledTypography";
 import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
 import moment from "moment";
 import MenuButton from "../../components/button/MenuButton";
-import { isLoginAtom } from "../store/atom";
-import { lookingPkAtom } from "../store/atom";
 import { albumPageMainImgAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
@@ -41,16 +39,10 @@ const AlbumMypage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
-  const [nextPageImages, setNextPageImages] = useState([]); // 추가: 다음 페이지의 이미지들을 저장할 상태
-  const BACK_URL = "http://congraduation.me/backapi";
-  const [isauthorized, setIsauthorized] = useState(false);
   const [memoryarray, setMemoryarray] = useState([]);
   const itemsPerPage = 6;
   const navigate = useNavigate();
   const location = useLocation();
-
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
-  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom);
   const [albumPageMainImg, setAlbumPageMainImg] =
     useRecoilState(albumPageMainImgAtom);
 
@@ -60,7 +52,7 @@ const AlbumMypage = () => {
   const [albumOpenAt, setalbumOpenAt] = useState(undefined);
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!sessionStorage.accessToken) {
       navigate("/");
       return;
     }
@@ -200,12 +192,10 @@ const AlbumMypage = () => {
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
                 <div style={{ color: "white", fontWeight: "bolder" }}>
-                  D - 
+                  D -
                   <span class="memorysize">
                     {remainDay === 0 ? (
-                      <span>
-                         day Congraduation!
-                      </span>
+                      <span>day Congraduation!</span>
                     ) : (
                       remainDay
                     )}

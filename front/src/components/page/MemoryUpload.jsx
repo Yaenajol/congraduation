@@ -1,18 +1,17 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import "./style.css"; 
+import "./style.css";
 import GridLayout from "react-grid-layout";
 import CropOriginal from "@mui/icons-material/CropOriginal";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
-import { TextField, Button, Box, Typography, Container } from '@mui/material';
-import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
-import MemoryAdd from '../button/MemoryAdd'
-import MemoryAdd1 from '../button/MemoryAdd1'
-import backgroundImage from '../images/background.png'
-import {Dialog} from "@mui/material";
+import { TextField, Button, Box, Typography, Container } from "@mui/material";
+import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
+import MemoryAdd from "../button/MemoryAdd";
+import MemoryAdd1 from "../button/MemoryAdd1";
+import backgroundImage from "../images/background.png";
+import { Dialog } from "@mui/material";
 import DragPage from "../page/DragPage";
-import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
@@ -27,44 +26,40 @@ const MemoryUpload = () => {
   const [message, setMessage] = useState("");
   const isReadyToSubmit =
     Object.values(images).every((img) => img !== null) && nickname && message;
-  
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
-  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom)
 
-  const params = useParams()
-  const navigate = useNavigate()
+  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom);
 
-  useEffect(()=> {
-    if (isLogin) {
+  const params = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (sessionStorage.accessToken) {
       if (params.PK) {
-        axios.get(
-          `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
-          { headers: { accessToken: sessionStorage.accessToken } }
-        )
-        .then((response) => {
-          if (response.data === true) {
-
-            navigate(`/albums/${params.PK}`)
-          }
-        })
-    } else {
-      navigate('/')
+        axios
+          .get(
+            `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
+            { headers: { accessToken: sessionStorage.accessToken } }
+          )
+          .then((response) => {
+            if (response.data === true) {
+              navigate(`/albums/${params.PK}`);
+            }
+          });
+      } else {
+        navigate("/");
+      }
     }
-  }})
+  });
   //모달
   const [openModal, setOpenModal] = useState(false);
   const handleCloseModal = () => {
     setOpenModal(false);
-    // setSelectedImageIndex(null);
   };
 
   const handleGridItemClick = (key) => {
     setSelectedGridItem(key);
-    // fileInputRef.current.click();
-    setSelectedImage(null)
-    setOpenModal(true)
-    
-
+    setSelectedImage(null);
+    setOpenModal(true);
   };
   const updateImage = (imageData) => {
     setImages((prevImages) => ({
@@ -81,9 +76,9 @@ const MemoryUpload = () => {
       reader.onloadend = () => {
         setImages((prevImages) => ({
           ...prevImages,
-          [selectedGridItem]: reader.result // 이미지 데이터 직접 저장
+          [selectedGridItem]: reader.result, // 이미지 데이터 직접 저장
         }));
-        setSelectedImage(reader.result)
+        setSelectedImage(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -141,59 +136,61 @@ const MemoryUpload = () => {
 
     const dataURLtoFile = (dataurl, filename) => {
       let arr = dataurl.split(","),
-      mime = arr[0].match(/:(.*?);/)[1],
-      bstr = atob(arr[arr.length - 1]),
-      n = bstr.length,
-      u8arr = new Uint8Array(n);
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[arr.length - 1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n);
       while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
       }
       return new File([u8arr], filename, { type: mime });
-    }
+    };
 
     const mergedImageDataURL = canvas.toDataURL("image/png");
-    const blobBin = atob(mergedImageDataURL.split(",")[1])
-    const array = []
+    const blobBin = atob(mergedImageDataURL.split(",")[1]);
+    const array = [];
     for (let i = 0; i < blobBin.length; i++) {
-      array.push(blobBin.charCodeAt(i))
+      array.push(blobBin.charCodeAt(i));
     }
-    
-    const file = dataURLtoFile(mergedImageDataURL, 'sample.png')
+
+    const file = dataURLtoFile(mergedImageDataURL, "sample.png");
     setMergedImage(mergedImageDataURL);
-    console.log(mergedImageDataURL)
+    console.log(mergedImageDataURL);
     // 합쳐진 이미지를 백엔드로 전송하는 코드
     if (isReadyToSubmit) {
       try {
-          const payload = {
-              albumPk: params.PK,
-              nickname,
-              content: message,
-          }
-          console.log(payload)
-          const formdata = new FormData()
-          formdata.append('image', file)
-          formdata.append('data', new Blob([JSON.stringify(payload)] , { type: 'application/json'}))
+        const payload = {
+          albumPk: params.PK,
+          nickname,
+          content: message,
+        };
+        console.log(payload);
+        const formdata = new FormData();
+        formdata.append("image", file);
+        formdata.append(
+          "data",
+          new Blob([JSON.stringify(payload)], { type: "application/json" })
+        );
 
-          axios.post('https://congraduation.me/backapi/memories', formdata, 
-          {
-            headers : {
-              'accessToken' : sessionStorage.getItem('accessToken')
+        axios
+          .post("https://congraduation.me/backapi/memories", formdata, {
+            headers: {
+              accessToken: sessionStorage.getItem("accessToken"),
             },
-          }).then (response => {
-            console.log(response.data)
-            navigate(`/albums/${params.PK}`)
           })
-          .catch(error => {
-            console.log(error)
-          }) 
-
+          .then((response) => {
+            console.log(response.data);
+            navigate(`/albums/${params.PK}`);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } catch (error) {
-          console.log('전송 중 실패', error)
+        console.log("전송 중 실패", error);
       }
     }
   };
-  
-    
+
   return (
     <StyledMemoryPage>
       <div className="title">Memory</div>
@@ -226,60 +223,58 @@ const MemoryUpload = () => {
       />
 
       <br />
-     
 
       <TextField
         // id="outlined-multiline-flexible"
         className="input-field"
         // variant="filled"
         multiline
-        rows={4} // 표시되는 기본 줄 수 
+        rows={4} // 표시되는 기본 줄 수
         type="text"
         label="메시지"
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        style={{ marginBottom : "10px"}}
+        style={{ marginBottom: "10px" }}
         inputProps={{
           minLength: 14,
-          maxLength: 200,  // 한줄에 20자 들어감 
+          maxLength: 200, // 한줄에 20자 들어감
         }}
-        
       />
 
-      
-        <TextField
-          className="input-field"
-          type="text"
-          label="별명"
-          // variant="filled"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
-          // style= {{ flex : 1}}
-          style={{ marginBottom: "5%"}}
-          // 글자수 제한
-          inputProps={{
-            maxLength: 15
-          }}
-        />
+      <TextField
+        className="input-field"
+        type="text"
+        label="별명"
+        // variant="filled"
+        value={nickname}
+        onChange={(e) => setNickname(e.target.value)}
+        // style= {{ flex : 1}}
+        style={{ marginBottom: "5%" }}
+        // 글자수 제한
+        inputProps={{
+          maxLength: 15,
+        }}
+      />
 
-        <MemoryAdd1
-          className="submit-button"
-          onClick={handleSubmit}
-          isClickable={isReadyToSubmit}
-          style= {{ flex: 0}}
+      <MemoryAdd1
+        className="submit-button"
+        onClick={handleSubmit}
+        isClickable={isReadyToSubmit}
+        style={{ flex: 0 }}
+      ></MemoryAdd1>
 
-        >
-        </MemoryAdd1 >
-      
       <Dialog
         // style={{ height: '0%'}}
         open={openModal}
         onClose={handleCloseModal}
         fullWidth={true}
       >
-        <DragPage selectedGridItem={selectedGridItem} setImages={setImages} setOpenModal={setOpenModal} />
+        <DragPage
+          selectedGridItem={selectedGridItem}
+          setImages={setImages}
+          setOpenModal={setOpenModal}
+        />
       </Dialog>
-
     </StyledMemoryPage>
   );
 };

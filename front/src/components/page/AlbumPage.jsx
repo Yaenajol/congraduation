@@ -63,12 +63,9 @@ const AlbumPage = () => {
   const [specificMemory, setSpecificMemory] = useState("");
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(null);
-  console.log(lookingPk);
-  useEffect(() => {
-    console.log("=======================" + isLogin);
-    setLookingPk(params.PK);
-    console.log(params.PK);
 
+  useEffect(() => {
+    setLookingPk(params.PK);
     // 특정 앨범 조회
     axios
       .get(`https://congraduation.me/backapi/albums/${params.PK}`)
@@ -91,9 +88,9 @@ const AlbumPage = () => {
           setMemoryarray(response.data);
         }
       });
-
+    console.log("is login?!?!?" + sessionStorage.accessToken);
     // accessToken 이 있을 때
-    if (isLogin) {
+    if (sessionStorage.accessToken) {
       // 유저의 앨범 접근 권한 조회를 한다.
       axios
         .get(
@@ -112,9 +109,6 @@ const AlbumPage = () => {
         });
     }
   }, []);
-
-  // lookingpk 확인
-  console.log("looking pk : " + lookingPk);
 
   // 페이지 전환 기능
   const handlePageChange = (event, value) => {
@@ -187,39 +181,6 @@ const AlbumPage = () => {
     });
   };
 
-  // 링크 주소 저장 기능
-  const handlerCopyClipBoard = async (text) => {
-    try {
-      console.log(text);
-      await navigator.clipboard.writeText(text);
-      alert("링크가 복사됐습니다!");
-      console.log(text);
-    } catch (err) {
-      console.log("error :", err);
-    }
-  };
-  const gotomyAlbum = () => {
-    sessionStorage.removeItem("lookingPk", params.PK);
-
-    navigate("/");
-  };
-  // Setting page 로 이동하는 기능
-  const gotoSetting = () => {
-    navigate(`/albums/${params.PK}/setting`); // 이러면 안되는데 수정 필요할 듯
-  };
-
-  const gotoAddMemory = () => {
-    console.log(isLogin);
-    if (!isLogin) {
-      console.log(isLoginAtom);
-      console.log(params.PK);
-      sessionStorage.setItem("lookingPk", params.PK);
-      navigate("/");
-    } else {
-      navigate(`/albums/${params.PK}/edit`);
-    }
-  };
-  
   const dday = new Date(album.openAt);
   const today = new Date();
   const timeGap = dday.getTime() - today.getTime();
@@ -308,10 +269,26 @@ const AlbumPage = () => {
         </div>
 
         <div class="alignCenter">
-          <button class="button-2" onClick={() => gotoAddMemory()}>
+          <button
+            class="button-2"
+            onClick={() => {
+              if (!sessionStorage.accessToken) {
+                sessionStorage.setItem("lookingPk", params.PK);
+                navigate("/");
+              } else {
+                navigate(`/albums/${params.PK}/edit`);
+              }
+            }}
+          >
             메모리 추가하기
           </button>
-          <button class="button-2" onClick={() => gotomyAlbum()}>
+          <button
+            class="button-2"
+            onClick={() => {
+              sessionStorage.removeItem("lookingPk", params.PK);
+              navigate("/");
+            }}
+          >
             내 앨범으로 가기
           </button>
         </div>
