@@ -1,0 +1,162 @@
+.book {
+  background-image: url("../images/sohyeon.png");
+  background-size: 100% 100%;
+  background-position-x: -10px;
+  background-repeat: no-repeat;
+  width: 500px;
+  height: 500px;
+  position: relative;
+}
+.wrapper {
+  width: 300px;
+  height: 215px;
+  display: flex;
+  position: absolute;
+  top: 27%;
+  left: 30%;
+  transform: rotate(21deg);
+  background-color: transparent;
+}
+
+/* 넘기는 페이지 크기 조절 */
+.flip-book {
+  background-position: 50% 50%;
+  /* border: 1px solid black; */
+  text-align: center;
+  width: 320px;
+  height: 330px;
+  position: relative;
+  perspective: 1500px;
+}
+.flip {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: 0.5s;
+  color: #000;
+}
+.front {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  padding: 0;
+  opacity: 1;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin-bottom: 30px;
+  top: 0;
+  left: 0;
+  background-color: #fff;
+  box-sizing: border-box;
+  padding: 50px 13px;
+  background-image: url("../images/1page.png");
+  background-repeat: no-repeat;
+  background-size: 100.5% 100%;
+  background-position: 100% 50%;
+  background-color: transparent;
+}
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99;
+  transform: 0.5;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  /* background-color: #000; */
+  background-size: 30% 30%;
+}
+
+.next-btn {
+  position: absolute;
+  right: 13px;
+  bottom: 20px;
+  right: 30px;
+  cursor: pointer;
+  color: #000000;
+}
+.back-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 13px;
+  cursor: pointer;
+  color: #000000;
+}
+.pageInput {
+  display: none;
+}
+/* @for $i from 1 through 100 {
+  #p#{$i} {
+    z-index: 100-$i;
+  }
+  #c#{$i}:checked ~ .flip-book #p#{$i} {
+    transform: rotateY(-180deg);
+    z-index: #{$i};
+  }
+} */
+/* #p1 {
+  z-index: 3;
+}
+#p2 {
+  z-index: 2;
+}
+#p3 {
+  z-index: 1;
+}
+#c1:checked ~ .flip-book #p1 {
+  transform: rotateY(-180deg);
+
+  z-index: 1;
+}
+#c2:checked ~ .flip-book #p2 {
+  transform: rotateY(-180deg);
+  z-index: 2;
+}
+#c3:checked ~ .flip-book #p3 {
+  transform: rotateY(-180deg);
+  z-index: 3;
+} */
+
+#p1 {
+  z-index: 4;
+}
+
+#c1:checked ~ .flip-book #p1 {
+  transform: rotateY(-180deg);
+  z-index: 1;
+}
+
+#p2 {
+  z-index: 3;
+}
+
+#c2:checked ~ .flip-book #p2 {
+  transform: rotateY(-180deg);
+  z-index: 2;
+}
+
+#p3 {
+  z-index: 2;
+}
+
+#c3:checked ~ .flip-book #p3 {
+  transform: rotateY(-180deg);
+  z-index: 3;
+}
+
+#p4 {
+  z-index: 1;
+}
+
+#c4:checked ~ .flip-book #p4 {
+  transform: rotateY(-180deg);
+  z-index: 4;
+}
