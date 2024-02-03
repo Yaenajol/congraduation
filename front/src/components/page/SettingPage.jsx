@@ -73,11 +73,7 @@ const SettingsPage = () => {
         const dateFormat = dayjs(graduationDate).format("YYYYMMDD");
         const todayDateFormat = dayjs(new Date()).format("YYYYMMDD");
 
-        //사용자가 선택한 값이 어제까지라면 경고
-        //오늘 부터라면 진행
-        console.log(dateFormat);
-        console.log(dateFormat.compa);
-        if (todayDateFormat < todayDateFormat) {
+        if (dateFormat < todayDateFormat) {
           window.alert("날짜를 오늘 이상으로 설정해 주세요.");
           return;
         }
@@ -271,11 +267,7 @@ const SettingsPage = () => {
                 }}
               />
             </div>
-            <Box textAlign="center" marginTop={15} marginBottom={2}>
-              <button className="button" onClick={handleSaveAlbumSettings}>
-                설정하기
-              </button>
-            </Box>
+
             {albumdata.openAt === null ? (
               <div
                 style={{
@@ -301,18 +293,22 @@ const SettingsPage = () => {
                     )}
                   />
                 </LocalizationProvider>
-                <Box textAlign="center" marginTop={15} marginBottom={2}>
-                  <button
-                    className="button"
-                    onClick={handleSaveAlbumSettingsWithGraduationDate}
-                  >
-                    설정하기
-                  </button>
-                </Box>
               </div>
             ) : (
               <div />
             )}
+            <Box textAlign="center" marginTop={15} marginBottom={2}>
+              <button
+                className="button"
+                onClick={
+                  albumdata.openAt === null
+                    ? handleSaveAlbumSettingsWithGraduationDate
+                    : handleSaveAlbumSettings
+                }
+              >
+                설정하기
+              </button>
+            </Box>
           </div>
         </div>
       </div>
