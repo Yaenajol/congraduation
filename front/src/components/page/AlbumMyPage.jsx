@@ -184,66 +184,6 @@ const AlbumMypage = () => {
     });
   };
 
-  const getFlipList = () => {
-    const page = parseInt(Math.ceil(albumMemories.length / 6));
-    const pageList = Array.from({ length: page }, () => []);
-    console.log("page " + page);
-    for (let index = 0; index < albumMemories.length; index++) {
-      pageList[parseInt(index / 6)].push(albumMemories[index]);
-    }
-    let flipList = Array.from({ length: page }, () => []);
-    for (let index = 0; index < page; index++) {
-      flipList[index].push(
-        <div className="flip" id={`p${index + 1}`} key={index + 1}>
-          <div className="back">
-            <label for={`c${index + 1}`} className="back-btn">
-              Before
-            </label>
-          </div>
-          <div className="front">
-            {pageList[index].map((memory, mapIndex) => {
-              console.log("console : " + (index * 6 + mapIndex));
-              return (
-                <StyledImg
-                  style={{
-                    backgroundColor: "white",
-                    padding: "1px",
-                    width: "80px",
-                    height: "80px",
-                  }}
-                  src={memory.imageUrl}
-                  onClick={() =>
-                    handleImageClick(memory.memoryPk, index * 6 + mapIndex)
-                  }
-                />
-              );
-            })}
-            <label for={`c${index + 1}`} className="next-btn">
-              NEXT
-            </label>
-          </div>
-        </div>
-      );
-    }
-    console.log(pageList);
-    return (
-      <div className="book">
-        <div className="wrapper">
-          {[...Array(parseInt(page))].map((n, index) => {
-            return (
-              <input
-                className="pageInput"
-                type="checkbox"
-                id={`c${index + 1}`}
-              />
-            );
-          })}
-          <div className="flip-book">{flipList}</div>
-        </div>
-      </div>
-    );
-  };
-
   // 메모리 리스트 회전 각도 배열
   const rotateArray = [5, -15, -30, 5, -8, 12];
 
@@ -321,7 +261,6 @@ const AlbumMypage = () => {
             </Grid>
           </div>
         </div>
-        {getFlipList()}
 
         <div class="alignCenter">
           <Pagination

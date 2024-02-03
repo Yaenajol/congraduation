@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
-import "./albumSlide.css";
+
 import {
   Paper,
   Grid,
@@ -219,63 +219,7 @@ const AlbumPage = () => {
       navigate(`/albums/${params.PK}/edit`);
     }
   };
-  const getFlipList = () => {
-    const page = parseInt(Math.ceil(albumMemories.length / 6));
-    const pageList = Array.from({ length: page }, () => []);
-    console.log("page " + page);
-    for (let index = 0; index < albumMemories.length; index++) {
-      pageList[parseInt(index / 6)].push(albumMemories[index]);
-    }
-    let flipList = Array.from({ length: page }, () => []);
-    for (let index = 0; index < page; index++) {
-      flipList[index].push(
-        <div className="flip" id={`p${index + 1}`} key={index + 1}>
-          <div className="back">
-            <label for={`c${index + 1}`} className="back-btn">
-              Before
-            </label>
-          </div>
-          <div className="front">
-            {pageList[index].map((memory, mapIndex) => {
-              console.log("console : " + (index * 6 + mapIndex));
-              return (
-                <StyledImg
-                  style={{
-                    backgroundColor: "white",
-                    padding: "1px",
-                    width: "80px",
-                    height: "80px",
-                  }}
-                  src={memory.imageUrl}
-                />
-              );
-            })}
-            <label for={`c${index + 1}`} className="next-btn">
-              NEXT
-            </label>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="book">
-        <div className="wrapper">
-          {[...Array(parseInt(100))].map((n, index) => {
-            return (
-              <input
-                className="pageInput"
-                type="checkbox"
-                id={`c${index + 1}`}
-              />
-            );
-          })}
-          <div className="flip-book">{flipList}</div>
-        </div>
-      </div>
-    );
-  };
-
+  
   const dday = new Date(album.openAt);
   const today = new Date();
   const timeGap = dday.getTime() - today.getTime();
@@ -322,9 +266,48 @@ const AlbumPage = () => {
             <MenuButton zin={true} />
           </div>
         </div>
-        {getFlipList()}
 
-        <div class="aligncenter">
+        <div style={{ display: "flex", position: "relative" }}>
+          <img
+            src={albumWhite}
+            alt="album"
+            style={{
+              width: "100%",
+              // height: "auto"
+            }}
+          />
+          <div class="memoryList">
+            <Grid container spacing={2}>
+              {albumMemories.slice(startIndex, endIndex).map((val, index) => (
+                <Grid
+                  item
+                  xs={4}
+                  key={index}
+                  style={{ marginLeft: "5%", marginBottom: "3%" }}
+                >
+                  <StyledImg
+                    style={{ transform: `rotate(${rotateArray[index]}deg)` }}
+                    src={val.imageUrl}
+                    alt={`Memory ${startIndex + index + 1}`}
+                    onClick={() =>
+                      handleImageClick(val.memoryPk, startIndex + index)
+                    }
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+        </div>
+
+        <div class="alignCenter">
+          <Pagination
+            count={Math.ceil(memoryarray.length / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+          />
+        </div>
+
+        <div class="alignCenter">
           <button class="button-2" onClick={() => gotoAddMemory()}>
             메모리 추가하기
           </button>
