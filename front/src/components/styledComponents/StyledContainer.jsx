@@ -5,7 +5,7 @@ import background2 from '../images/background2.png';
 import background23 from '../images/backgroun2-2.png';
 
 
-const StyledContainer = styled(Box)(({ theme }) => ({
+const StyledContainer = styled(Box)(({ theme }) => ({ 
     display: 'flex',
     flexDirection: 'column',
     // alignItems: 'center',
@@ -15,6 +15,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
     // height:'100vh',
     backgroundImage: `url(${background2})`, // 배경 이미지 추가
     backgroundSize: 'cover', // 배경 이미지를 화면에 꽉 채우도록 설정
+    
 }));
 
 export default StyledContainer;

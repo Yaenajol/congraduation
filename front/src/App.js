@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 
@@ -17,11 +17,14 @@ import { isLoginAtom } from "./components/store/atom";
 
 function App() {
   const setIsLogin = useSetRecoilState(isLoginAtom)
-
-  const accessToken = sessionStorage.getItem('accessToken')
-  if (typeof(accessToken) === typeof("")) {
-    setIsLogin(true)
-  }
+  
+  useEffect(() => {
+    const accessToken = sessionStorage.getItem('accessToken')
+    if (typeof(accessToken) === typeof("")) {
+      setIsLogin(true)
+    }
+  }, [setIsLogin])
+ 
   return ( 
     <BrowserRouter>
      

@@ -240,6 +240,7 @@ const MemoryUpload = () => {
         onChange={(e) => setMessage(e.target.value)}
         style={{ marginBottom : "10px"}}
         inputProps={{
+          minLength: 14,
           maxLength: 200,  // 한줄에 20자 들어감 
         }}
         
@@ -264,11 +265,11 @@ const MemoryUpload = () => {
         <MemoryAdd1
           className="submit-button"
           onClick={handleSubmit}
-          disabled={!isReadyToSubmit}
+          isClickable={isReadyToSubmit}
           style= {{ flex: 0}}
 
         >
-        </MemoryAdd1>
+        </MemoryAdd1 >
       
       <Dialog
         // style={{ height: '0%'}}
@@ -277,9 +278,6 @@ const MemoryUpload = () => {
         fullWidth={true}
       >
         <DragPage selectedGridItem={selectedGridItem} setImages={setImages} setOpenModal={setOpenModal} />
-        
-
-
       </Dialog>
 
     </StyledMemoryPage>
