@@ -12,11 +12,11 @@ import MemoryAdd1 from "../button/MemoryAdd1";
 import backgroundImage from "../images/background.png";
 import { Dialog } from "@mui/material";
 import DragPage from "../page/DragPage";
+import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import Spinner from "../spinner/Spinner";
-import { isLoginAtom } from "../store/atom";
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
@@ -36,7 +36,7 @@ const MemoryUpload = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (sessionStorage.accessToken) {
+    if (isLogin) {
       if (params.PK) {
         axios
           .get(
@@ -57,10 +57,12 @@ const MemoryUpload = () => {
   const [openModal, setOpenModal] = useState(false);
   const handleCloseModal = () => {
     setOpenModal(false);
+    // setSelectedImageIndex(null);
   };
 
   const handleGridItemClick = (key) => {
     setSelectedGridItem(key);
+    // fileInputRef.current.click();
     setSelectedImage(null);
     setOpenModal(true);
   };
