@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
+import "./albumSlide.css";
 import {
   Paper,
   Grid,
   Pagination,
-  TextField,
   Container,
   Button,
   Typography,
@@ -30,6 +30,8 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
 import AlbumProfileImage from "./AlbumProfileImage";
 
+import "../page/AlbumPage.css";
+import albumWhite from "../images/albumWhite.png";
 import "../page/AlbumPage.css";
 import albumWhite from "../images/albumWhite.png";
 
@@ -96,20 +98,12 @@ const AlbumMypage = () => {
   const dday = new Date(album.openAt);
   const today = new Date();
   const timeGap = dday.getTime() - today.getTime();
-  console.log("album.openAt : " + album.openAt);
-  console.log("dday : " + dday);
-  console.log("today : " + today);
+
   const remainDay = Math.ceil(timeGap / (1000 * 60 * 60 * 24));
 
-  const filteredAlbumMemories = albumMemories.filter(
-    (val) => val.albumPk === params.PK
-  ); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
   const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  const displayedAlbumMemories = filteredAlbumMemories.slice(
-    startIndex,
-    endIndex
-  );
+  const displayedAlbumMemories = filteredAlbumMemories.slice(startIndex, endIndex);
 
   const handleImageClick = (imageUrl, index) => {
     const now = moment();
@@ -133,15 +127,17 @@ const AlbumMypage = () => {
 
       setOpenModal(true); // 모달 opne 상태 true로
     } else {
-      alert("공개일 아님");
+      alert('공개일 아님')
     }
-    console.log(imageUrl);
+    console.log(imageUrl)
     // console.log(index)
     // setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
     // setOpenModal(true); // 모달 opne 상태 true로
-  };
+  }
 
-  const DarkMode = () => {};
+  const DarkMode = () => {
+    
+  }
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
@@ -184,6 +180,66 @@ const AlbumMypage = () => {
     });
   };
 
+  const getFlipList = () => {
+    const page = parseInt(Math.ceil(albumMemories.length / 6));
+    const pageList = Array.from({ length: page }, () => []);
+    console.log("page " + page);
+    for (let index = 0; index < albumMemories.length; index++) {
+      pageList[parseInt(index / 6)].push(albumMemories[index]);
+    }
+    let flipList = Array.from({ length: page }, () => []);
+    for (let index = 0; index < page; index++) {
+      flipList[index].push(
+        <div className="flip" id={`p${index + 1}`} key={index + 1}>
+          <div className="back">
+            <label for={`c${index + 1}`} className="back-btn">
+              Before
+            </label>
+          </div>
+          <div className="front">
+            {pageList[index].map((memory, mapIndex) => {
+              console.log("console : " + (index * 6 + mapIndex));
+              return (
+                <StyledImg
+                  style={{
+                    backgroundColor: "white",
+                    padding: "1px",
+                    width: "80px",
+                    height: "80px",
+                  }}
+                  src={memory.imageUrl}
+                  onClick={() =>
+                    handleImageClick(memory.memoryPk, index * 6 + mapIndex)
+                  }
+                />
+              );
+            })}
+            <label for={`c${index + 1}`} className="next-btn">
+              NEXT
+            </label>
+          </div>
+        </div>
+      );
+    }
+    console.log(pageList);
+    return (
+      <div className="book">
+        <div className="wrapper">
+          {[...Array(parseInt(page))].map((n, index) => {
+            return (
+              <input
+                className="pageInput"
+                type="checkbox"
+                id={`c${index + 1}`}
+              />
+            );
+          })}
+          <div className="flip-book">{flipList}</div>
+        </div>
+      </div>
+    );
+  };
+
   // 메모리 리스트 회전 각도 배열
   const rotateArray = [5, -15, -30, 5, -8, 12];
 
@@ -200,18 +256,9 @@ const AlbumMypage = () => {
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
                 <div style={{ color: "white", fontWeight: "bolder" }}>
-                  D - 
-                  <span class="memorysize">
-                    {remainDay === 0 ? (
-                      <span>
-                         day Congraduation!
-                      </span>
-                    ) : (
-                      remainDay
-                    )}
-                  </span>
+                  D - <span class="memorysize">{remainDay === 0 ? <div>Congraduation!</div> : remainDay}</span>
                 </div>
-              )}
+              )}{" "}
             </StyledTypography>
             <StyledTypography style={{ color: "white" }}>
               <span class="memorysize">{memoryarray.length}장</span>의 메모리가
@@ -226,28 +273,19 @@ const AlbumMypage = () => {
               albumPk={album.albumPk}
               isClickable={true}
             />
-            <MenuButton onClick={() => DarkMode()} zin={false} />
+            <MenuButton onClick={()=>DarkMode()} zin={false}/>
           </div>
         </div>
 
         <div style={{ display: "flex", position: "relative" }}>
-          <img
-            src={albumWhite}
-            alt="album"
-            style={{
-              width: "100%",
-              // height: "auto"
-            }}
-          />
+          <img src={albumWhite} alt="album" style={{
+            width: "100%"
+            // height: "auto"
+          }} />
           <div class="memoryList">
             <Grid container spacing={2}>
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-                <Grid
-                  item
-                  xs={4}
-                  key={index}
-                  style={{ marginLeft: "5%", marginBottom: "3%" }}
-                >
+                <Grid item xs={4} key={index} style={{ marginLeft: "5%", marginBottom: "3%" }}>
                   <StyledImg
                     style={{ transform: `rotate(${rotateArray[index]}deg)` }}
                     src={val.imageUrl}
@@ -271,9 +309,10 @@ const AlbumMypage = () => {
         </div>
 
         <div class="alignCenter">
-          <button
-            class="button"
-            onClick={() => handlerCopyClipBoard(album.albumPk)}
+          <button class="button"
+            onClick={() =>
+              handlerCopyClipBoard(album.albumPk)
+            }
           >
             공유하러 가기
           </button>
