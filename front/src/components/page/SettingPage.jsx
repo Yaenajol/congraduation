@@ -77,11 +77,9 @@ const SettingsPage = () => {
           window.alert("날짜를 오늘 이상으로 설정해 주세요.");
           return;
         }
-
-        if (!dateFormat)
-          if (!window.confirm("확정 시, 수정 불가합니다.")) {
-            return;
-          }
+        if (!window.confirm("확정 시, 수정 불가합니다.")) {
+          return;
+        }
 
         console.log("데이트포맷 : " + dateFormat);
         const payload = {
