@@ -17,11 +17,26 @@
   font-style: normal;
 }
 
+/* 눈누 평창평화체 폰트적용되었는지 테스트용 */
+@font-face {
+  font-family: 'PyeongChangPeace-Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
 
+
+.font700 {
+  font-family: 'TheJamsil5Bold';  
+}
+
+.fonttest {
+  font-family: 'PyeongChangPeace-Bold';
+  color: red;
+}
 
 body {  
   background-color: rgb(18, 1, 104);
-
 }
 
 /* YourComponent.css */
@@ -74,6 +89,7 @@ body {
   background-color: rgb(245, 225, 75);
   color: rgb(55, 31, 31);
   /* font-size: 1.5rem; */
+  margin-top: 15%;
 }
 
 
@@ -186,6 +202,8 @@ h1 span:nth-child(14) { animation-delay: .13s; }
   width: 200px;
   height: 170px;
   justify-content: center;
+  margin-top: 10%;
+
 }
 
 .textfield {
