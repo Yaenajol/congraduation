@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
-import "./albumSlide.scss";
+import "./albumSlide.css";
 import {
   Paper,
   Grid,
@@ -28,10 +28,10 @@ import { lookingPkAtom } from "../store/atom";
 import { albumPageMainImgAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
-import "../page/AlbumPage.css";
-
 import AlbumProfileImage from "./AlbumProfileImage";
-import AlbumImage from "../album/AlbumImage";
+
+import "../page/AlbumPage.css";
+import albumWhite from "../images/albumWhite.png";
 
 const AlbumMypage = () => {
   const params = useParams();
@@ -58,7 +58,7 @@ const AlbumMypage = () => {
   const [specificMemory, setSpecificMemory] = useState("");
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(undefined);
-  console.log(albumMemories);
+
   useEffect(() => {
     if (!isLogin) {
       navigate("/");
@@ -89,7 +89,6 @@ const AlbumMypage = () => {
             if (typeof response.data === typeof []) {
               setMemoryarray(response.data);
             }
-            console.log(response.data);
           });
       });
   }, []);
@@ -231,6 +230,9 @@ const AlbumMypage = () => {
     );
   };
 
+  // 메모리 리스트 회전 각도 배열
+  const rotateArray = [5, -15, -30, 5, -8, 12];
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <StyledContainer>
@@ -264,20 +266,12 @@ const AlbumMypage = () => {
               albumPk={album.albumPk}
               isClickable={true}
             />
-            <MenuButton />
+            <MenuButton zin={false} />
           </div>
         </div>
         {getFlipList()}
-        {/* 
-        <div class="aligncenter">
-          <Pagination
-            count={Math.ceil(memoryarray.length / itemsPerPage)}
-            page={currentPage}
-            onChange={handlePageChange}
-          />
-        </div> */}
 
-        <div class="aligncenter">
+        <div class="alignCenter">
           <button
             class="button"
             onClick={() => handlerCopyClipBoard(album.albumPk)}
@@ -287,15 +281,28 @@ const AlbumMypage = () => {
         </div>
 
         <Dialog open={openModal} onClose={handleCloseModal}>
-          <DialogContent>
+          <DialogContent style={{ overflowY: "auto" }}>
             {selectedImageIndex !== null && (
-              <StyledImg
-                src={memoryarray[selectedImageIndex]?.imageUrl}
-                alt={`Memory ${selectedImageIndex + 1}`}
-                style={{ maxWidth: "100%" }}
-              />
+              <div>
+                <StyledImg
+                  src={memoryarray[selectedImageIndex]?.imageUrl}
+                  alt={`Memory ${selectedImageIndex + 1}`}
+                  style={{ maxWidth: "100%" }}
+                />
+                <div
+                  style={{
+                    maxHeight: "30vh",
+                    overflowY: "auto",
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {" "}
+                  {/* wordWrap: 'break-word' 일 경우 단어가 끊김  */}
+                  <p>{specificMemory.nickname}</p>
+                  <h2> {specificMemory.content}ㅋㅋㅋㅋㅋ</h2>
+                </div>
+              </div>
             )}
-            <p>{memoryarray[selectedImageIndex]?.nickname}</p>
           </DialogContent>
           <DialogActions>
             <Button

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
-import "./albumSlide.scss";
+import "./albumSlide.css";
 import {
   Paper,
   Grid,
@@ -31,8 +31,12 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
 import "../page/AlbumPage.css";
 import DehazeRoundedIcon from "@mui/icons-material/DehazeRounded";
+
 import AlbumProfileImage from "./AlbumProfileImage";
 import Dday from "./Dday";
+
+import "../page/AlbumPage.css";
+import albumWhite from "../images/albumWhite.png";
 
 const AlbumPage = () => {
   const params = useParams();
@@ -64,6 +68,7 @@ const AlbumPage = () => {
     console.log("=======================" + isLogin);
     setLookingPk(params.PK);
     console.log(params.PK);
+
     // 특정 앨범 조회
     axios
       .get(`https://congraduation.me/backapi/albums/${params.PK}`)
@@ -98,6 +103,7 @@ const AlbumPage = () => {
         .then((response) => {
           console.log("check" + response.data);
           // 만약 접근한 유저의 권한이 true 이면
+
           if (typeof response.data === typeof true) {
             if (response.data === true) {
               navigate("/myalbum");
@@ -149,12 +155,8 @@ const AlbumPage = () => {
 
       setOpenModal(true); // 모달 opne 상태 true로
     } else {
-      alert("공개일 아님");
+      alert("앨범 주인만 볼 수 있어요!!");
     }
-    console.log(imageUrl);
-    console.log(index);
-    // setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
-    // setOpenModal(true); // 모달 opne 상태 true로
   };
 
   // 다이어리(모달)을 끄는 기능
@@ -197,7 +199,9 @@ const AlbumPage = () => {
     }
   };
   const gotomyAlbum = () => {
-    navigate("/myalbum");
+    sessionStorage.removeItem("lookingPk", params.PK);
+
+    navigate("/");
   };
   // Setting page 로 이동하는 기능
   const gotoSetting = () => {
@@ -253,11 +257,11 @@ const AlbumPage = () => {
         </div>
       );
     }
-    console.log(pageList);
+
     return (
       <div className="book">
         <div className="wrapper">
-          {[...Array(parseInt(page))].map((n, index) => {
+          {[...Array(parseInt(100))].map((n, index) => {
             return (
               <input
                 className="pageInput"
@@ -272,48 +276,61 @@ const AlbumPage = () => {
     );
   };
 
+  const dday = new Date(album.openAt);
+  const today = new Date();
+  const timeGap = dday.getTime() - today.getTime();
+
+  const remainDay = Math.ceil(timeGap / (1000 * 60 * 60 * 24));
+
+  // 메모리 리스트 회전 각도 배열
+  const rotateArray = [5, -15, -30, 5, -8, 12];
+
   // 유저 이미지 아이콘 버튼
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <StyledContainer>
-        <div style={{ marginLeft: "1rem", height: "20%" }}>
-          <StyledTypography>
-            {albumOpenAt === null ? (
-              <div>졸업일자를 설정해주세요.</div>
-            ) : (
-              <div style={{ color: "white", fontWeight: "bolder" }}>
-                D - <span class="memorysize">{album.openAt}</span>
-              </div>
-            )}
-          </StyledTypography>
-          <StyledTypography style={{ color: "white" }}>
-            <span class="memorysize">{memoryarray.length}장</span>의 메모리가
-            도착했어요!
-          </StyledTypography>
-        </div>
-
-        <div class="aligncenter">
-          <AlbumProfileImage
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
-            albumPk={params.PK}
-            isClickable={false}
-          />
-          <StyledTypography>
-            {album.nickname} 의 {album.title}
-          </StyledTypography>
-
+        <div class="sortHeader">
           <div>
+            <StyledTypography>
+              {album.nickname} 의 {album.title}
+            </StyledTypography>
+            <StyledTypography>
+              {albumOpenAt === null ? (
+                <div>졸업일자를 설정해주세요.</div>
+              ) : (
+                <div style={{ color: "white", fontWeight: "bolder" }}>
+                  D -{" "}
+                  <span class="memorysize">
+                    {remainDay === 0 ? <div>Congraduation!</div> : remainDay}
+                  </span>
+                </div>
+              )}
+            </StyledTypography>
+            <StyledTypography style={{ color: "white" }}>
+              <span class="memorysize">{memoryarray.length}장</span>의 메모리가
+              도착했어요!
+            </StyledTypography>
+            <StyledTypography>{album.graduationPlace} 졸업</StyledTypography>
+          </div>
+          <div style={{ textAlign: "end", width: "30%" }}>
+            <AlbumProfileImage
+              imageUrl={imageUrl}
+              setImageUrl={setImageUrl}
+              albumPk={params.PK}
+              isClickable={false}
+            />
             <MenuButton zin={true} />
           </div>
         </div>
         {getFlipList()}
 
         <div class="aligncenter">
-          <button class="button" onClick={() => gotoAddMemory()}>
+          <button class="button-2" onClick={() => gotoAddMemory()}>
             메모리 추가하기
           </button>
-          <button onClick={() => gotomyAlbum()}> 내 앨범으로 가기</button>
+          <button class="button-2" onClick={() => gotomyAlbum()}>
+            내 앨범으로 가기
+          </button>
         </div>
 
         <Dialog open={openModal} onClose={handleCloseModal}>

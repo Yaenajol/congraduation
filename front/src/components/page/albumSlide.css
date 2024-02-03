@@ -93,19 +93,16 @@
 .pageInput {
   display: none;
 }
-$totalPage: 100;
-
-@for $i from 1 through $totalPage {
+/* @for $i from 1 through 100 {
   #p#{$i} {
-    z-index: $totalPage-$i;
+    z-index: 100-$i;
   }
   #c#{$i}:checked ~ .flip-book #p#{$i} {
     transform: rotateY(-180deg);
-    z-index: 1;
+    z-index: #{$i};
   }
-}
-
-#p1 {
+} */
+/* #p1 {
   z-index: 3;
 }
 #p2 {
@@ -114,7 +111,6 @@ $totalPage: 100;
 #p3 {
   z-index: 1;
 }
-
 #c1:checked ~ .flip-book #p1 {
   transform: rotateY(-180deg);
 
@@ -127,32 +123,40 @@ $totalPage: 100;
 #c3:checked ~ .flip-book #p3 {
   transform: rotateY(-180deg);
   z-index: 3;
+} */
+
+#p1 {
+  z-index: 4;
 }
-/* 
 
-// MyComponent.jsx
-
-import React from 'react';
-
-const generateDynamicStyles = () => {
-  const dynamicClassName = `c${Math.floor(Math.random() * 1000)}`;
-  const dynamicStyles = {
-    color: 'red',
-    fontSize: '16px',
-    [dynamicClassName]: {
-      color: 'blue',
-    },
-  };
-  return dynamicStyles;
-};
-
-function MyComponent() {
-  const dynamicStyles = generateDynamicStyles();
-
-  return (
-    <div className={`c1 ${dynamicStyles[dynamicClassName]}`}>
-      동적으로 생성된 스타일이 적용된 컴포넌트
-    </div>
-  );
+#c1:checked ~ .flip-book #p1 {
+  transform: rotateY(-180deg);
+  z-index: 1;
 }
-] */
+
+#p2 {
+  z-index: 3;
+}
+
+#c2:checked ~ .flip-book #p2 {
+  transform: rotateY(-180deg);
+  z-index: 2;
+}
+
+#p3 {
+  z-index: 2;
+}
+
+#c3:checked ~ .flip-book #p3 {
+  transform: rotateY(-180deg);
+  z-index: 3;
+}
+
+#p4 {
+  z-index: 1;
+}
+
+#c4:checked ~ .flip-book #p4 {
+  transform: rotateY(-180deg);
+  z-index: 4;
+}
