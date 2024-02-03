@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { Paper, Grid, Pagination, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Paper, Grid, Pagination,TextField, Container, Button, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 import StyledContainer from '../styledComponents/StyledContainer';
 import StyledImg from '../styledComponents/StyledImg';
@@ -48,6 +48,7 @@ const AlbumMypage = () => {
   const [albumOpenAt, setalbumOpenAt] = useState(undefined);
 
 
+
   useEffect(() => {
 
     if (!isLogin) {
@@ -77,12 +78,11 @@ const AlbumMypage = () => {
             if (typeof (response.data) === typeof ([])) {
               setMemoryarray(response.data)
             }
-            console.log(response.data)
           });
       });
   },[])
   
-  console.log(album)
+ 
   
   const filteredAlbumMemories = albumMemories.filter((val) => val.albumPk === params.PK); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
   const startIndex = (currentPage - 1) * itemsPerPage;  // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
@@ -111,9 +111,13 @@ const AlbumMypage = () => {
       alert('공개일 아님')
     }
     console.log(imageUrl)
-    console.log(index)
+    // console.log(index)
     // setSelectedImageIndex(index); //해당 인덱스로 선택된 이미지 상태 변경
     // setOpenModal(true); // 모달 opne 상태 true로
+  }
+
+  const DarkMode = () => {
+    
   }
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -174,14 +178,14 @@ const AlbumMypage = () => {
             </StyledTypography>
             <StyledTypography>{album.graduationPlace} 졸업</StyledTypography>
           </div>
-          <div style={{ textAlign: "end", width: "30%" }}>
+          <div style={{ textAlign: "end", width: "30%", }}>
             <AlbumProfileImage
               imageUrl={imageUrl}
               setImageUrl={setImageUrl}
               albumPk={album.albumPk}
               isClickable={true}
             />
-            <MenuButton />
+            <MenuButton onClick={()=>DarkMode()} zin={false}/>
           </div>
         </div>
 
@@ -226,16 +230,25 @@ const AlbumMypage = () => {
         </div>
 
         <Dialog open={openModal} onClose={handleCloseModal}>
-          <DialogContent>
+          <DialogContent style={{ overflowY: 'auto'}}>
             {selectedImageIndex !== null && (
-              <StyledImg
+              <div>
+                <StyledImg
                 src={memoryarray[selectedImageIndex]?.imageUrl}
                 alt={`Memory ${selectedImageIndex + 1}`}
                 style={{ maxWidth: "100%" }}
-              />
+                />
+                <div style={{ maxHeight: '30vh' , overflowY: 'auto', wordBreak: 'break-word'}}>  {/* wordWrap: 'break-word' 일 경우 단어가 끊김  */}
+                <p>{specificMemory.nickname}</p>
+                <h2>  {specificMemory.content}ㅋㅋㅋㅋㅋ</h2>
+              
+                </div>
 
+                </div>
+              
+              
             )}
-            <p>{memoryarray[selectedImageIndex]?.nickname}</p>
+            
           </DialogContent>
           <DialogActions>
             <Button

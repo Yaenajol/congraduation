@@ -10,6 +10,7 @@ import MemoryAdd from '../button/MemoryAdd'
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import { albumPageMainImgAtom } from "../store/atom";
 import axios from 'axios';
+import { data } from 'jquery';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -45,6 +46,8 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   // ... (rest of the code remains same as in your TS file)
   function onSelectFile(e) {
     if (e.target.files && e.target.files.length > 0) {
+      console.log(e.target.files[0])
+      
       setCrop(undefined) // Makes crop preview update between images.
       const reader = new FileReader()
       reader.addEventListener('load', () =>
@@ -62,18 +65,20 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   }
 
   async function onDownloadCropClick(page) {
-
+    
     const updateImage = (imageData) => {
       setImages((prevImages) => ({
         ...prevImages,
         [selectedGridItem]: imageData, // 선택된 그리드 아이템에 이미지 데이터 업데이트
       }));
-      
     };
     
     const image = imgRef.current
     const previewCanvas = previewCanvasRef.current
-
+    console.log(crop)
+    console.log(completedCrop)
+    console.log(!!crop)
+    console.log(!crop)
     if (!image || !previewCanvas || !completedCrop) {
       throw new Error('Crop canvas does not exist')
     }
@@ -190,7 +195,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
       <div className="upload" >
         <InputFileUpload onChange={onSelectFile} />
       
-        <MemoryAdd  onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
+        <MemoryAdd isClickable={imgSrc !== '' && !!crop  && !!crop.width && !!crop.height} onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
       </div>
         
         
@@ -240,16 +245,18 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
           aspect={aspect}
           minWidth={100}
           minHeight={100}
+          
           locked={false}
+          
           // circularCrop
         >
         
           <img
+            className='img-size'
             ref={imgRef}
             alt="Crop me"
             src={imgSrc}
-            style={{ transform: `scale(${scale}) rotsate(${rotate}deg)`   }}
-            
+            style={{ transform: `scale(${scale}) rotsate(${rotate}deg)` , objectFit: 'contain', maxHeight: '50vh' }}
             onLoad={onImageLoad}
           />
           
@@ -275,7 +282,8 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
                 objectFit: 'contain',
                 width: completedCrop.width,
                 height: completedCrop.height,
-                visibility: 'hidden'
+                // visibility: 'hidden',   // 얘는 안보이지만 공간을 차지
+                display: 'none'  // 얘는 공간도 안 차지함
               }}
             />
           </div>

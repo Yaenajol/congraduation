@@ -129,7 +129,7 @@ const AlbumPage = () => {
       setOpenModal(true); // 모달 opne 상태 true로
 
     } else {
-      alert('공개일 아님')
+      alert('앨범 주인만 볼 수 있어요!!')
     }
    
   }

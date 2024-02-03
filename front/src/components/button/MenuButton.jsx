@@ -35,9 +35,10 @@ export default function MenuIntroduction({zin}) {
   const createHandleMenuClick = (menuItem) => {
 
     return () => {
-      if (menuItem === 'Log out') {
+      if (menuItem === 'Logout') {
         sessionStorage.removeItem('accessToken')
         setIsLogin(false)
+        console.log('로그아웃')
         navigate('/')
       } else if (menuItem === 'Profile' ) {
         navigate(`/myalbum/setting` , { state : settingdata})
@@ -57,7 +58,7 @@ export default function MenuIntroduction({zin}) {
         <MenuItem onClick={createHandleMenuClick('Inquiry')}>
           1:1 문의
         </MenuItem>
-        {isLogin? <MenuItem onClick={createHandleMenuClick('Log out')}>로그 아웃</MenuItem> : null}
+        {isLogin? <MenuItem onClick={createHandleMenuClick('Logout')}>로그 아웃</MenuItem> : null}
         
       </Menu>
     </Dropdown>
@@ -113,10 +114,11 @@ const MenuItem = styled(BaseMenuItem)(
   ({ theme }) => `
   list-style: none;
   padding: 8px;
+  height : 20px;
   border-radius: 8px;
   cursor: default;
-  user-select: none;
-
+  user-select: all;
+  
   &:last-of-type {
     border-bottom: none;
   }

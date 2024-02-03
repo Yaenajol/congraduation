@@ -5,13 +5,14 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 
 
-export default function ButtonColors({onClick, value}) {
+export default function ButtonColors({onClick, isClickable}) {
   const [variant, setVariant] = React.useState('soft');
   return (
     <Box
       sx={{
         // display: 'flex',
         // marginRight: '10%',
+        marginBottom: '5%',
         alignItems: 'center',
         gap: 3,
       }}
@@ -23,7 +24,7 @@ export default function ButtonColors({onClick, value}) {
           gap: 1,
         }}
       >
-        <Button onClick={onClick} size="md"  variant={variant} color="primary">
+        <Button onClick={onClick} size="md" disabled={!isClickable} variant={variant} color="primary">
           업로드
         </Button>
       </Box>
