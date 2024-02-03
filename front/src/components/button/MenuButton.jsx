@@ -4,7 +4,7 @@ import { Dropdown } from '@mui/base/Dropdown';
 import { Menu } from '@mui/base/Menu';
 import { MenuButton as BaseMenuButton } from '@mui/base/MenuButton';
 import DehazeRoundedIcon from '@mui/icons-material/DehazeRounded';
-
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MenuItem as BaseMenuItem, menuItemClasses } from '@mui/base/MenuItem';
 import { styled } from '@mui/system';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
@@ -49,8 +49,20 @@ export default function MenuIntroduction({zin}) {
 
   return (
     <Dropdown>
-      <MenuButton >
-      <DehazeRoundedIcon/>
+      {/* <IconButton
+        aria-label="more"
+        id="long-button"
+        aria-controls={open ? 'long-menu' : undefined}
+        aria-expanded={open ? 'true' : undefined}
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
+        <MoreVertIcon />
+      </IconButton> */}
+      <MenuButton style={{borderRadius:"50%", width:"50%"}}>
+      {/* <MenuButton style={{backgroundColor:"rgba( 255, 255, 255, 0 )", border:"none"}}> */}
+      <MoreVertIcon style={{color:"black", textAlign:"start"}}/>
+      {/* <DehazeRoundedIcon/> */}
       </MenuButton>
       <Menu slots={{ listbox: Listbox }}>
         {!zin ? <MenuItem  onClick={createHandleMenuClick('Profile')}>앨범 설정</MenuItem>: null}

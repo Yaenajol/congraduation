@@ -16,9 +16,11 @@ import { lookingPkAtom } from "../store/atom";
 import { albumPageMainImgAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
-import '../page/AlbumPage.css'
 import AlbumProfileImage from "./AlbumProfileImage";
 import Dday from './Dday';
+
+import '../page/AlbumPage.css'
+import albumWhite from '../images/albumWhite.png'
 
 const AlbumPage = () => {
   const params = useParams();
@@ -46,7 +48,7 @@ const AlbumPage = () => {
   const [albumOpenAt, setalbumOpenAt] = useState(null);
   console.log(lookingPk);
   useEffect(() => {
-    console.log("======================="+isLogin)
+    console.log("=======================" + isLogin)
     setLookingPk(params.PK)
     console.log(params.PK)
     // 특정 앨범 조회
@@ -84,11 +86,11 @@ const AlbumPage = () => {
           console.log('check' + response.data)
           // 만약 접근한 유저의 권한이 true 이면
           if (typeof (response.data) === typeof (true)) {
-            if(response.data===true){
+            if (response.data === true) {
               navigate("/myalbum")
             }
-            
-           
+
+
           }
 
         });
@@ -131,7 +133,7 @@ const AlbumPage = () => {
     } else {
       alert('공개일 아님')
     }
-   
+
   }
 
   // 다이어리(모달)을 끄는 기능
@@ -173,7 +175,7 @@ const AlbumPage = () => {
     }
   };
   const gotomyAlbum = () => {
-    
+
     sessionStorage.removeItem('lookingPk', params.PK)
 
     navigate('/')
@@ -190,47 +192,72 @@ const AlbumPage = () => {
       console.log(params.PK)
       sessionStorage.setItem('lookingPk', params.PK)
       navigate("/");
-      
+
     } else {
       navigate(`/albums/${params.PK}/edit`);
     }
   };
 
+  // 메모리 리스트 회전 각도 배열
+  const rotateArray = [5, -15, -30, 5, -8, 12];
+
   // 유저 이미지 아이콘 버튼
   return (
-    <div style={{ display: "flex", justifyContent: "center"}}>
+    <div style={{ display: "flex", justifyContent: "center" }}>
       <StyledContainer>
-        <div style={{marginLeft:"1rem" ,height: "20%"}}>
-          <StyledTypography>
-            {albumOpenAt === null ? (
-              <div>졸업일자를 설정해주세요.</div>
-            ) : (
-              <div style={{ color: "white", fontWeight: "bolder" }}>D - <span class="memorysize">{album.openAt}</span></div>
-            )}
-          </StyledTypography>
-          <StyledTypography style={{ color: "white" }}>
-            <span class="memorysize">{memoryarray.length}장</span>의 메모리가 도착했어요!
-          </StyledTypography>
-        </div>
-        
-        <div class="aligncenter">
-          <AlbumProfileImage
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
-            albumPk={params.PK}
-            isClickable={false}
-          />
-          <StyledTypography>{album.nickname} 의 {album.title}</StyledTypography>
-          
+        <div class="sortHeader">
           <div>
+            <StyledTypography>{album.nickname} 의 {album.title}</StyledTypography>
+            <StyledTypography>
+              {albumOpenAt === null ? (
+                <div>졸업일자를 설정해주세요.</div>
+              ) : (
+                <div style={{ color: "white", fontWeight: "bolder" }}>D - <span class="memorysize">{album.openAt}</span></div>
+              )}
+            </StyledTypography>
+            <StyledTypography style={{ color: "white" }}>
+              <span class="memorysize">{memoryarray.length}장</span>의 메모리가 도착했어요!
+            </StyledTypography>
+            <StyledTypography>{album.graduationPlace} 졸업</StyledTypography>
+          </div>
+          <div style={{ textAlign: "end", width: "30%" }}>
+            <AlbumProfileImage
+              imageUrl={imageUrl}
+              setImageUrl={setImageUrl}
+              albumPk={params.PK}
+              isClickable={false}
+            />
             <MenuButton zin={true} />
           </div>
         </div>
-        <div style={{ height : '15%'}} className='gridAlignCenter'>
+
+        <div style={{ display: "flex", position: "relative" }}>
+          <img src={albumWhite} alt="album" style={{
+            width: "100%"
+            // height: "auto"
+          }} />
+          <div class="memoryList">
+            <Grid container spacing={2}>
+              {albumMemories.slice(startIndex, endIndex).map((val, index) => (
+                <Grid item xs={4} key={index} style={{ marginLeft: "5%", marginBottom: "3%" }}>
+                  <StyledImg
+                    style={{ transform: `rotate(${rotateArray[index]}deg)` }}
+                    src={val.imageUrl}
+                    alt={`Memory ${startIndex + index + 1}`}
+                    onClick={() =>
+                      handleImageClick(val.memoryPk, startIndex + index)
+                    }
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </div>
+        </div>
+
+        {/* <div style={{ height: '15%' }} className='gridAlignCenter'>
           <Grid container spacing={2}>
             {albumMemories.slice(startIndex, endIndex).map((val, index) => (
               <Grid item xs={4} key={index}>
-                {/* <StyledPaper> */}
                 <StyledImg
                   style={{ backgroundColor: "white", padding: "1px", }}
                   src={val.imageUrl}
@@ -239,26 +266,28 @@ const AlbumPage = () => {
                     handleImageClick(val.memoryPk, startIndex + index)
                   }
                 />
-                {/* </StyledPaper> */}
               </Grid>
             ))}
           </Grid>
+        </div> */}
+
+        <div class="alignCenter">
+          <Pagination
+            count={Math.ceil(memoryarray.length / itemsPerPage)}
+            page={currentPage}
+            onChange={handlePageChange}
+          />
         </div>
-        <div class="aligncenter">
-        <Pagination
-          count={Math.ceil(memoryarray.length / itemsPerPage)}
-          page={currentPage}
-          onChange={handlePageChange}
-        />
-        </div>
-        <div class="aligncenter">
-            <button class="button"
-                  onClick={() => gotoAddMemory()}
-                >
-              메모리 추가하기
-            </button>
-            <button onClick={() => gotomyAlbum()}> 내 앨범으로 가기</button>
-          
+
+        <div class="alignCenter">
+          <button class="button-2"
+            onClick={() => gotoAddMemory()}
+          >
+            메모리 추가하기
+          </button>
+          <button class="button-2"
+            onClick={() => gotomyAlbum()}> 내 앨범으로 가기
+          </button>
         </div>
 
         <Dialog open={openModal} onClose={handleCloseModal}>
@@ -272,7 +301,6 @@ const AlbumPage = () => {
 
             )}
             <p>{memoryarray[selectedImageIndex]?.nickname}</p>
-
           </DialogContent>
           <DialogActions>
             <Button

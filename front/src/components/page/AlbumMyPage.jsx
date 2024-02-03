@@ -16,10 +16,10 @@ import { lookingPkAtom } from "../store/atom";
 import { albumPageMainImgAtom } from "../store/atom";
 import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
-import '../page/AlbumPage.css'
-
 import AlbumProfileImage from "./AlbumProfileImage";
-import AlbumImage from '../album/AlbumImage';
+
+import '../page/AlbumPage.css'
+import albumWhite from '../images/albumWhite.png'
 
 const AlbumMypage = () => {
 
@@ -80,10 +80,10 @@ const AlbumMypage = () => {
             console.log(response.data)
           });
       });
-  },[])
-  
+  }, [])
+
   console.log(album)
-  
+
   const filteredAlbumMemories = albumMemories.filter((val) => val.albumPk === params.PK); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
   const startIndex = (currentPage - 1) * itemsPerPage;  // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
@@ -156,6 +156,9 @@ const AlbumMypage = () => {
     });
   };
 
+  // 메모리 리스트 회전 각도 배열
+  const rotateArray = [5, -15, -30, 5, -8, 12];
+
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <StyledContainer>
@@ -185,29 +188,30 @@ const AlbumMypage = () => {
           </div>
         </div>
 
-        <div style={{display:"flex"}}>
-          <AlbumImage class="album" />
+        <div style={{ display: "flex", position: "relative" }}>
+          <img src={albumWhite} alt="album" style={{
+            width: "100%"
+            // height: "auto"
+          }} />
           <div class="memoryList">
-
             <Grid container spacing={2}>
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-                <Grid item xs={5} key={index}>
-                  {/* <StyledPaper> */}
+                <Grid item xs={4} key={index} style={{ marginLeft: "5%", marginBottom: "3%" }}>
                   <StyledImg
+                    style={{ transform: `rotate(${rotateArray[index]}deg)` }}
                     src={val.imageUrl}
                     alt={`Memory ${startIndex + index + 1}`}
                     onClick={() =>
                       handleImageClick(val.memoryPk, startIndex + index)
                     }
                   />
-                  {/* </StyledPaper> */}
                 </Grid>
               ))}
             </Grid>
           </div>
         </div>
 
-        <div class="aligncenter">
+        <div class="alignCenter">
           <Pagination
             count={Math.ceil(memoryarray.length / itemsPerPage)}
             page={currentPage}
@@ -215,7 +219,7 @@ const AlbumMypage = () => {
           />
         </div>
 
-        <div class="aligncenter">
+        <div class="alignCenter">
           <button class="button"
             onClick={() =>
               handlerCopyClipBoard(album.albumPk)
