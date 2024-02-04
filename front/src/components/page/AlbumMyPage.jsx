@@ -1,60 +1,67 @@
+// react
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
-import axios from "axios";
-import {
-  Paper,
-  Grid,
-  Pagination,
-  TextField,
-  Container,
-  Button,
-  Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
+
+// recoil
+import { useRecoilState } from "recoil";
+import { albumPageMainImgAtom } from "../store/atom";
+
+// css
+import { Grid, Pagination, Button, Dialog, DialogContent, DialogActions } from "@mui/material";
 import StyledContainer from "../styledComponents/StyledContainer";
 import StyledImg from "../styledComponents/StyledImg";
-
 import StyledTypography from "../styledComponents/StyledTypography";
+import "../page/AlbumPage.css";
 
-import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
-import moment from "moment";
+// component
+import CustomButton from "../button/CustomButton";
 import MenuButton from "../../components/button/MenuButton";
-import { albumPageMainImgAtom } from "../store/atom";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 
+// image
+import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
+import albumFrame from "../images/albumFrame.png";
 import AlbumProfileImage from "./AlbumProfileImage";
 
-import "../page/AlbumPage.css";
-import albumFrame from "../images/albumFrame.png";
-import { fontSize } from "@mui/system";
-import CustomButton from "../button/CustomButton";
+// external
+import axios from "axios";
+import moment from "moment";
+
 
 const AlbumMypage = () => {
-  const params = useParams();
 
+  // 전역 상태 변수 목록
+  const [albumPageMainImg, setAlbumPageMainImg] =useRecoilState(albumPageMainImgAtom);
+
+  
+  // 상태 변수 목록
   const [album, setAlbum] = useState([]);
   const [albumMemories, setAlbumMemories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [openModal, setOpenModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [memoryarray, setMemoryarray] = useState([]);
-  const itemsPerPage = 4;
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [albumPageMainImg, setAlbumPageMainImg] =
-    useRecoilState(albumPageMainImgAtom);
-
-  const date = moment(album.openAt);
   const [specificMemory, setSpecificMemory] = useState("");
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(undefined);
-  console.log(albumMemories);
+  
+  // 날짜 설정 변수 목록
+  const date = moment(album.openAt);
+  const dday = new Date(album.openAt);
+  const today = new Date();
+  const timeGap = dday.getTime() - today.getTime();
+  const remainDay = Math.ceil(timeGap / (1000 * 60 * 60 * 24));
+  
+  // 페이지네이션 변수 목록
+  const itemsPerPage = 4;
+  const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
+  const endIndex = startIndex + itemsPerPage; // 끝 인덱스
+  
+  const navigate = useNavigate();
+
+
   useEffect(() => {
-    if (!sessionStorage.accessToken) {
+    if (!sessionStorage.accessToken) {  // accessToken 없으면 로그인 페이지로
       navigate("/");
       return;
     }
@@ -86,24 +93,6 @@ const AlbumMypage = () => {
           });
       });
   }, []);
-
-  const dday = new Date(album.openAt);
-  const today = new Date();
-  const timeGap = dday.getTime() - today.getTime();
-  console.log("album.openAt : " + album.openAt);
-  console.log("dday : " + dday);
-  console.log("today : " + today);
-  const remainDay = Math.ceil(timeGap / (1000 * 60 * 60 * 24));
-
-  const filteredAlbumMemories = albumMemories.filter(
-    (val) => val.albumPk === params.PK
-  ); // 메모리들의 albumPk 값이 url의 PK 값과 같은 것들을 담은 변수
-  const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
-  const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  const displayedAlbumMemories = filteredAlbumMemories.slice(
-    startIndex,
-    endIndex
-  );
 
   const handleImageClick = (imageUrl, index) => {
     const now = moment();
