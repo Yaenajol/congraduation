@@ -24,7 +24,7 @@ export default function ButtonColors({onClick, value, isClickable}) {
         }}
       >
         <Button onClick={onClick} size="md" disabled={!isClickable}  variant={variant} color="primary">
-          업로드
+          이미지 설정
         </Button>
       </Box>
       
