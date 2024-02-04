@@ -1,6 +1,6 @@
-import {styled } from '@mui/material/styles';
-import { Typography } from '@mui/material';
-import '../../index.css';
+import { styled } from "@mui/material/styles";
+import { Typography } from "@mui/material";
+import "../../index.css";
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
     textAlign: 'left',

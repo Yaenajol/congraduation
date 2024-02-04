@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
-
+import CustomButton from "../button/CustomButton";
 import {
   Paper,
   Grid,
@@ -197,8 +197,8 @@ const AlbumPage = () => {
               {album.nickname} 의 {album.title}
             </StyledTypography>
             <StyledTypography style={{ color: "white" }}>
-              <span class="strongLetter">{memoryarray.length}장</span>의 메모리가
-              도착했어요!
+              <span class="strongLetter">{memoryarray.length}장</span>의
+              메모리가 도착했어요!
             </StyledTypography>
             <StyledTypography>
               {albumOpenAt === null ? (
@@ -239,33 +239,40 @@ const AlbumPage = () => {
           <div class="memoryList">
             <Grid container spacing={2}>
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-                <Grid
-                  item
-                  xs={5}
-                  key={index}
-                  style={{ marginLeft: "5%" }}
-                >
-                  <div style={{
-                    backgroundColor: "#ffe2e9",
-                    padding: "8% 8% 8% 8%",
-                    border: "1px solid darkgrey",
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    fontSize: "30px",
-                    width: "100%"
-                  }}>
+                <Grid item xs={5} key={index} style={{ marginLeft: "5%" }}>
+                  <div
+                    style={{
+                      backgroundColor: "#ffe2e9",
+                      padding: "8% 8% 8% 8%",
+                      border: "1px solid darkgrey",
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      fontSize: "30px",
+                      width: "100%",
+                    }}
+                  >
                     <StyledImg
                       src={val.imageUrl}
                       alt={`Memory ${startIndex + index + 1}`}
                       style={{
-                        position: "relative"
+                        position: "relative",
                       }}
                       onClick={() =>
                         handleImageClick(val.memoryPk, startIndex + index)
                       }
                     />
-                    <div style={{ overflow: "hidden", fontSize: "2.5vh", width: "100%", marginTop: "5%", textAlign: "center" }}>{val.nickName}</div>
+                    <div
+                      style={{
+                        overflow: "hidden",
+                        fontSize: "2.5vh",
+                        width: "100%",
+                        marginTop: "5%",
+                        textAlign: "center",
+                      }}
+                    >
+                      {val.nickName}
+                    </div>
                   </div>
                 </Grid>
               ))}
@@ -282,9 +289,8 @@ const AlbumPage = () => {
         </div>
 
         <div class="alignCenter">
-          <button
-            class="button-2"
-            onClick={() => {
+          <CustomButton
+            clickCallback={() => {
               if (!sessionStorage.accessToken) {
                 sessionStorage.setItem("lookingPk", params.PK);
                 navigate("/");
@@ -292,18 +298,18 @@ const AlbumPage = () => {
                 navigate(`/albums/${params.PK}/edit`);
               }
             }}
-          >
-            메모리 추가하기
-          </button>
-          <button
-            class="button-2"
-            onClick={() => {
+            buttonName={"메모리 작성"}
+            customWidth={"40%"}
+          ></CustomButton>
+
+          <CustomButton
+            clickCallback={() => {
               sessionStorage.removeItem("lookingPk", params.PK);
               navigate("/");
             }}
-          >
-            내 앨범으로 가기
-          </button>
+            buttonName={"내 앨범으로 "}
+            customWidth={"40%"}
+          ></CustomButton>
         </div>
 
         <Dialog open={openModal} onClose={handleCloseModal}>

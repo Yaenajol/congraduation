@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { TextField, Button, Box } from "@mui/material";
 import axios from "axios";
+import CustomButton from "../button/CustomButton";
 
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import HomeIcon from "@mui/icons-material/Home";
@@ -77,11 +78,14 @@ const SettingsPage = () => {
           window.alert("날짜를 오늘 이상으로 설정해 주세요.");
           return;
         }
-        if (!window.confirm("확정 시, 수정 불가합니다.")) {
+        if (
+          !window.confirm(
+            "졸업일자는 확정시 수정 불가능합니다.진행하시겠습니까?"
+          )
+        ) {
           return;
         }
 
-        console.log("데이트포맷 : " + dateFormat);
         const payload = {
           graduationDate: dateFormat,
         };
@@ -295,18 +299,15 @@ const SettingsPage = () => {
             ) : (
               <div />
             )}
-            <Box textAlign="center" marginTop={15} marginBottom={2}>
-              <button
-                className="button"
-                onClick={
-                  albumdata.openAt === null
-                    ? handleSaveAlbumSettingsWithGraduationDate
-                    : handleSaveAlbumSettings
-                }
-              >
-                설정하기
-              </button>
-            </Box>
+
+            <CustomButton
+              clickCallback={
+                albumdata.openAt === null
+                  ? handleSaveAlbumSettingsWithGraduationDate
+                  : handleSaveAlbumSettings
+              }
+              buttonName={"수정 완료"}
+            ></CustomButton>
           </div>
         </div>
       </div>

@@ -28,7 +28,8 @@
 /* 버튼 관련*/
 .alignCenter {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  width: 100%;
 }
 
 .button {
