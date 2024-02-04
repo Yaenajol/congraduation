@@ -13,7 +13,7 @@ import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
-import { isLoginAtom } from "../store/atom";
+
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
@@ -30,7 +30,7 @@ const MemoryUpload = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLogin) {
+    if (sessionStorage.accessToken) {
       if (params.PK) {
         axios
           .get(
