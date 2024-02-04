@@ -12,7 +12,7 @@ import MemoryAdd1 from "../button/MemoryAdd1";
 import backgroundImage from "../images/background.png";
 import { Dialog } from "@mui/material";
 import DragPage from "../page/DragPage";
-import { lookingPkAtom } from "../store/atom";
+import { isLoginAtom, lookingPkAtom } from "../store/atom";
 import axios from "axios";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import Spinner from "../spinner/Spinner";

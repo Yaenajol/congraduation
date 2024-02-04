@@ -30,7 +30,7 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import AlbumProfileImage from "./AlbumProfileImage";
 
 import "../page/AlbumPage.css";
-import albumWhite from "../images/albumWhite.png";
+import albumFrame from "../images/albumFrame.png";
 
 
 const AlbumMypage = () => {
@@ -184,6 +184,10 @@ const AlbumMypage = () => {
             <StyledTypography>
               {album.nickname} 의 {album.title}
             </StyledTypography>
+            <StyledTypography style={{ color: "white" }}>
+              <span class="memorysize">{memoryarray.length}장</span>의 메모리가
+              도착했어요!
+            </StyledTypography>
             <StyledTypography>
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
@@ -200,10 +204,6 @@ const AlbumMypage = () => {
                 </div>
               )}{" "}
             </StyledTypography>
-            <StyledTypography style={{ color: "white" }}>
-              <span class="memorysize">{memoryarray.length}장</span>의 메모리가
-              도착했어요!
-            </StyledTypography>
             <StyledTypography>{album.graduationPlace} 졸업</StyledTypography>
           </div>
           <div style={{ textAlign: "end", width: "30%" }}>
@@ -217,7 +217,7 @@ const AlbumMypage = () => {
           </div>
         </div>
         <div style={{ display: "flex", position: "relative" }}>
-          <img src={albumWhite} alt="album" style={{
+          <img src={albumFrame} alt="album" style={{
             width: "100%"
             // height: "auto"
           }} />
