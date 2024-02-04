@@ -1,6 +1,6 @@
 /* 강조 */
-.memorysize {
-  color: white;
+.strongLetter {
+  color: aqua;
   font-weight: bolder;
 }
 
@@ -14,11 +14,11 @@
 /* 메모리 리스트 */
 .memoryList {
   position: absolute;
-  z-index: 2;
-  width: 68%;
+  z-index: 1;
+  width: 66%;
   transform: rotate(13deg);
-  top: 23.5%;
-  left: 19%;
+  top: 18%;
+  left: 10.5%;
   transform: rotate(12.5deg);
   /* border: 10px solid pink; */
   /* margin: 5vh; */
