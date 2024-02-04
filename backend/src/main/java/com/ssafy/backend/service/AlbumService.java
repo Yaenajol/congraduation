@@ -76,6 +76,7 @@ public class AlbumService {
         albumMemoryList.add(AlbumMemoryResponseDto.builder()
             .memoryPk(memory.getPk())
             .imageUrl(imageService.getPresingendURL(memory.getThumbnailBlurImageName()))
+            .nickName(memory.getNickname())
             .build());
       }
     }else{
@@ -83,6 +84,7 @@ public class AlbumService {
         albumMemoryList.add(AlbumMemoryResponseDto.builder()
             .memoryPk(memory.getPk())
             .imageUrl(imageService.getPresingendURL(memory.getThumbnailImageName()))
+            .nickName(memory.getNickname())
             .build());
       }
     }

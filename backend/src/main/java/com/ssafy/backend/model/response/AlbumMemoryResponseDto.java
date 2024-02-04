@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class AlbumMemoryResponseDto {
   private String memoryPk;
   private String imageUrl;
+  private String nickName;
 }
