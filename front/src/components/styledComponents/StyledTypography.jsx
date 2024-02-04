@@ -6,8 +6,8 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     textAlign: 'left',
     fontSize: '3vh',
     color: 'white',
-    fontFamily: 'TheJamsil2Light',
-    fontWeight: 'bold',
+    fontFamily: 'GOSEONGGEUMGANGNURI',
+    // fontWeight: 'bold',
 }));
 
 export default StyledTypography;
