@@ -78,11 +78,14 @@ const SettingsPage = () => {
           window.alert("날짜를 오늘 이상으로 설정해 주세요.");
           return;
         }
-        if (!window.confirm("확정 시, 수정 불가합니다.")) {
+        if (
+          !window.confirm(
+            "졸업일자는 확정시 수정 불가능합니다.진행하시겠습니까?"
+          )
+        ) {
           return;
         }
 
-        console.log("데이트포맷 : " + dateFormat);
         const payload = {
           graduationDate: dateFormat,
         };
@@ -303,6 +306,7 @@ const SettingsPage = () => {
                   ? handleSaveAlbumSettingsWithGraduationDate
                   : handleSaveAlbumSettings
               }
+              buttonName={"수정 완료"}
             ></CustomButton>
           </div>
         </div>
