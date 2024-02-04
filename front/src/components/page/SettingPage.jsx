@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { TextField, Button, Box } from "@mui/material";
 import axios from "axios";
+import CustomButton from "../button/CustomButton";
 
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import HomeIcon from "@mui/icons-material/Home";
@@ -295,18 +296,14 @@ const SettingsPage = () => {
             ) : (
               <div />
             )}
-            <Box textAlign="center" marginTop={15} marginBottom={2}>
-              <button
-                className="button"
-                onClick={
-                  albumdata.openAt === null
-                    ? handleSaveAlbumSettingsWithGraduationDate
-                    : handleSaveAlbumSettings
-                }
-              >
-                설정하기
-              </button>
-            </Box>
+
+            <CustomButton
+              clickCallback={
+                albumdata.openAt === null
+                  ? handleSaveAlbumSettingsWithGraduationDate
+                  : handleSaveAlbumSettings
+              }
+            ></CustomButton>
           </div>
         </div>
       </div>
