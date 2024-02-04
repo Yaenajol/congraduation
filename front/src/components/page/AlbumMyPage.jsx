@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
+import FunnyDog from "../button/FunnyDog";
 import {
   Paper,
   Grid,
@@ -174,7 +175,13 @@ const AlbumMypage = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+      }}
+    >
       <StyledContainer>
         <div class="sortHeader">
           <div>
@@ -322,6 +329,8 @@ const AlbumMypage = () => {
           </DialogActions>
         </Dialog>
       </StyledContainer>
+
+      <FunnyDog></FunnyDog>
     </div>
   );
 };
