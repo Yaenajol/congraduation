@@ -30,7 +30,8 @@ import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
 import AlbumProfileImage from "./AlbumProfileImage";
 
 import "../page/AlbumPage.css";
-import albumWhite from "../images/albumWhite.png";
+import albumFrame from "../images/albumFrame.png";
+import { fontSize } from "@mui/system";
 
 
 const AlbumMypage = () => {
@@ -42,7 +43,7 @@ const AlbumMypage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
   const [memoryarray, setMemoryarray] = useState([]);
-  const itemsPerPage = 6;
+  const itemsPerPage = 4;
   const navigate = useNavigate();
   const location = useLocation();
   const [albumPageMainImg, setAlbumPageMainImg] =
@@ -52,7 +53,7 @@ const AlbumMypage = () => {
   const [specificMemory, setSpecificMemory] = useState("");
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(undefined);
-
+  console.log(albumMemories);
   useEffect(() => {
     if (!sessionStorage.accessToken) {
       navigate("/");
@@ -173,9 +174,6 @@ const AlbumMypage = () => {
     });
   };
 
-  // 메모리 리스트 회전 각도 배열
-  const rotateArray = [5, -15, -30, 5, -8, 12];
-
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <StyledContainer>
@@ -185,28 +183,27 @@ const AlbumMypage = () => {
               {album.nickname} 의 {album.title}
             </StyledTypography>
             <StyledTypography>
+              <span class="strongLetter">{memoryarray.length}장</span>의 메모리가
+              도착했어요!
+            </StyledTypography>
+            <StyledTypography>
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
                 <div style={{ color: "white", fontWeight: "bolder" }}>
-                  D -
-                  <span class="memorysize">
+                  D -{" "}
+                  <span class="strongLetter">
                     {remainDay === 0 ? (
-                      <span>day Congraduation!</span>
+                      <span> day Congraduation!</span>
                     ) : (
                       remainDay
                     )}
                   </span>
                 </div>
-              )}{" "}
+              )}
             </StyledTypography>
-            <StyledTypography style={{ color: "white" }}>
-              <span class="memorysize">{memoryarray.length}장</span>의 메모리가
-              도착했어요!
-            </StyledTypography>
-            <StyledTypography>{album.graduationPlace} 졸업</StyledTypography>
           </div>
-          <div style={{ textAlign: "end", width: "30%" }}>
+          <div style={{ textAlign: "end", width: "25%" }}>
             <AlbumProfileImage
               imageUrl={imageUrl}
               setImageUrl={setImageUrl}
@@ -217,22 +214,44 @@ const AlbumMypage = () => {
           </div>
         </div>
         <div style={{ display: "flex", position: "relative" }}>
-          <img src={albumWhite} alt="album" style={{
-            width: "100%"
-            // height: "auto"
-          }} />
+          <img
+            src={albumFrame}
+            alt="album"
+            style={{
+              width: "100%",
+            }}
+          />
           <div class="memoryList">
             <Grid container spacing={2}>
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-                <Grid item xs={4} key={index} style={{ marginLeft: "5%", marginBottom: "3%" }}>
-                  <StyledImg
-                    style={{ transform: `rotate(${rotateArray[index]}deg)` }}
-                    src={val.imageUrl}
-                    alt={`Memory ${startIndex + index + 1}`}
-                    onClick={() =>
-                      handleImageClick(val.memoryPk, startIndex + index)
-                    }
-                  />
+                <Grid
+                  item
+                  xs={5}
+                  key={index}
+                  style={{ marginLeft: "5%" }}
+                >
+                  <div style={{
+                    backgroundColor: "#ffe2e9",
+                    padding: "8% 8% 8% 8%",
+                    border: "1px solid darkgrey",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    fontSize: "30px",
+                    width: "100%",
+                  }}>
+                    <StyledImg
+                      src={val.imageUrl}
+                      alt={`Memory ${startIndex + index + 1}`}
+                      style={{
+                        position: "relative"
+                      }}
+                      onClick={() =>
+                        handleImageClick(val.memoryPk, startIndex + index)
+                      }
+                    />
+                    <div style={{ overflow: "hidden", fontSize: "2.5vh", width: "100%", marginTop: "5%", textAlign: "center" }}>{val.nickName}</div>
+                  </div>
                 </Grid>
               ))}
             </Grid>
