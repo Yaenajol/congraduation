@@ -1,22 +1,19 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./style.css";
-import GridLayout from "react-grid-layout";
 import CropOriginal from "@mui/icons-material/CropOriginal";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
-import { TextField, Button, Box, Typography, Container } from "@mui/material";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import MemoryAdd from "../button/MemoryAdd";
+import { TextField} from "@mui/material";
+import { useRecoilState } from "recoil";
 import MemoryAdd1 from "../button/MemoryAdd1";
-import backgroundImage from "../images/background.png";
 import { Dialog } from "@mui/material";
 import DragPage from "../page/DragPage";
 import { isLoginAtom } from "../store/atom";
 import { lookingPkAtom } from "../store/atom";
 import axios from "axios";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
-import Spinner from "../spinner/Spinner";
+
 
 const MemoryUpload = () => {
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
@@ -29,14 +26,11 @@ const MemoryUpload = () => {
   const isReadyToSubmit =
     Object.values(images).every((img) => img !== null) && nickname && message;
 
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
-  const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom);
-  const [isLoading, setIsLoading] = useState(false);
   const params = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLogin) {
+    if (sessionStorage.accessToken) {
       if (params.PK) {
         axios
           .get(
@@ -91,6 +85,14 @@ const MemoryUpload = () => {
 
   const imageSize = 300; // 이미지 크기
   const spacing = 30; // 이미지 사이의 간격
+
+  // 올라가는 사진을 보기위한 테스트 코드  {mergedImageDisplay} 을 리턴에 추가하세요 
+  const mergedImageDisplay = mergedImage ? (
+    <div>
+      <img src={mergedImage} alt="11" style={{ maxWidth: "100%", maxHeight: "100%"}} />
+    </div>
+  ) : null
+
 
   const positions = [
     { x: spacing, y: spacing }, // 'a' 위치
@@ -161,6 +163,12 @@ const MemoryUpload = () => {
     const file = dataURLtoFile(mergedImageDataURL, "sample.png");
     setMergedImage(mergedImageDataURL);
     console.log(mergedImageDataURL);
+    console.log(mergedImage)
+    const blob = await (await fetch(mergedImageDataURL)).blob()
+    const imageSize1 = blob.size
+
+  
+
     // 합쳐진 이미지를 백엔드로 전송하는 코드
     if (isReadyToSubmit) {
       try {
@@ -186,6 +194,9 @@ const MemoryUpload = () => {
           .then((response) => {
             console.log(response.data);
             navigate(`/albums/${params.PK}`);
+            console.log(imageSize1)
+            console.log(canvasHeight)
+            console.log(canvasWidth)
           })
           .catch((error) => {
             console.log(error);
@@ -206,7 +217,6 @@ const MemoryUpload = () => {
             className="image-upload"
             key={key}
             onClick={() => handleGridItemClick(key)}
-            // style={{ backgroundImage: `url(${myImg})` }}
           >
             {images[key] ? (
               <img
@@ -261,7 +271,7 @@ const MemoryUpload = () => {
           maxLength: 15,
         }}
       />
-
+      
       <MemoryAdd1
         className="submit-button"
         onClick={handleSubmit}

@@ -4,7 +4,7 @@ import { SyncLoader} from 'react-spinners'
 const Spinner = () => {
   return (
     <div >
-      <h3>잠시만 기다려주세요.</h3>
+      <h3 style={{ display: 'flex', justifyContent: 'center'}}>잠시만 기다려주세요.</h3>
       <SyncLoader style={{ display: 'flex', justifyContent: 'center'}}/>
     </div>
   )

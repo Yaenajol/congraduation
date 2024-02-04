@@ -60,7 +60,7 @@ export default function MenuIntroduction({zin}) {
       >
         <MoreVertIcon />
       </IconButton> */}
-      <MenuButton style={{borderRadius:"50%", width:"50%"}}>
+      <MenuButton style={{borderRadius:"20%", width:"50%"}}>
       {/* <MenuButton style={{backgroundColor:"rgba( 255, 255, 255, 0 )", border:"none"}}> */}
       <MoreVertIcon style={{color:"black", textAlign:"start"}}/>
       {/* <DehazeRoundedIcon/> */}
