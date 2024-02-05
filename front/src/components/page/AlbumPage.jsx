@@ -37,6 +37,7 @@ import Dday from "./Dday";
 
 import "../page/AlbumPage.css";
 import albumFrame from "../images/albumFrame.png";
+import "../page/Snowrain.css";
 
 const AlbumPage = () => {
   const params = useParams();
@@ -64,8 +65,38 @@ const AlbumPage = () => {
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(null);
 
+  const [snowflakes, setSnowflakes] = useState([]);
+
   useEffect(() => {
     setLookingPk(params.PK);
+
+    const snowCount = 100;
+    const newSnowflakes = [];
+
+    for (let i = 0; i < snowCount; i++) {
+      const randomXStart = Math.random() * window.innerWidth;
+      const randomXEnd = Math.random() * window.innerWidth;
+      const randomScale = Math.random() * 0.1;
+      const fallDuration = randomRange(10, 30) + "s";
+      const fallDelay = randomRange(-30, 0) + "s";
+
+      newSnowflakes.push({
+        id: i,
+        style: {
+          opacity: Math.random(),
+          transform: `translate(${randomXStart}px, -10px) scale(${randomScale})`,
+          animation: `fall ${fallDuration} ${fallDelay} linear infinite`,
+          position: "absolute",
+          width: "15px",
+          height: "15px",
+          background: "pink",
+          borderRadius: "50%",
+          left: `${randomXStart}px`,
+        },
+      });
+    }
+    setSnowflakes(newSnowflakes);
+
     // 특정 앨범 조회
     axios
       .get(`https://congraduation.me/backapi/albums/${params.PK}`)
@@ -114,6 +145,10 @@ const AlbumPage = () => {
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
+
+  function randomRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
 
   //4개씩 보이게 적용
   const filteredAlbumMemories = albumMemories.filter(
@@ -189,7 +224,17 @@ const AlbumPage = () => {
 
   // 유저 이미지 아이콘 버튼
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {snowflakes.map((flake) => (
+        <div key={flake.id} className="snow" style={flake.style} />
+      ))}
       <StyledContainer>
         <div class="sortHeader">
           <div>
