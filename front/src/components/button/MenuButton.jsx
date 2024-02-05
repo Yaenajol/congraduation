@@ -43,7 +43,7 @@ export default function MenuIntroduction({zin}) {
       } else if (menuItem === 'Profile' ) {
         navigate(`/myalbum/setting` , { state : settingdata})
       } else if (menuItem === 'Inquiry') {
-        console.log('아직 개발 안함')
+        console.log("아직 개발 안됨");
       }
     };
   };
@@ -60,9 +60,9 @@ export default function MenuIntroduction({zin}) {
       >
         <MoreVertIcon />
       </IconButton> */}
-      <MenuButton style={{borderRadius:"20%", width:"50%"}}>
+      <MenuButton style={{borderRadius:"20%", width:"5.0%"}}>
       {/* <MenuButton style={{backgroundColor:"rgba( 255, 255, 255, 0 )", border:"none"}}> */}
-      <MoreVertIcon style={{color:"black", textAlign:"start"}}/>
+      <MoreVertIcon style={{color:"black", textAlign:"center"}}/>
       {/* <DehazeRoundedIcon/> */}
       </MenuButton>
       <Menu slots={{ listbox: Listbox }}>

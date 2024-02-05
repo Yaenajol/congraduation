@@ -136,6 +136,7 @@ const SettingsPage = () => {
             alignItems: "center",
             padding: "0 15px",
             marginTop: "20px",
+            marginBottom: "15%"
           }}
         >
           <div
@@ -148,7 +149,7 @@ const SettingsPage = () => {
           >
             앨범 설정
           </div>
-          <HomeIcon sx={{ fontSize: 50 }} onClick={gotoAlbumPage} />
+          <HomeIcon sx={{ fontSize: 50, }} onClick={gotoAlbumPage} />
         </div>
         <div>
           <div
@@ -159,7 +160,7 @@ const SettingsPage = () => {
               padding: "0 15px",
             }}
           >
-            <StyledTypography
+            {/* <StyledTypography
               variant="h6"
               gutterBottom
               style={{
@@ -169,7 +170,7 @@ const SettingsPage = () => {
               }}
             >
               {nickname}님
-            </StyledTypography>
+            </StyledTypography> */}
           </div>
           <div
             style={{
@@ -199,7 +200,7 @@ const SettingsPage = () => {
                 width="100%S"
                 onChange={(e) => setNickname(e.target.value)}
                 margin="dense"
-                sx={{ input: { textAlign: "center" } }} // 안에 문자 중간정렬
+                sx={{ input: { textAlign: "center",} }} // 안에 문자 중간정렬
                 // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
                 InputProps={{
                   style: {
@@ -207,6 +208,7 @@ const SettingsPage = () => {
                     backgroundColor: "rgb(255, 255, 255, 0.9)",
                     fontFamily: "TheJamsil5Bold",
                     color: "rgba(74, 16, 102)",
+                    boxShadow: "4px 4px 1px 1px rgb(168, 170, 175)",
                   },
                 }}
               />
@@ -236,6 +238,7 @@ const SettingsPage = () => {
                     backgroundColor: "rgb(255, 255, 255)",
                     fontFamily: "TheJamsil5Bold",
                     color: "rgba(74, 16, 102)",
+                    boxShadow: "4px 4px 1px 1px rgb(168, 170, 175)",
                   },
                 }}
               />
@@ -265,6 +268,7 @@ const SettingsPage = () => {
                     backgroundColor: "rgb(255, 255, 255)",
                     fontFamily: "TheJamsil5Bold",
                     color: "rgba(74, 16, 102)",
+                    boxShadow: "4px 4px 1px 1px rgb(168, 170, 175)",
                   },
                 }}
               />

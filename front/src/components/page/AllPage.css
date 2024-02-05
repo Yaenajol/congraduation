@@ -1,6 +1,4 @@
 
-/* @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap'); */
-
 /* 눈누 더잠실체 폰트크기 700 */
 @font-face {
   font-family: 'TheJamsil5Bold';  
@@ -25,7 +23,6 @@
   font-style: normal;
 }
 
-
 .font700 {
   font-family: 'TheJamsil5Bold';  
 }
@@ -49,29 +46,6 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.box {
-  /* border: solid 1px; color: #000; */
-  background-color: rgba(255, 239, 182, 0.88);
-  width: 768px;
-  min-height: 1400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.imagebox {
-  background-image: url(./flowerschool.png);
-  width: 100%;
-  max-width: 800px;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .kakaobutton {
@@ -105,15 +79,11 @@ body {
     margin-top: 0.5rem;
     margin-bottom: 0.25rem;
     color: rgba(255, 255, 255);
-    /* text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff; */
     font-family: 'TheJamsil5Bold';  
-
-    /* letter-spacing: -1px;   */
-
 }
+
 .instatext {
   font-family: 'TheJamsil2Light';
-
   color: white;
   /* text-shadow: -1.5px -1.5px 0 #050000, 1.5px -1.5px 0 #050000, -1.5px 1.5px 0 #050000, 1.5px 1.5px 0 #050000; */
   margin-top: 5px;
@@ -121,23 +91,6 @@ body {
 
 }
 
-.settingbutton {
-
-}
-
-.loginimage1 {
-  width: 30vw;
-  height: 50vw;
-  transform: rotate(-20deg); /* 왼쪽으로  30도 회전*/
-  right: 30px;
-}
-
-.loginimage2 {
-  width: 30vw;
-  height: 50vw;
-  transform: rotate(20deg);
-  right: 30px;
-}
 
 @keyframes fadeIn {
   from { 
@@ -208,26 +161,4 @@ h1 span:nth-child(14) { animation-delay: .13s; }
 
 .textfield {
   border-radius: 20px;
-}
-
-/* 미디어 쿼리 */
-@media all and (max-width: 769px) {
-  .box{
-    width: 100%;
-  }
-  .container {
-    
-  }
-
-  .kakaobutton {
-    /* width: 70%; */
-  }
-
-  .csstitle {
-
-  }
-
-  .imagebox {
-
-  }
 }
