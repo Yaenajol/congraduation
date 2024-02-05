@@ -101,9 +101,27 @@ const SettingsPage = () => {
             }
           )
           .then((response) => {
-            console.log(response.data);
-            // window.location.reload();
-            gotoAlbumPage();
+            const userInfo = {
+              nickname: nickname,
+              graduationPlace: graduationPlace,
+              title: title,
+            };
+
+            const accessToken = sessionStorage.getItem("accessToken");
+
+            axios
+              .put(
+                `https://congraduation.me/backapi/albums/${albumdata.albumPk}`,
+                userInfo,
+                {
+                  headers: {
+                    accessToken: accessToken,
+                  },
+                }
+              )
+              .then((response) => {
+                gotoAlbumPage();
+              });
           })
           .catch((error) => {
             console.log("실패" + error);
@@ -136,7 +154,7 @@ const SettingsPage = () => {
             alignItems: "center",
             padding: "0 15px",
             marginTop: "20px",
-            marginBottom: "15%"
+            marginBottom: "15%",
           }}
         >
           <div
@@ -149,7 +167,7 @@ const SettingsPage = () => {
           >
             앨범 설정
           </div>
-          <HomeIcon sx={{ fontSize: 50, }} onClick={gotoAlbumPage} />
+          <HomeIcon sx={{ fontSize: 50 }} onClick={gotoAlbumPage} />
         </div>
         <div>
           <div
@@ -159,19 +177,7 @@ const SettingsPage = () => {
               alignItems: "center",
               padding: "0 15px",
             }}
-          >
-            {/* <StyledTypography
-              variant="h6"
-              gutterBottom
-              style={{
-                color: "rgb(255, 249, 215)",
-                textShadow: "0px 0px 10px rgb(108, 0, 174)",
-                fontFamily: "TheJamsil5Bold",
-              }}
-            >
-              {nickname}님
-            </StyledTypography> */}
-          </div>
+          ></div>
           <div
             style={{
               display: "flex",
@@ -193,6 +199,7 @@ const SettingsPage = () => {
             >
               {/* <div className='font700'>Nickname</div> */}
               <TextField
+                placeholder="15글자 이하로 입력해주세요."
                 label="닉네임"
                 id="outlined-size-small"
                 value={nickname}
@@ -200,8 +207,9 @@ const SettingsPage = () => {
                 width="100%S"
                 onChange={(e) => setNickname(e.target.value)}
                 margin="dense"
-                sx={{ input: { textAlign: "center",} }} // 안에 문자 중간정렬
+                sx={{ input: { textAlign: "center" } }} // 안에 문자 중간정렬
                 // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
+                inputProps={{ maxLength: 15 }}
                 InputProps={{
                   style: {
                     borderRadius: "20px",
@@ -224,6 +232,7 @@ const SettingsPage = () => {
             >
               {/* <div className='font700'>Graduation Place</div> */}
               <TextField
+                placeholder="15글자 이하로 입력해주세요."
                 label="졸업 학교"
                 id="outlined-size-small"
                 value={graduationPlace}
@@ -232,6 +241,7 @@ const SettingsPage = () => {
                 margin="dense"
                 sx={{ input: { textAlign: "center" } }} // 안에 문자 중간정렬
                 // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
+                inputProps={{ maxLength: 15 }}
                 InputProps={{
                   style: {
                     borderRadius: "20px",
@@ -254,6 +264,7 @@ const SettingsPage = () => {
             >
               {/* <div className='font700'>Title</div>   */}
               <TextField
+                placeholder="15글자 이하로 입력해주세요."
                 label="앨범 이름"
                 id="outlined-size-small"
                 value={title}
@@ -262,6 +273,7 @@ const SettingsPage = () => {
                 margin="dense"
                 sx={{ input: { textAlign: "center" } }} // 안에 문자 중간정렬
                 // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
+                inputProps={{ maxLength: 15 }}
                 InputProps={{
                   style: {
                     borderRadius: "20px",
@@ -295,7 +307,6 @@ const SettingsPage = () => {
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        
                       />
                     )}
                   />
