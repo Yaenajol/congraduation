@@ -33,6 +33,7 @@ import AlbumProfileImage from "./AlbumProfileImage";
 import "../page/AlbumPage.css";
 import albumFrame from "../images/albumFrame.png";
 import { fontSize } from "@mui/system";
+import CustomButton from "../button/CustomButton";
 import "../page/Snowrain.css"
 
 const AlbumMypage = () => {
@@ -169,7 +170,7 @@ const AlbumMypage = () => {
 
       setOpenModal(true); // 모달 opne 상태 true로
     } else {
-      alert('공개일 아님')
+      alert("공개일 아님");
     }
   };
 
@@ -232,8 +233,8 @@ const AlbumMypage = () => {
               {album.nickname} 의 {album.title}
             </StyledTypography>
             <StyledTypography>
-              <span class="strongLetter">{memoryarray.length}장</span>의 메모리가
-              도착했어요!
+              <span class="strongLetter">{memoryarray.length}장</span>의
+              메모리가 도착했어요!
             </StyledTypography>
             <StyledTypography>
               {albumOpenAt === null ? (
@@ -273,33 +274,40 @@ const AlbumMypage = () => {
           <div class="memoryList">
             <Grid container spacing={2}>
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
-                <Grid
-                  item
-                  xs={5}
-                  key={index}
-                  style={{ marginLeft: "5%" }}
-                >
-                  <div style={{
-                    backgroundColor: "#ffe2e9",
-                    padding: "8% 8% 8% 8%",
-                    border: "1px solid darkgrey",
-                    display: "flex",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    fontSize: "30px",
-                    width: "100%",
-                  }}>
+                <Grid item xs={5} key={index} style={{ marginLeft: "5%" }}>
+                  <div
+                    style={{
+                      backgroundColor: "#ffe2e9",
+                      padding: "8% 8% 8% 8%",
+                      border: "1px solid darkgrey",
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      fontSize: "30px",
+                      width: "100%",
+                    }}
+                  >
                     <StyledImg
                       src={val.imageUrl}
                       alt={`Memory ${startIndex + index + 1}`}
                       style={{
-                        position: "relative"
+                        position: "relative",
                       }}
                       onClick={() =>
                         handleImageClick(val.memoryPk, startIndex + index)
                       }
                     />
-                    <div style={{ overflow: "hidden", fontSize: "2.5vh", width: "100%", marginTop: "5%", textAlign: "center" }}>{val.nickName}</div>
+                    <div
+                      style={{
+                        overflow: "hidden",
+                        fontSize: "2.5vh",
+                        width: "100%",
+                        marginTop: "5%",
+                        textAlign: "center",
+                      }}
+                    >
+                      {val.nickName}
+                    </div>
                   </div>
                 </Grid>
               ))}
@@ -315,14 +323,10 @@ const AlbumMypage = () => {
           />
         </div>
 
-        <div class="alignCenter">
-          <button
-            class="button"
-            onClick={() => handlerCopyClipBoard(album.albumPk)}
-          >
-            공유하러 가기
-          </button>
-        </div>
+        <CustomButton
+          clickCallback={() => handlerCopyClipBoard(album.albumPk)}
+          buttonName={"공유하러가기"}
+        ></CustomButton>
 
         <Dialog open={openModal} onClose={handleCloseModal}>
           <DialogContent style={{ overflowY: "auto" }}>

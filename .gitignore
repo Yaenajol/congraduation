@@ -49,6 +49,7 @@ backend/!**/src/test/**/bin/
 *.iml
 *.ipr
 application.properties
+application.yml
 backend/out/
 backend/!**/src/main/**/out/
 backend/!**/src/test/**/out/
