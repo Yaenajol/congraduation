@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import {ReactCrop, centerCrop, makeAspectCrop, convertToPixelCrop} from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import "./style.css"; 
@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { albumPageMainImgAtom } from "../store/atom";
 import axios from 'axios';
 import Spinner from '../spinner/Spinner';
+import { useDebounceEffect } from './useDebounceEffect';
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -36,6 +37,15 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom)
   const [isLoading, setIsLoading] = useState(false);
 
+  const [pendingCrop, setPendingCrop] = useState();
+
+  const debounceSetCrop = useCallback((percentCrop) => {
+    setPendingCrop(percentCrop)
+  },[])
+
+  useDebounceEffect(() => {
+    setCrop(pendingCrop)
+  }, 50, [pendingCrop])
 
   function onSelectFile(e) {
     if (e.target.files && e.target.files.length > 0) {
@@ -155,7 +165,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
           <ReactCrop
           
           crop={crop}
-          onChange={(_, percentCrop) => setCrop(percentCrop)}
+          onChange={(_, percentCrop) => debounceSetCrop(percentCrop)}
           onComplete={(c) => setCompletedCrop(c)}
           aspect={aspect}
           minWidth={100}

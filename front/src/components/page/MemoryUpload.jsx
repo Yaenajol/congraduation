@@ -252,6 +252,7 @@ const MemoryUpload = () => {
         rows={4} // 표시되는 기본 줄 수
         type="text"
         label="메시지"
+        
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         style={{ marginBottom: "10px" }}

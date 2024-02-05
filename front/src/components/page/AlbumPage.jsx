@@ -303,9 +303,9 @@ const AlbumPage = () => {
                       style={{
                         position: "relative",
                       }}
-                      // onClick={() =>
-                      //   handleImageClick(val.memoryPk, startIndex + index)
-                      // }
+                      onClick={() =>
+                        handleImageClick(val.memoryPk, startIndex + index)
+                      }
                     />
                     <div
                       style={{
