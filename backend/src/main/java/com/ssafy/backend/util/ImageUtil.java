@@ -36,12 +36,12 @@ public class ImageUtil {
     }
     if(width >= height && width > imageDefaultMaxPixel){
       double rate=((double)height)/width;
-      width=300;
+      width=imageDefaultMaxPixel;
       height=(int) (width*rate);
       resizImage=resizeImage(image,width,height);
     }else if(width < height && height > imageDefaultMaxPixel){
       double rate=((double)width)/height;
-      height=300;
+      height=imageDefaultMaxPixel;
       width=(int) (height*rate);
       resizImage=resizeImage(image,width,height);
     }
