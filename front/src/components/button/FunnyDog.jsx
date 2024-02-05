@@ -15,7 +15,7 @@ function FunnyDog() {
       <label
         style={{
           position: "relative",
-          left: "10px",
+          left: "30px",
           zIndex: "3",
           width: "65px",
         }}
@@ -27,7 +27,7 @@ function FunnyDog() {
       <label
         style={{
           position: "relative",
-          left: "10px",
+          left: "30px",
           zIndex: "3",
           width: "65px",
         }}

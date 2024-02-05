@@ -6,9 +6,17 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { lookingPkAtom, albumPageMainImgAtom } from "../store/atom";
 
+import FunnyDog from "../button/FunnyDog";
 // css
 import "../page/AlbumPage.css";
-import { Grid, Pagination, Button, Dialog, DialogContent, DialogActions } from "@mui/material";
+import {
+  Grid,
+  Pagination,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import StyledContainer from "../styledComponents/StyledContainer";
 import StyledImg from "../styledComponents/StyledImg";
 import StyledTypography from "../styledComponents/StyledTypography";
@@ -27,11 +35,10 @@ import albumFrame from "../images/albumFrame.png";
 import axios from "axios";
 import moment from "moment";
 
-
 const AlbumPage = () => {
-
   // 전역 상태 변수 목록
-  const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom);
+  const [albumPageMainImg, setAlbumPageMainImg] =
+    useRecoilState(albumPageMainImgAtom);
   const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom);
 
   // 상태 변수 목록
@@ -43,25 +50,24 @@ const AlbumPage = () => {
   const [memoryarray, setMemoryarray] = useState([]);
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(null);
-  
+
   // 날짜 설정 변수 목록
   const dday = new Date(album.openAt);
   const today = new Date();
   const timeGap = dday.getTime() - today.getTime();
   const remainDay = Math.ceil(timeGap / (1000 * 60 * 60 * 24));
   // const openDate = moment(album.openAt);
-  
+
   // 페이지네이션 변수 목록
   const itemsPerPage = 4;
   const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  
+
   const params = useParams();
   const navigate = useNavigate();
-  
+
   // BE url
   const BACK_URL = "http://congraduation.me/backapi";
-  
 
   const [snowflakes, setSnowflakes] = useState([]);
 
@@ -115,9 +121,8 @@ const AlbumPage = () => {
         }
       });
 
-      // accessToken 이 있을 때
+    // accessToken 이 있을 때
     if (sessionStorage.accessToken) {
-
       // 유저의 앨범 접근 권한 조회
       axios
         .get(
@@ -126,7 +131,7 @@ const AlbumPage = () => {
         )
         .then((response) => {
           console.log("check" + response.data);
-          
+
           // 만약 접근한 유저의 권한이 true 이면 내 앨범 페이지로 이동
           if (typeof response.data === typeof true) {
             if (response.data === true) {
@@ -139,8 +144,8 @@ const AlbumPage = () => {
 
   /**
    * 현재 페이지를 표시합니다
-   * @param {*} event 
-   * @param {*} value 현재 페이지 
+   * @param {*} event
+   * @param {*} value 현재 페이지
    */
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -168,9 +173,8 @@ const AlbumPage = () => {
    */
   const handleNextImage = () => {
     setSelectedImageIndex((prevIndex) => {
-
       const nextIndex = prevIndex + 1;
-      
+
       // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
       if (nextIndex < memoryarray.length) {
         return nextIndex;
@@ -205,7 +209,6 @@ const AlbumPage = () => {
         <div key={flake.id} className="snow" style={flake.style} />
       ))}
       <StyledContainer>
-
         {/* 졸업자 정보 */}
         <div class="sortHeader">
           <div>
@@ -224,7 +227,10 @@ const AlbumPage = () => {
                   D -{" "}
                   <span>
                     {remainDay <= 0 ? (
-                      <span style={{fontFamily:"KyoboHand"}}> day Congraduation!</span>
+                      <span style={{ fontFamily: "KyoboHand" }}>
+                        {" "}
+                        day Congraduation!
+                      </span>
                     ) : (
                       remainDay
                     )}
@@ -240,11 +246,47 @@ const AlbumPage = () => {
               albumPk={params.PK}
               isClickable={false}
             />
-            <MenuButton zin={true} />
           </div>
         </div>
 
-        <div style={{ display: "flex", position: "relative", width: "100%", zIndex:"0" }}>
+        <div class="alignCenter">
+          {/* 메모리 작성 버튼 */}
+          <CustomButton
+            clickCallback={() => {
+              if (!sessionStorage.accessToken) {
+                sessionStorage.setItem("lookingPk", params.PK);
+                navigate("/");
+              } else {
+                navigate(`/albums/${params.PK}/edit`);
+              }
+            }}
+            marginTop={"25px"}
+            marginBottom={"0px"}
+            buttonName={"메모리 작성"}
+            customWidth={"40%"}
+          ></CustomButton>
+
+          {/* 내 앨범 버튼 */}
+          <CustomButton
+            marginTop={"25px"}
+            marginBottom={"0px"}
+            clickCallback={() => {
+              sessionStorage.removeItem("lookingPk", params.PK);
+              navigate("/");
+            }}
+            buttonName={"내 앨범으로 "}
+            customWidth={"40%"}
+          ></CustomButton>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            position: "relative",
+            width: "100%",
+            zIndex: "0",
+          }}
+        >
           <img
             src={albumFrame}
             alt="album"
@@ -308,32 +350,6 @@ const AlbumPage = () => {
           />
         </div>
 
-        <div class="alignCenter">
-          {/* 메모리 작성 버튼 */}
-          <CustomButton
-            clickCallback={() => {
-              if (!sessionStorage.accessToken) {
-                sessionStorage.setItem("lookingPk", params.PK);
-                navigate("/");
-              } else {
-                navigate(`/albums/${params.PK}/edit`);
-              }
-            }}
-            buttonName={"메모리 작성"}
-            customWidth={"40%"}
-          ></CustomButton>
-
-          {/* 내 앨범 버튼 */}
-          <CustomButton
-            clickCallback={() => {
-              sessionStorage.removeItem("lookingPk", params.PK);
-              navigate("/");
-            }}
-            buttonName={"내 앨범으로 "}
-            customWidth={"40%"}
-          ></CustomButton>
-        </div>
-
         {/* 모달 */}
         <Dialog open={openModal} onClose={handleCloseModal}>
           <DialogContent>
@@ -367,6 +383,7 @@ const AlbumPage = () => {
           </DialogActions>
         </Dialog>
       </StyledContainer>
+      <FunnyDog></FunnyDog>
     </div>
   );
 };

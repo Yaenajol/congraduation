@@ -8,7 +8,14 @@ import { useRecoilState } from "recoil";
 import { albumPageMainImgAtom } from "../store/atom";
 
 // css
-import { Grid, Pagination, Button, Dialog, DialogContent, DialogActions } from "@mui/material";
+import {
+  Grid,
+  Pagination,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import StyledContainer from "../styledComponents/StyledContainer";
 import StyledImg from "../styledComponents/StyledImg";
 import StyledTypography from "../styledComponents/StyledTypography";
@@ -18,7 +25,7 @@ import "../page/Snowrain.css";
 // component
 import CustomButton from "../button/CustomButton";
 import MenuButton from "../../components/button/MenuButton";
-import "../page/Snowrain.css"
+import "../page/Snowrain.css";
 
 // image
 import userAltImage from "../images/userAltImage.png";
@@ -29,13 +36,11 @@ import AlbumProfileImage from "./AlbumProfileImage";
 import axios from "axios";
 import moment from "moment";
 
-
 const AlbumMypage = () => {
-
   // 전역 상태 변수 목록
-  const [albumPageMainImg, setAlbumPageMainImg] =useRecoilState(albumPageMainImgAtom);
+  const [albumPageMainImg, setAlbumPageMainImg] =
+    useRecoilState(albumPageMainImgAtom);
 
-  
   // 상태 변수 목록
   const [album, setAlbum] = useState([]);
   const [albumMemories, setAlbumMemories] = useState([]);
@@ -57,16 +62,15 @@ const AlbumMypage = () => {
   const today = new Date();
   const timeGap = dday.getTime() - today.getTime();
   const remainDay = Math.ceil(timeGap / (1000 * 60 * 60 * 24));
-  
+
   // 페이지네이션 변수 목록
   const itemsPerPage = 4;
   const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 4개씩 1페이지이면 2페이지일 때는 4)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    
     // 벚꽃
     const snowCount = 100;
     const newSnowflakes = [];
@@ -77,29 +81,30 @@ const AlbumMypage = () => {
       const randomScale = Math.random() * 0.1;
       const fallDuration = randomRange(10, 30) + "s";
       const fallDelay = randomRange(-30, 0) + "s";
-      
+
       newSnowflakes.push({
         id: i,
         style: {
           opacity: Math.random(),
           transform: `translate(${randomXStart}px, -10px) scale(${randomScale})`,
           animation: `fall ${fallDuration} ${fallDelay} linear infinite`,
-          position: 'absolute',
-          width: '15px',
-          height: '15px',
-          background: 'pink',
-          borderRadius: '50%',
+          position: "absolute",
+          width: "15px",
+          height: "15px",
+          background: "pink",
+          borderRadius: "50%",
           left: `${randomXStart}px`,
-        }
+        },
       });
     }
     setSnowflakes(newSnowflakes);
 
-    if (!sessionStorage.accessToken) {  // accessToken 없으면 로그인 페이지로
+    if (!sessionStorage.accessToken) {
+      // accessToken 없으면 로그인 페이지로
       navigate("/");
       return;
     }
-    
+
     // accessToken 이 있을 때 현재 로그인 된 유저의 정보를 조회
     axios
       .get(`https://congraduation.me/backapi/members/myAlbum`, {
@@ -119,7 +124,6 @@ const AlbumMypage = () => {
         return response.data.albumPk;
       })
       .then((albumPk) => {
-        
         // 특정 앨범의 메모리 리스트 조회
         axios
           .get(`https://congraduation.me/backapi/albums/${albumPk}/memories`)
@@ -137,12 +141,10 @@ const AlbumMypage = () => {
   }
 
   const handleImageClick = (imageUrl, index) => {
-    
     const now = moment();
     setSelectedImageIndex(index);
 
     if (now >= openDate) {
-      
       // 특정 메모리를 조회해서 구체적인 이미지를 보여준다.
       axios
         .get(
@@ -154,7 +156,7 @@ const AlbumMypage = () => {
         .then((response) => {
           setSpecificMemory(response.data);
           setSpecNickname(response.data.nickname);
-          setModalimage(response.data.imageUrl)
+          setModalimage(response.data.imageUrl);
           setSpecContent(response.data.content);
           console.log("spec Nickname : " + specificMemory.nickname);
           console.log("spec Content : " + specificMemory.content);
@@ -162,7 +164,7 @@ const AlbumMypage = () => {
 
       setOpenModal(true);
 
-    // 공개일 아닐 때
+      // 공개일 아닐 때
     } else {
       alert("아직 공개일이 아닙니다!");
     }
@@ -170,8 +172,8 @@ const AlbumMypage = () => {
 
   /**
    * 현재 페이지를 표시합니다
-   * @param {*} event 
-   * @param {*} value 현재 페이지 
+   * @param {*} event
+   * @param {*} value 현재 페이지
    */
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
@@ -207,25 +209,24 @@ const AlbumMypage = () => {
    */
   const handleNextImage = () => {
     setSelectedImageIndex((prevIndex) => {
-      
       const nextIndex = prevIndex + 1;
 
       // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
       if (nextIndex < memoryarray.length) {
         axios
-        .get(
-          `https://congraduation.me/backapi/memories/${albumMemories[nextIndex].memoryPk}`,
-          {
-            headers: { accessToken: sessionStorage.accessToken },
-          }
-        )
-        .then((response) => {
-          setModalimage(response.data.imageUrl);
-          setSpecificMemory(response.data);
-          setSpecNickname(response.data.nickname);
-          setSpecContent(response.data.content);
-        });
-        
+          .get(
+            `https://congraduation.me/backapi/memories/${albumMemories[nextIndex].memoryPk}`,
+            {
+              headers: { accessToken: sessionStorage.accessToken },
+            }
+          )
+          .then((response) => {
+            setModalimage(response.data.imageUrl);
+            setSpecificMemory(response.data);
+            setSpecNickname(response.data.nickname);
+            setSpecContent(response.data.content);
+          });
+
         return nextIndex;
       }
       return prevIndex; // 그 외의 경우에는 이전 인덱스를 반환
@@ -240,18 +241,20 @@ const AlbumMypage = () => {
       // 인덱스 값이 0 이상일 때
       if (prevIndex > 0) {
         axios
-        .get(
-          `https://congraduation.me/backapi/memories/${albumMemories[prevIndex - 1].memoryPk}`,
-          {
-            headers: { accessToken: sessionStorage.accessToken },
-          }
-        )
-        .then((response) => {
-          setModalimage(response.data.imageUrl);
-          setSpecificMemory(response.data);
-          setSpecNickname(response.data.nickname);
-          setSpecContent(response.data.content);
-        });
+          .get(
+            `https://congraduation.me/backapi/memories/${
+              albumMemories[prevIndex - 1].memoryPk
+            }`,
+            {
+              headers: { accessToken: sessionStorage.accessToken },
+            }
+          )
+          .then((response) => {
+            setModalimage(response.data.imageUrl);
+            setSpecificMemory(response.data);
+            setSpecNickname(response.data.nickname);
+            setSpecContent(response.data.content);
+          });
 
         return prevIndex - 1;
       }
@@ -272,7 +275,6 @@ const AlbumMypage = () => {
         <div key={flake.id} className="snow" style={flake.style} />
       ))}
       <StyledContainer>
-        
         {/* 내 정보 */}
         <div class="sortHeader">
           <div>
@@ -291,7 +293,10 @@ const AlbumMypage = () => {
                   D -{" "}
                   <span>
                     {remainDay <= 0 ? (
-                      <span style={{fontFamily:"KyoboHand"}}> day Congraduation!</span>
+                      <span style={{ fontFamily: "KyoboHand" }}>
+                        {" "}
+                        day Congraduation!
+                      </span>
                     ) : (
                       remainDay
                     )}
@@ -300,6 +305,7 @@ const AlbumMypage = () => {
               )}
             </StyledTypography>
           </div>
+
           <div style={{ textAlign: "end", width: "25%" }}>
             <AlbumProfileImage
               imageUrl={imageUrl}
@@ -307,10 +313,28 @@ const AlbumMypage = () => {
               albumPk={album.albumPk}
               isClickable={true}
             />
-            <MenuButton zin={false} />
           </div>
         </div>
-        <div style={{ position: "relative", width:"100%", zIndex:"0"}}>
+        {/* 공유 버튼 */}
+        <div
+          className="menuShareContainer"
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "space-around",
+          }}
+        >
+          <CustomButton
+            customWidth={"50%"}
+            marginTop={"20px"}
+            marginBottom={"0px"}
+            clickCallback={() => handlerCopyClipBoard(album.albumPk)}
+            buttonName={"공유하러가기"}
+          ></CustomButton>
+          <MenuButton zin={false} />
+        </div>
+
+        <div style={{ position: "relative", width: "100%", zIndex: "0" }}>
           <img
             src={albumFrame}
             alt="album"
@@ -374,12 +398,6 @@ const AlbumMypage = () => {
           />
         </div>
 
-        {/* 공유 버튼 */}
-        <CustomButton
-          clickCallback={() => handlerCopyClipBoard(album.albumPk)}
-          buttonName={"공유하러가기"}
-        ></CustomButton>
-
         {/* 모달 */}
         <Dialog open={openModal} onClose={handleCloseModal}>
           <DialogContent style={{ overflowY: "auto" }}>
@@ -401,7 +419,7 @@ const AlbumMypage = () => {
                   {/* wordWrap: 'break-word' 일 경우 단어가 끊김  */}
                   <p className="nickname">From. {specNickname}</p>
                   <p className="box52">{specContent} </p>
-                </div>  
+                </div>
               </div>
             )}
           </DialogContent>
@@ -426,7 +444,6 @@ const AlbumMypage = () => {
           </DialogActions>
         </Dialog>
       </StyledContainer>
-
       <FunnyDog></FunnyDog>
     </div>
   );
