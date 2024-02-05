@@ -19,6 +19,7 @@ import "../page/Snowrain.css";
 import CustomButton from "../button/CustomButton";
 import MenuButton from "../../components/button/MenuButton";
 import "../page/Snowrain.css"
+import Sharebutton from "../button/Sharebutton"
 
 // image
 import userAltImage from "../images/userAltImage.png";
@@ -62,11 +63,11 @@ const AlbumMypage = () => {
   const itemsPerPage = 4;
   const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 4개씩 1페이지이면 2페이지일 때는 4)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  
+  const [shareButton, setShareButton] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    
+
     // 벚꽃
     const snowCount = 100;
     const newSnowflakes = [];
@@ -92,6 +93,7 @@ const AlbumMypage = () => {
           left: `${randomXStart}px`,
         }
       });
+
     }
     setSnowflakes(newSnowflakes);
 
@@ -130,14 +132,27 @@ const AlbumMypage = () => {
             }
           });
       });
+    const script = document.createElement("script");
+		script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+		script.async = true;
+		document.body.appendChild(script);
+
+		script.onload = () => {
+			setShareButton(true);
+		};
+		return () => {
+			document.body.removeChild(script);
+		};
   }, []);
 
   function randomRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const handleImageClick = (imageUrl, index) => {
-    
+  
+
+
+  const handleImageClick = (imageUrl, index) => {    
     const now = moment();
     setSelectedImageIndex(index);
 
@@ -299,6 +314,7 @@ const AlbumMypage = () => {
                 </div>
               )}
             </StyledTypography>
+          <Sharebutton/>
           </div>
           <div style={{ textAlign: "end", width: "25%" }}>
             <AlbumProfileImage
@@ -307,7 +323,7 @@ const AlbumMypage = () => {
               albumPk={album.albumPk}
               isClickable={true}
             />
-            <MenuButton zin={false} />
+            <MenuButton zin={false} />  
           </div>
         </div>
         <div style={{ position: "relative", width:"100%", zIndex:"0"}}>
