@@ -38,7 +38,7 @@ public class Memory {
   private String nickname;
 
   @Column(name = "content",nullable = false)
-  @Size(max=100)
+  @Size(max=1000)
   private String content;
 
   @Column(name = "image_name",nullable = false)
