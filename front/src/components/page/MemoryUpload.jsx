@@ -29,11 +29,12 @@ const MemoryUpload = () => {
   const [message, setMessage] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const fileInputRef = useRef(null);
-  
+
   const params = useParams();
   const navigate = useNavigate();
-   
-  const isReadyToSubmit = Object.values(images).every((img) => img !== null) && nickname && message;
+
+  const isReadyToSubmit =
+    Object.values(images).every((img) => img !== null) && nickname && message;
 
   useEffect(() => {
     if (sessionStorage.accessToken) {
@@ -52,7 +53,7 @@ const MemoryUpload = () => {
         navigate("/");
       }
     }
-  });
+  }, []);
 
   /**
    * 모달 끄기
@@ -254,7 +255,6 @@ const MemoryUpload = () => {
         rows={4} // 표시되는 기본 줄 수
         type="text"
         label="메시지"
-        
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         style={{ marginBottom: "10px" }}
@@ -272,7 +272,7 @@ const MemoryUpload = () => {
                 bottom: "0px",
               }}
             >
-              {message.length } / 200
+              {message.length} / 200
             </span>
           ),
         }}
