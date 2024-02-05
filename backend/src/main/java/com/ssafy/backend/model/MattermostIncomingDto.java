@@ -1,6 +1,8 @@
 package com.ssafy.backend.model;
 
 import com.google.gson.annotations.SerializedName;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -8,7 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 
-public class MattermostDto {
+public class MattermostIncomingDto {
   @Getter
   public static class Attachments {
     private List<Attachment> attachments;
@@ -52,30 +54,30 @@ public class MattermostDto {
     private String footer;
 
     public Attachment addFeedbackInfo(FeedbackDto feedbackDto) {
-      this.title = "feedback now : " + feedbackDto.getMessageType().toString();
+      this.title = "**Feedback now** : " + feedbackDto.getMessageType().toString();
+      this.color  = "#ff5d52";
+      this.authorName = "yaenajol-feedback-issue";
       StringBuilder sb = new StringBuilder(text);
-      sb.append("**Feedback Sender**").append("/n").append("/n").append("```").append(feedbackDto.getSenderPk()).append("```")
-          .append("/n").append("/n");
+      sb.append(":raised_hands: **Feedback Sender** : ").append("```").append(feedbackDto.getSenderPk()).append("```")
+          .append("\n").append("\n");
 
-      sb.append("**Feedback Content**").append("/n").append("/n").append("```").append(feedbackDto.getContent()).append("```")
-          .append("/n").append("/n");
+      sb.append(":question_block: **Feedback Content** : ").append("```").append(feedbackDto.getContent()).append("```")
+          .append("\n").append("\n");
 
       this.text = sb.toString();
+      this.footer = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
       return this;
     }
 
 
   }
 
-  /** Exception e 를 담고 Stack Trace로 나타내기 위해 만든 코드이므로 우리를 필요없다. **/
+  /** Exception e 를 담고 Stack Trace로 나타내기 위해 만든 코드 (였다). **/
 //  public static class Props {
 //    private String card;
-//
 //    public Props() {
 //      StringBuilder text = new StringBuilder();
-//
 //      StringWriter sw = new StringWriter();
-//
 //      text.append("**Stack Trace")
 //    }
 //  }

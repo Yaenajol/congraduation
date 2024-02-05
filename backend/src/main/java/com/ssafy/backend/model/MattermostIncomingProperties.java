@@ -1,8 +1,6 @@
 package com.ssafy.backend.model;
 
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -14,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @ConfigurationProperties("notification.mattermost")
 @Primary
-public class MattermostProperties {
+public class MattermostIncomingProperties {
 
   private String channel;
   private String pretext;
