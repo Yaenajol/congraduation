@@ -65,7 +65,6 @@ const AlbumMypage = () => {
 
     for (let i = 0; i < snowCount; i++) {
       const randomXStart = Math.random() * window.innerWidth;
-      const randomXEnd = Math.random() * window.innerWidth;
       const randomScale = Math.random() * 0.1;
       const fallDuration = randomRange(10, 30) + "s";
       const fallDelay = randomRange(-30, 0) + "s";
@@ -74,7 +73,7 @@ const AlbumMypage = () => {
         id: i,
         style: {
           opacity: Math.random(),
-          transform: `translate(${randomXStart}px, -10px) scale(${randomScale})`,
+          transform: `translate(${randomXStart}px, 0px) scale(${randomScale})`,
           animation: `fall ${fallDuration} ${fallDelay} linear infinite`,
           position: "absolute",
           width: "15px",
@@ -218,6 +217,7 @@ const AlbumMypage = () => {
         display: "flex",
         justifyContent: "center",
         position: "relative",
+        overflow: "hidden",
       }}
     >
       {snowflakes.map((flake) => (
