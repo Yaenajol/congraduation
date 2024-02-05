@@ -4,9 +4,9 @@ import "../../index.css";
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
     textAlign: 'left',
-    fontSize: '3vh',
+    fontSize: '1.2rem',
     color: 'white',
-    fontFamily: 'GOSEONGGEUMGANGNURI',
+    fontFamily: 'KyoboHand',
     // fontWeight: 'bold',
 }));
 

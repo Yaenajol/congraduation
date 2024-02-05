@@ -183,17 +183,17 @@ const AlbumMypage = () => {
             </StyledTypography>
             <StyledTypography>
               <span class="strongLetter">{memoryarray.length}장</span>의
-              메모리가 도착했어요!
+              메모리가 도착했어요
             </StyledTypography>
             <StyledTypography>
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
-                <div style={{ color: "white", fontWeight: "bolder" }}>
+                <div class="strongLetter">
                   D -{" "}
-                  <span class="strongLetter">
+                  <span>
                     {remainDay === 0 ? (
-                      <span> day Congraduation!</span>
+                      <span style={{fontFamily:"KyoboHand"}}> day Congraduation!</span>
                     ) : (
                       remainDay
                     )}
@@ -212,7 +212,7 @@ const AlbumMypage = () => {
             <MenuButton zin={false} />
           </div>
         </div>
-        <div style={{ display: "flex", position: "relative" }}>
+        <div style={{ position: "relative", width:"100%", zIndex:"0"}}>
           <img
             src={albumFrame}
             alt="album"
@@ -253,6 +253,7 @@ const AlbumMypage = () => {
                         width: "100%",
                         marginTop: "5%",
                         textAlign: "center",
+                        fontFamily: "KyoboHand",
                       }}
                     >
                       {val.nickName}
@@ -296,7 +297,7 @@ const AlbumMypage = () => {
                   {" "}
                   {/* wordWrap: 'break-word' 일 경우 단어가 끊김  */}
                   <p>{specificMemory.nickname}</p>
-                  <h2> {specificMemory.content}ㅋㅋㅋㅋㅋ</h2>
+                  <h2> {specificMemory.content}</h2>
                 </div>
               </div>
             )}
