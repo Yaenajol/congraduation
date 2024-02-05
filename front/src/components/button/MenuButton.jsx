@@ -44,7 +44,8 @@ export default function MenuIntroduction({zin}) {
       } else if (menuItem === 'Profile' ) {
         navigate(`/myalbum/setting` , { state : settingdata})
       } else if (menuItem === 'Inquiry') {
-        console.log('아직 개발 안함')
+        window.location.href = 'https://www.instagram.com/yaenajol.official/'
+        
       }
     };
   };

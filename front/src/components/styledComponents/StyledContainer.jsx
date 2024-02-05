@@ -9,7 +9,7 @@ import background23 from "../images/backgroun2-2.png";
 const StyledContainer = styled(Box)(({ theme }) => ({ 
     display: 'flex',
     flexDirection: 'column',
-    // alignItems: 'center',
+    alignItems: 'center',
     backgroundPosition: 'center top',
     backgroundRepeat: 'no-repeat',
     maxWidth: '1080px',
