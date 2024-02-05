@@ -161,7 +161,7 @@ const AlbumMypage = () => {
 
     // 공개일 아닐 때
     } else {
-      alert("공개일 아님");
+      alert("아직 공개일이 아닙니다!");
     }
   };
 

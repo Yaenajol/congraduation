@@ -258,7 +258,21 @@ const MemoryUpload = () => {
         style={{ marginBottom: "10px" }}
         inputProps={{
           minLength: 14,
-          maxLength: 200, // 한줄에 20자 들어감
+          maxLength: 199, // 한줄에 20자 들어감
+        }}
+        InputProps={{
+          startAdornment: (
+            <span
+              style={{
+                position: "absolute",
+                color: "grey",
+                right: "20px",
+                bottom: "0px",
+              }}
+            >
+              {message.length } / 200
+            </span>
+          ),
         }}
       />
 
