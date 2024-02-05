@@ -254,12 +254,27 @@ const MemoryUpload = () => {
         rows={4} // 표시되는 기본 줄 수
         type="text"
         label="메시지"
+        
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         style={{ marginBottom: "10px" }}
         inputProps={{
           minLength: 14,
-          maxLength: 200, // 한줄에 20자 들어감
+          maxLength: 199, // 한줄에 20자 들어감
+        }}
+        InputProps={{
+          startAdornment: (
+            <span
+              style={{
+                position: "absolute",
+                color: "grey",
+                right: "20px",
+                bottom: "0px",
+              }}
+            >
+              {message.length } / 200
+            </span>
+          ),
         }}
       />
 
