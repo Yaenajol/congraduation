@@ -1,20 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { TextField, Button, Box } from "@mui/material";
-import axios from "axios";
-import CustomButton from "../button/CustomButton";
+// react
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
+// css
+import { TextField } from "@mui/material";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import HomeIcon from "@mui/icons-material/Home";
-
 import StyledTypography from "../styledComponents/StyledTypography";
-import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs from "dayjs";
 import "./AllPage.css";
 
+// component
+import CustomButton from "../button/CustomButton";
+
+// external
+import axios from "axios";
+import dayjs from "dayjs";
+
+/**
+ * 유저의 앨범 정보를 수정하는 페이지
+ * @returns 
+ */
 const SettingsPage = () => {
   const location = useLocation();
   const albumdata = location.state;
@@ -37,6 +45,9 @@ const SettingsPage = () => {
       navigate(`/myalbum`);
     };
 
+    /**
+     * 유저의 앨범 정보를 저장합니다
+     */
     const handleSaveAlbumSettings = async () => {
       try {
         const userInfo = {
@@ -69,6 +80,10 @@ const SettingsPage = () => {
       }
     };
 
+    /**
+     * 졸업 일자를 설정합니다
+     * @returns 
+     */
     const handleSaveAlbumSettingsWithGraduationDate = async () => {
       try {
         const dateFormat = dayjs(graduationDate).format("YYYYMMDD");
@@ -114,6 +129,7 @@ const SettingsPage = () => {
     };
 
     return (
+      // 가운데 네모
       <div
         style={{
           marginTop: "80px",
@@ -136,6 +152,7 @@ const SettingsPage = () => {
             alignItems: "center",
             padding: "0 15px",
             marginTop: "20px",
+            marginBottom: "15%"
           }}
         >
           <div
@@ -148,7 +165,7 @@ const SettingsPage = () => {
           >
             앨범 설정
           </div>
-          <HomeIcon sx={{ fontSize: 50 }} onClick={gotoAlbumPage} />
+          <HomeIcon sx={{ fontSize: 50, }} onClick={gotoAlbumPage} />
         </div>
         <div>
           <div
@@ -159,7 +176,7 @@ const SettingsPage = () => {
               padding: "0 15px",
             }}
           >
-            <StyledTypography
+            {/* <StyledTypography
               variant="h6"
               gutterBottom
               style={{
@@ -169,7 +186,7 @@ const SettingsPage = () => {
               }}
             >
               {nickname}님
-            </StyledTypography>
+            </StyledTypography> */}
           </div>
           <div
             style={{
@@ -199,7 +216,7 @@ const SettingsPage = () => {
                 width="100%S"
                 onChange={(e) => setNickname(e.target.value)}
                 margin="dense"
-                sx={{ input: { textAlign: "center" } }} // 안에 문자 중간정렬
+                sx={{ input: { textAlign: "center",} }} // 안에 문자 중간정렬
                 // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
                 InputProps={{
                   style: {
@@ -207,6 +224,7 @@ const SettingsPage = () => {
                     backgroundColor: "rgb(255, 255, 255, 0.9)",
                     fontFamily: "TheJamsil5Bold",
                     color: "rgba(74, 16, 102)",
+                    boxShadow: "4px 4px 1px 1px rgb(168, 170, 175)",
                   },
                 }}
               />
@@ -228,14 +246,14 @@ const SettingsPage = () => {
                 size="medium"
                 onChange={(e) => setGraduationPlace(e.target.value)}
                 margin="dense"
-                sx={{ input: { textAlign: "center" } }} // 안에 문자 중간정렬
-                // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
+                sx={{ input: { textAlign: "center" } }}
                 InputProps={{
                   style: {
                     borderRadius: "20px",
                     backgroundColor: "rgb(255, 255, 255)",
                     fontFamily: "TheJamsil5Bold",
                     color: "rgba(74, 16, 102)",
+                    boxShadow: "4px 4px 1px 1px rgb(168, 170, 175)",
                   },
                 }}
               />
@@ -257,14 +275,14 @@ const SettingsPage = () => {
                 size="normal"
                 onChange={(e) => setTitle(e.target.value)}
                 margin="dense"
-                sx={{ input: { textAlign: "center" } }} // 안에 문자 중간정렬
-                // 테두리 둥글게 하는 방법 inputprops부터 넣어야함
+                sx={{ input: { textAlign: "center" } }}
                 InputProps={{
                   style: {
                     borderRadius: "20px",
                     backgroundColor: "rgb(255, 255, 255)",
                     fontFamily: "TheJamsil5Bold",
                     color: "rgba(74, 16, 102)",
+                    boxShadow: "4px 4px 1px 1px rgb(168, 170, 175)",
                   },
                 }}
               />
@@ -280,6 +298,7 @@ const SettingsPage = () => {
                   marginTop: "30px",
                 }}
               >
+                {/* 달력 */}
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Graduation Date"
@@ -301,6 +320,7 @@ const SettingsPage = () => {
               <div />
             )}
 
+            {/* 수정 버튼 */}
             <CustomButton
               clickCallback={
                 albumdata.openAt === null

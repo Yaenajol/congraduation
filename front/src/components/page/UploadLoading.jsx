@@ -1,6 +1,11 @@
+// css
 import Spinner from "../images/uploadSpinner.gif";
 import StyledImg from "../styledComponents/StyledImg";
 
+/**
+ * 로딩 스피너
+ * @returns 
+ */
 const UploadLoading = () => {
   return (
     <StyledImg

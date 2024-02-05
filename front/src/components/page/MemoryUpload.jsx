@@ -1,33 +1,39 @@
+// react
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
+// css
 import "./style.css";
-import CropOriginal from "@mui/icons-material/CropOriginal";
 import "/node_modules/react-grid-layout/css/styles.css";
 import "/node_modules/react-resizable/css/styles.css";
-import { TextField } from "@mui/material";
-import { useRecoilState } from "recoil";
-import MemoryAdd1 from "../button/MemoryAdd1";
-import { Dialog } from "@mui/material";
-import DragPage from "../page/DragPage";
-import { isLoginAtom } from "../store/atom";
-import { lookingPkAtom } from "../store/atom";
-import axios from "axios";
+import CropOriginal from "@mui/icons-material/CropOriginal";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
+import { Dialog, TextField } from "@mui/material";
+
+// component
 import CustomButton from "../button/CustomButton";
+import DragPage from "../page/DragPage";
+
+// external
+import axios from "axios";
 
 const MemoryUpload = () => {
+  // 전역 상태 변수 목록
+
+  // 상태 변수 목록
   const [images, setImages] = useState({ a: null, b: null, c: null, d: null });
-  const fileInputRef = useRef(null);
   const [selectedGridItem, setSelectedGridItem] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [mergedImage, setMergedImage] = useState(null);
   const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
-  const isReadyToSubmit =
-    Object.values(images).every((img) => img !== null) && nickname && message;
-
+  const [openModal, setOpenModal] = useState(false);
+  const fileInputRef = useRef(null);
+  
   const params = useParams();
   const navigate = useNavigate();
+   
+  const isReadyToSubmit = Object.values(images).every((img) => img !== null) && nickname && message;
 
   useEffect(() => {
     if (sessionStorage.accessToken) {
@@ -47,27 +53,30 @@ const MemoryUpload = () => {
       }
     }
   });
-  //모달
-  const [openModal, setOpenModal] = useState(false);
+
+  /**
+   * 모달 끄기
+   */
   const handleCloseModal = () => {
     setOpenModal(false);
     // setSelectedImageIndex(null);
   };
 
+  /**
+   * 그리드 클릭 시 모달 띄우기
+   * @param {*} key 그리드의 인덱스 값
+   */
   const handleGridItemClick = (key) => {
     setSelectedGridItem(key);
     // fileInputRef.current.click();
     setSelectedImage(null);
     setOpenModal(true);
   };
-  const updateImage = (imageData) => {
-    setImages((prevImages) => ({
-      ...prevImages,
-      [selectedGridItem]: imageData, // 선택된 그리드 아이템에 이미지 데이터 업데이트
-    }));
-    setOpenModal(false); // 모달 닫기
-  };
 
+  /**
+   * 그리드 내에 이미지를 업로드 합니다.
+   * @param {*} e 이벤트
+   */
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file && selectedGridItem) {
@@ -86,17 +95,6 @@ const MemoryUpload = () => {
   const imageSize = 300; // 이미지 크기
   const spacing = 30; // 이미지 사이의 간격
 
-  // 올라가는 사진을 보기위한 테스트 코드  {mergedImageDisplay} 을 리턴에 추가하세요
-  const mergedImageDisplay = mergedImage ? (
-    <div>
-      <img
-        src={mergedImage}
-        alt="11"
-        style={{ maxWidth: "100%", maxHeight: "100%" }}
-      />
-    </div>
-  ) : null;
-
   const positions = [
     { x: spacing, y: spacing }, // 'a' 위치
     { x: imageSize + spacing * 2, y: spacing }, // 'b' 위치
@@ -104,6 +102,9 @@ const MemoryUpload = () => {
     { x: imageSize + spacing * 2, y: imageSize + spacing * 2 }, // 'd' 위치
   ];
 
+  /**
+   * 4개의 사진, 닉네임, 제목을 넣으면 데이터를 취합해 백엔드에 제출합니다
+   */
   const handleSubmit = async () => {
     if (!isReadyToSubmit) {
       alert("모든 사진과 내용들을 입력해주세요!");
@@ -215,6 +216,7 @@ const MemoryUpload = () => {
     <StyledMemoryPage>
       <div className="title">Memory</div>
 
+      {/* 그리드 */}
       <div className="image-grid">
         {["a", "b", "c", "d"].map((key) => (
           <div
