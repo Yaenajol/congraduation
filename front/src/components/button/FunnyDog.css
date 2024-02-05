@@ -158,11 +158,11 @@
   height: 2px;
   background: #333;
   z-index: 5;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -ms-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.65s;
+  -moz-transition: 0.65s;
+  -ms-transition: 0.65s;
+  -o-transition: 0.65s;
+  transition: 0.65s;
   -webkit-transform-origin: top left;
   -moz-transform-origin: top left;
   -ms-transform-origin: top left;
@@ -171,11 +171,11 @@
 }
 .dog__mouse:before {
   height: 0;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -ms-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.65s;
+  -moz-transition: 0.65s;
+  -ms-transition: 0.65s;
+  -o-transition: 0.65s;
+  transition: 0.65s;
 }
 .dog__tail {
   position: absolute;
@@ -304,18 +304,18 @@
 }
 
 #feed:checked + label + .dog .dog__ear {
-  -webkit-animation: fase 0.3s infinite ease-in-out;
-  -moz-animation: fase 0.3s infinite ease-in-out;
-  animation: fase 0.3s infinite ease-in-out;
+  -webkit-animation: fase 0.65s infinite ease-in-out;
+  -moz-animation: fase 0.65s infinite ease-in-out;
+  animation: fase 0.65s infinite ease-in-out;
   -webkit-animation-fill-mode: both;
   -moz-animation-fill-mode: both;
   animation-fill-mode: both;
 }
 
 #feed:checked + label + .dog .dog__hat {
-  -webkit-animation: fase 0.3s infinite ease-in-out;
-  -moz-animation: fase 0.3s infinite ease-in-out;
-  animation: fase 0.3s infinite ease-in-out;
+  -webkit-animation: fase 0.65s infinite ease-in-out;
+  -moz-animation: fase 0.65s infinite ease-in-out;
+  animation: fase 0.65s infinite ease-in-out;
   -webkit-animation-fill-mode: both;
   -moz-animation-fill-mode: both;
   animation-fill-mode: both;
@@ -325,9 +325,9 @@
   top: 10px;
 }
 #feed:checked + label + .dog .dog__face {
-  -webkit-animation: fase 0.3s infinite ease-in-out;
-  -moz-animation: fase 0.3s infinite ease-in-out;
-  animation: fase 0.3s infinite ease-in-out;
+  -webkit-animation: fase 0.65s infinite ease-in-out;
+  -moz-animation: fase 0.65s infinite ease-in-out;
+  animation: fase 0.65s infinite ease-in-out;
   -webkit-animation-fill-mode: both;
   -moz-animation-fill-mode: both;
   animation-fill-mode: both;
@@ -344,11 +344,11 @@
 }
 #feed:checked + label + .dog .dog__mouse {
   top: 25px;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -ms-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.65s;
+  -moz-transition: 0.65s;
+  -ms-transition: 0.65s;
+  -o-transition: 0.65s;
+  transition: 0.65s;
 }
 #feed:checked + label + .dog .dog__mouse:before {
   top: 2px;
@@ -357,11 +357,11 @@
   height: 16px;
   border-radius: 0 0 10px 10px;
   background: #d91e19;
-  -webkit-transition: 0.3s;
-  -moz-transition: 0.3s;
-  -ms-transition: 0.3s;
-  -o-transition: 0.3s;
-  transition: 0.3s;
+  -webkit-transition: 0.65s;
+  -moz-transition: 0.65s;
+  -ms-transition: 0.65s;
+  -o-transition: 0.65s;
+  transition: 0.65s;
 }
 #feed:checked + label + .dog .dog__tail {
   -webkit-animation: tail 0.1s infinite alternate;
@@ -372,9 +372,9 @@
   animation-fill-mode: both;
 }
 #feed:checked + label + .dog .dog__body:after {
-  -webkit-animation: fase 0.3s infinite ease-in-out;
-  -moz-animation: fase 0.3s infinite ease-in-out;
-  animation: fase 0.3s infinite ease-in-out;
+  -webkit-animation: fase 0.65s infinite ease-in-out;
+  -moz-animation: fase 0.65s infinite ease-in-out;
+  animation: fase 0.65s infinite ease-in-out;
   -webkit-animation-fill-mode: both;
   -moz-animation-fill-mode: both;
   animation-fill-mode: both;
@@ -452,11 +452,11 @@
   }
   15%,
   65% {
-    -webkit-transform: translateY(0.3vh) rotate(-0.2deg);
-    -moz-transform: translateY(0.3vh) rotate(-0.2deg);
-    -ms-transform: translateY(0.3vh) rotate(-0.2deg);
-    -o-transform: translateY(0.3vh) rotate(-0.2deg);
-    transform: translateY(0.3vh) rotate(-0.2deg);
+    -webkit-transform: translateY(0.65vh) rotate(-0.2deg);
+    -moz-transform: translateY(0.65vh) rotate(-0.2deg);
+    -ms-transform: translateY(0.65vh) rotate(-0.2deg);
+    -o-transform: translateY(0.65vh) rotate(-0.2deg);
+    transform: translateY(0.65vh) rotate(-0.2deg);
   }
 }
 @-moz-keyframes fase {
@@ -471,11 +471,11 @@
   }
   15%,
   65% {
-    -webkit-transform: translateY(0.3vh) rotate(-0.2deg);
-    -moz-transform: translateY(0.3vh) rotate(-0.2deg);
-    -ms-transform: translateY(0.3vh) rotate(-0.2deg);
-    -o-transform: translateY(0.3vh) rotate(-0.2deg);
-    transform: translateY(0.3vh) rotate(-0.2deg);
+    -webkit-transform: translateY(0.65vh) rotate(-0.2deg);
+    -moz-transform: translateY(0.65vh) rotate(-0.2deg);
+    -ms-transform: translateY(0.65vh) rotate(-0.2deg);
+    -o-transform: translateY(0.65vh) rotate(-0.2deg);
+    transform: translateY(0.65vh) rotate(-0.2deg);
   }
 }
 @keyframes fase {
@@ -490,11 +490,11 @@
   }
   15%,
   65% {
-    -webkit-transform: translateY(0.3vh) rotate(-0.2deg);
-    -moz-transform: translateY(0.3vh) rotate(-0.2deg);
-    -ms-transform: translateY(0.3vh) rotate(-0.2deg);
-    -o-transform: translateY(0.3vh) rotate(-0.2deg);
-    transform: translateY(0.3vh) rotate(-0.2deg);
+    -webkit-transform: translateY(0.65vh) rotate(-0.2deg);
+    -moz-transform: translateY(0.65vh) rotate(-0.2deg);
+    -ms-transform: translateY(0.65vh) rotate(-0.2deg);
+    -o-transform: translateY(0.65vh) rotate(-0.2deg);
+    transform: translateY(0.65vh) rotate(-0.2deg);
   }
 }
 @-webkit-keyframes tail {

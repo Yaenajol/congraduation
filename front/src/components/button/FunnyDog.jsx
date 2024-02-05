@@ -17,6 +17,7 @@ function FunnyDog() {
           position: "relative",
           left: "10px",
           zIndex: "3",
+          width: "65px",
         }}
         for="ball"
       >
@@ -28,6 +29,7 @@ function FunnyDog() {
           position: "relative",
           left: "10px",
           zIndex: "3",
+          width: "65px",
         }}
         for="feed"
       >
