@@ -161,7 +161,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
           minWidth={100}
           minHeight={100}
           locked={false}
-          
+          style={{marginBottom: '5%'}}
           // circularCrop
         >
         {isLoading && (
@@ -174,7 +174,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
             ref={imgRef}
             alt="Crop me"
             src={imgSrc}
-            style={{ objectFit: 'contain', maxHeight: '50vh' }}
+            style={{ objectFit: 'contain', maxHeight: '50vh', }}
             onLoad={onImageLoad}
           />
           </ReactCrop>

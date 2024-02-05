@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { isLoginAtom } from "../store/atom";
 import "./AllPage.css";
 
-import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
+import StyledMemoryPage1 from "../styledComponents/StyledMemoryPage1";
 import logo from "../images/logo.png"
 
 
@@ -30,7 +30,7 @@ function HomePage() {
 
  
   return (
-    <StyledMemoryPage>
+    <StyledMemoryPage1>
         <br></br>
         <br></br>
         <br></br>
@@ -78,7 +78,7 @@ function HomePage() {
         <br></br>
         <br></br>
 
-    </StyledMemoryPage>
+    </StyledMemoryPage1>
   );
 }
 

@@ -1,77 +1,52 @@
 
-/* @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap'); */
-
 /* 눈누 더잠실체 폰트크기 700 */
 @font-face {
-  font-family: 'TheJamsil5Bold';  
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-family: "TheJamsil5Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2")
+    format("woff2");
   font-weight: 700;
   font-style: normal;
 }
 
 /* 눈누 더잠실체 폰트크기 300 */
 @font-face {
-  font-family: 'TheJamsil2Light';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil2Light.woff2') format('woff2');
+  font-family: "TheJamsil2Light";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil2Light.woff2")
+    format("woff2");
   font-weight: 300;
   font-style: normal;
 }
 
 /* 눈누 평창평화체 폰트적용되었는지 테스트용 */
 @font-face {
-  font-family: 'PyeongChangPeace-Bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2') format('woff2');
+  font-family: "PyeongChangPeace-Bold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2")
+    format("woff2");
   font-weight: 700;
   font-style: normal;
 }
 
-
 .font700 {
-  font-family: 'TheJamsil5Bold';  
+  font-family: "TheJamsil5Bold";
 }
 
 .fonttest {
-  font-family: 'PyeongChangPeace-Bold';
+  font-family: "PyeongChangPeace-Bold";
   color: red;
 }
 
-body {  
+body {
   background-color: rgb(18, 1, 104);
 }
 
 /* YourComponent.css */
 /*  */
 
-
-
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.box {
-  /* border: solid 1px; color: #000; */
-  background-color: rgba(255, 239, 182, 0.88);
-  width: 768px;
-  min-height: 1400px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.imagebox {
-  background-image: url(./flowerschool.png);
-  width: 100%;
-  max-width: 800px;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .kakaobutton {
@@ -92,7 +67,6 @@ body {
   margin-top: 15%;
 }
 
-
 .kakaoballoon {
   width: 1.25rem;
   position: absolute;
@@ -100,29 +74,27 @@ body {
 }
 
 .csstitle {
-    font-size: 2rem;
-    line-height: 2.5rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.25rem;
-    color: rgba(255, 255, 255);
-    /* text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff; */
-    font-family: 'TheJamsil5Bold';  
+  font-size: 2rem;
+  line-height: 2.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  color: rgba(255, 255, 255);
+  /* text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff; */
+  font-family: "TheJamsil5Bold";
 
-    /* letter-spacing: -1px;   */
-
+  /* letter-spacing: -1px;   */
 }
+
 .instatext {
-  font-family: 'TheJamsil2Light';
+  font-family: "TheJamsil2Light";
 
   color: white;
   /* text-shadow: -1.5px -1.5px 0 #050000, 1.5px -1.5px 0 #050000, -1.5px 1.5px 0 #050000, 1.5px 1.5px 0 #050000; */
   margin-top: 5px;
   margin-bottom: 3px;
-
 }
 
 .settingbutton {
-
 }
 
 .loginimage1 {
@@ -140,7 +112,7 @@ body {
 }
 
 @keyframes fadeIn {
-  from { 
+  from {
     opacity: 0;
   }
   to {
@@ -148,62 +120,72 @@ body {
   }
 }
 
-
-
 @keyframes bounce {
   100% {
     top: -20px;
-    text-shadow: 0 1px 0 #CCC,
-      0 2px 0 #CCC,
-      0 3px 0 #CCC,
-      0 4px 0 #CCC,
-      0 5px 0 #CCC,
-      0 6px 0 #CCC,
-      0 7px 0 #CCC,
-      0 8px 0 #CCC,
-      0 9px 0 #CCC,
-      0 50px 25px rgba(0,0,0, .2);
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
+      0 5px 0 #ccc, 0 6px 0 #ccc, 0 7px 0 #ccc, 0 8px 0 #ccc, 0 9px 0 #ccc,
+      0 50px 25px rgba(0, 0, 0, 0.2);
   }
 }
 h1 span {
   position: relative;
   top: 10px;
   /* display: inline-block; */
-  animation: bounce .6s ease 2 alternate;
+  animation: bounce 0.6s ease 2 alternate;
   /* font-family: 'Titan One', cursive; */
   font-size: 30px;
-  color: #FFF;
-  text-shadow: 0 1px 0 #CCC,
-               0 2px 0 #CCC,
-               0 3px 0 #CCC,
-               0 4px 0 #CCC,
-               0 5px 0 #CCC,
-               0 6px 0 transparent,
-               0 7px 0 transparent,
-               0 8px 0 transparent,
-               0 9px 0 transparent,
-               0 10px 10px rgba(0, 0, 0, .4);
+  color: #fff;
+  text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
+    0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
+    0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);
 }
-h1 span:nth-child(2) { animation-delay: .1s; animation-duration:3.6; }
-h1 span:nth-child(3) { animation-delay: .2s; }
-h1 span:nth-child(4) { animation-delay: .3s; }
-h1 span:nth-child(5) { animation-delay: .4s; }
-h1 span:nth-child(6) { animation-delay: .5s; }
-h1 span:nth-child(7) { animation-delay: .6s; }
-h1 span:nth-child(8) { animation-delay: .7s; }
-h1 span:nth-child(9) { animation-delay: .8s; }
-h1 span:nth-child(10) { animation-delay: .9s; }
-h1 span:nth-child(11) { animation-delay: .10s; }
-h1 span:nth-child(12) { animation-delay: .11s; }
-h1 span:nth-child(13) { animation-delay: .12s; }
-h1 span:nth-child(14) { animation-delay: .13s; }
+h1 span:nth-child(2) {
+  animation-delay: 0.1s;
+  animation-duration: 3.6;
+}
+h1 span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+h1 span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+h1 span:nth-child(5) {
+  animation-delay: 0.4s;
+}
+h1 span:nth-child(6) {
+  animation-delay: 0.5s;
+}
+h1 span:nth-child(7) {
+  animation-delay: 0.6s;
+}
+h1 span:nth-child(8) {
+  animation-delay: 0.7s;
+}
+h1 span:nth-child(9) {
+  animation-delay: 0.8s;
+}
+h1 span:nth-child(10) {
+  animation-delay: 0.9s;
+}
+h1 span:nth-child(11) {
+  animation-delay: 0.1s;
+}
+h1 span:nth-child(12) {
+  animation-delay: 0.11s;
+}
+h1 span:nth-child(13) {
+  animation-delay: 0.12s;
+}
+h1 span:nth-child(14) {
+  animation-delay: 0.13s;
+}
 
 .logo {
   width: 200px;
   height: 170px;
   justify-content: center;
   margin-top: 10%;
-
 }
 
 .textfield {
@@ -212,11 +194,10 @@ h1 span:nth-child(14) { animation-delay: .13s; }
 
 /* 미디어 쿼리 */
 @media all and (max-width: 769px) {
-  .box{
+  .box {
     width: 100%;
   }
   .container {
-    
   }
 
   .kakaobutton {
@@ -224,10 +205,8 @@ h1 span:nth-child(14) { animation-delay: .13s; }
   }
 
   .csstitle {
-
   }
 
   .imagebox {
-
   }
 }

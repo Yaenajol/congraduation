@@ -90,10 +90,11 @@
 }
 
 .upload {
-  justify-content: space-between;
+  justify-content: space-around;
   display: flex;
   margin-bottom: 10%;
   margin-top: 5%; 
+  
 }
 
 .image-box {

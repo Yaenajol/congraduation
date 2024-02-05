@@ -6,6 +6,7 @@ import DragPage from "../page/DragPage";
 import {Dialog} from "@mui/material";
 import {ReactCrop, centerCrop, makeAspectCrop, convertToPixelCrop} from 'react-image-crop';
 import userAltImage from '../images/userAltImage.png'
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
   
@@ -50,10 +51,11 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
           alt="userAltImage"
           width={"100%"}
           // height={"70rem"}
-          style={{borderRadius:"50%"}}
+          style={{borderRadius:"50%" }}
           onClick={() => {
             handelopenmodal()
           }}
+          
         />
       )}
 

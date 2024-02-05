@@ -1,4 +1,5 @@
 .settingButtonContainer {
+  z-index: 3;
   height: 56px;
   margin-top: 35px;
   margin-bottom: 30px;

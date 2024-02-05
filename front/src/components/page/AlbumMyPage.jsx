@@ -1,7 +1,7 @@
 // react
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import FunnyDog from "../button/FunnyDog";
 
 // recoil
 import { useRecoilState } from "recoil";
@@ -17,6 +17,7 @@ import "../page/AlbumPage.css";
 // component
 import CustomButton from "../button/CustomButton";
 import MenuButton from "../../components/button/MenuButton";
+import "../page/Snowrain.css"
 
 // image
 import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
@@ -45,8 +46,11 @@ const AlbumMypage = () => {
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(undefined);
   
+  const [specNickname, setSpecNickname] = useState("");
+  const [specContent, setSpecContent] = useState("");
+  const [modalimage, setModalimage] = useState("")
   // 날짜 설정 변수 목록
-  const date = moment(album.openAt);
+  const openDate = moment(album.openAt);
   const dday = new Date(album.openAt);
   const today = new Date();
   const timeGap = dday.getTime() - today.getTime();
@@ -58,23 +62,51 @@ const AlbumMypage = () => {
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
   
   const navigate = useNavigate();
-
+  const [snowflakes, setSnowflakes] = useState([])
 
   useEffect(() => {
+    const snowCount = 100;
+    const newSnowflakes = [];
+
+    for (let i = 0; i < snowCount; i++) {
+      const randomXStart = Math.random() * window.innerWidth;
+      const randomScale = Math.random() * 0.1;
+      const fallDuration = randomRange(10, 30) + "s";
+      const fallDelay = randomRange(-30, 0) + "s";
+
+      newSnowflakes.push({
+        id: i,
+        style: {
+          opacity: Math.random(),
+          transform: `translate(${randomXStart}px, 0px) scale(${randomScale})`,
+          animation: `fall ${fallDuration} ${fallDelay} linear infinite`,
+          position: 'absolute',
+          width: '15px',
+          height: '15px',
+          background: 'pink',
+          borderRadius: '50%',
+          left: `${randomXStart}px`,
+        },
+      });
+    }
+    setSnowflakes(newSnowflakes)
+
     if (!sessionStorage.accessToken) {  // accessToken 없으면 로그인 페이지로
       navigate("/");
       return;
     }
+    
+    // accessToken 이 있을 때 현재 로그인 된 유저의 정보를 조회
     axios
       .get(`https://congraduation.me/backapi/members/myAlbum`, {
         headers: { accessToken: sessionStorage.accessToken },
       })
       .then((response) => {
-        console.log("Album Data:", response.data);
-
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
+
+        // 공개일자가 정해지지 않았으면 앨범 정보와 함께 설정 페이지로 이동
         if (response.data.openAt === null) {
           console.log(response.data);
           navigate("/myalbum/setting", { state: response.data });
@@ -83,6 +115,8 @@ const AlbumMypage = () => {
         return response.data.albumPk;
       })
       .then((albumPk) => {
+        
+        // 특정 앨범의 메모리 리스트 조회
         axios
           .get(`https://congraduation.me/backapi/albums/${albumPk}/memories`)
           .then((response) => {
@@ -94,13 +128,18 @@ const AlbumMypage = () => {
       });
   }, []);
 
+  function randomRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
   const handleImageClick = (imageUrl, index) => {
+    
     const now = moment();
     setSelectedImageIndex(index);
-    console.log(now);
-    console.log(date);
-    console.log(albumMemories[index].memoryPk);
-    if (now >= date) {
+
+    if (now >= openDate) {
+      
+      // 특정 메모리를 조회해서 구체적인 이미지를 보여준다.
       axios
         .get(
           `https://congraduation.me/backapi/memories/${albumMemories[index].memoryPk}`,
@@ -109,53 +148,112 @@ const AlbumMypage = () => {
           }
         )
         .then((response) => {
-          console.log(response.data);
           setSpecificMemory(response.data);
-          // console.log(response.data)
+          setSpecNickname(response.data.nickname);
+          setModalimage(response.data.imageUrl)
+          setSpecContent(response.data.content);
+          console.log("spec Nickname : " + specificMemory.nickname);
+          console.log("spec Content : " + specificMemory.content);
         });
 
-      setOpenModal(true); // 모달 opne 상태 true로
+      setOpenModal(true);
+
+    // 공개일 아닐 때
     } else {
       alert("공개일 아님");
     }
   };
 
+  /**
+   * 현재 페이지를 표시합니다
+   * @param {*} event 
+   * @param {*} value 현재 페이지 
+   */
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
-  const handlerCopyClipBoard = async (text) => {
+
+  /**
+   * 앨범 기본키 값을 받아서 링크를 복사, 저장합니다
+   * @param {*} albumPk 앨범 기본키
+   */
+  const handlerCopyClipBoard = async (albumPk) => {
     try {
-      console.log(text);
+      console.log(albumPk);
       const domain = window.location.origin;
-      const address = `${domain}/albums/${text}`;
+      const address = `${domain}/albums/${albumPk}`;
       await navigator.clipboard.writeText(address);
       alert("링크가 복사됐습니다!");
-      console.log(text);
+      console.log(albumPk);
     } catch (err) {
       console.log("error :", err);
     }
   };
+
+  /**
+   * 모달 끄기
+   */
   const handleCloseModal = () => {
-    setOpenModal(false); // 모달 open 상태 false로
-    setSelectedImageIndex(null); // 선택된 이미지 인덱스를 null로 상태 변경
+    setOpenModal(false);
+    setSelectedImageIndex(null);
   };
 
-  // 다이어리(모달) 내에서 다음 이미지를 보여주는 함수
+  /**
+   * 모달 내에서 다음 이미지를 보여줍니다
+   */
   const handleNextImage = () => {
     setSelectedImageIndex((prevIndex) => {
+      
       const nextIndex = prevIndex + 1;
+
+      // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
       if (nextIndex < memoryarray.length) {
-        // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
+        axios
+        .get(
+          `https://congraduation.me/backapi/memories/${albumMemories[nextIndex].memoryPk}`,
+          {
+            headers: { accessToken: sessionStorage.accessToken },
+          }
+        )
+        .then((response) => {
+          setModalimage(response.data.imageUrl)
+          setSpecificMemory(response.data);
+          setSpecNickname(response.data.nickname);
+          setSpecContent(response.data.content);
+          console.log("spec Nickname : " + specificMemory.nickname);
+          console.log("spec Content : " + specificMemory.content);
+        });
+        
         return nextIndex;
       }
       return prevIndex; // 그 외의 경우에는 이전 인덱스를 반환
     });
   };
 
-  // 다이어리(모달) 내에서 이전 이미지를 보여주는 함수
+  /**
+   * 모달 내에서 이전 이미지를 보여줍니다
+   */
   const handlePrevImage = () => {
     setSelectedImageIndex((prevIndex) => {
+      // 인덱스 값이 0 이상일 때
       if (prevIndex > 0) {
+        axios
+        .get(
+          `https://congraduation.me/backapi/memories/${albumMemories[prevIndex - 1].memoryPk}`,
+          {
+            headers: { accessToken: sessionStorage.accessToken },
+          }
+        )
+        .then((response) => {
+          setModalimage(response.data.imageUrl)
+          setSpecificMemory(response.data);
+          setSpecNickname(response.data.nickname);
+          setSpecContent(response.data.content);
+          console.log(specificMemory)
+          console.log("spec Nickname : " + specificMemory.nickname);
+          console.log("spec Content : " + specificMemory.content);
+        });
+
         return prevIndex - 1;
       }
       return prevIndex; // 이미지 인덱스가 0보다 작을 때는 현재 인덱스를 반환
@@ -163,8 +261,20 @@ const AlbumMypage = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {snowflakes.map((flake) => (
+        <div key={flake.id} className="snow" style={flake.style} />
+      ))}
       <StyledContainer>
+        
+        {/* 내 정보 */}
         <div class="sortHeader">
           <div>
             <StyledTypography>
@@ -172,17 +282,17 @@ const AlbumMypage = () => {
             </StyledTypography>
             <StyledTypography>
               <span class="strongLetter">{memoryarray.length}장</span>의
-              메모리가 도착했어요!
+              메모리가 도착했어요
             </StyledTypography>
             <StyledTypography>
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
-                <div style={{ color: "white", fontWeight: "bolder" }}>
+                <div class="strongLetter">
                   D -{" "}
-                  <span class="strongLetter">
-                    {remainDay === 0 ? (
-                      <span> day Congraduation!</span>
+                  <span>
+                    {remainDay <= 0 ? (
+                      <span style={{fontFamily:"KyoboHand"}}> day Congraduation!</span>
                     ) : (
                       remainDay
                     )}
@@ -201,7 +311,7 @@ const AlbumMypage = () => {
             <MenuButton zin={false} />
           </div>
         </div>
-        <div style={{ display: "flex", position: "relative" }}>
+        <div style={{ position: "relative", width:"100%", zIndex:"0"}}>
           <img
             src={albumFrame}
             alt="album"
@@ -209,6 +319,8 @@ const AlbumMypage = () => {
               width: "100%",
             }}
           />
+
+          {/* 메모리 리스트 */}
           <div class="memoryList">
             <Grid container spacing={2}>
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
@@ -242,6 +354,7 @@ const AlbumMypage = () => {
                         width: "100%",
                         marginTop: "5%",
                         textAlign: "center",
+                        fontFamily: "KyoboHand",
                       }}
                     >
                       {val.nickName}
@@ -253,6 +366,7 @@ const AlbumMypage = () => {
           </div>
         </div>
 
+        {/* 페이지네이션 */}
         <div class="alignCenter">
           <Pagination
             count={Math.ceil(memoryarray.length / itemsPerPage)}
@@ -261,17 +375,19 @@ const AlbumMypage = () => {
           />
         </div>
 
+        {/* 공유 버튼 */}
         <CustomButton
           clickCallback={() => handlerCopyClipBoard(album.albumPk)}
           buttonName={"공유하러가기"}
         ></CustomButton>
 
+        {/* 모달 */}
         <Dialog open={openModal} onClose={handleCloseModal}>
           <DialogContent style={{ overflowY: "auto" }}>
             {selectedImageIndex !== null && (
               <div>
                 <StyledImg
-                  src={memoryarray[selectedImageIndex]?.imageUrl}
+                  src={modalimage}
                   alt={`Memory ${selectedImageIndex + 1}`}
                   style={{ maxWidth: "100%" }}
                 />
@@ -284,9 +400,9 @@ const AlbumMypage = () => {
                 >
                   {" "}
                   {/* wordWrap: 'break-word' 일 경우 단어가 끊김  */}
-                  <p>{specificMemory.nickname}</p>
-                  <h2> {specificMemory.content}ㅋㅋㅋㅋㅋ</h2>
-                </div>
+                  <p className="nickname">From. {specNickname}</p>
+                  <p className="box52">{specContent} </p>
+                </div>  
               </div>
             )}
           </DialogContent>
@@ -311,6 +427,8 @@ const AlbumMypage = () => {
           </DialogActions>
         </Dialog>
       </StyledContainer>
+
+      <FunnyDog></FunnyDog>
     </div>
   );
 };
