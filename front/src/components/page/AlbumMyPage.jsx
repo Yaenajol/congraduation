@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
+import sakura from '../images/sakura.png'
 
 import {
   Paper,
@@ -32,7 +33,7 @@ import AlbumProfileImage from "./AlbumProfileImage";
 import "../page/AlbumPage.css";
 import albumFrame from "../images/albumFrame.png";
 import { fontSize } from "@mui/system";
-
+import "../page/Snowrain.css"
 
 const AlbumMypage = () => {
   const params = useParams();
@@ -53,12 +54,46 @@ const AlbumMypage = () => {
   const [specificMemory, setSpecificMemory] = useState("");
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(undefined);
-  console.log(albumMemories);
+
+  const [snowflakes, setSnowflakes] = useState([])
+  
   useEffect(() => {
+    const snowCount = 100
+    const newSnowflakes = [];
+
+    for (let i = 0; i < snowCount; i++) {
+      const randomXStart = Math.random() * window.innerWidth;
+      const randomXEnd = Math.random() * window.innerWidth;
+      const randomScale = Math.random() * 0.1;
+      const fallDuration = randomRange(10, 30) + "s";
+      const fallDelay = randomRange(-30, 0) + "s";
+      
+      newSnowflakes.push({
+        id: i,
+        style: {
+          opacity: Math.random(),
+          transform: `translate(${randomXStart}px, -10px) scale(${randomScale})`,
+          animation: `fall ${fallDuration} ${fallDelay} linear infinite`,
+          position: 'absolute',
+          width: '15px',
+          height: '15px',
+          background: 'pink',
+          borderRadius: '50%',
+          backgroundImage: `url(${sakura})`,
+          left: `${randomXStart}px`,
+
+        }
+      });
+      
+    }
+    setSnowflakes(newSnowflakes)
+
+    
     if (!sessionStorage.accessToken) {
       navigate("/");
       return;
     }
+
     axios
       .get(`https://congraduation.me/backapi/members/myAlbum`, {
         headers: { accessToken: sessionStorage.accessToken },
@@ -95,6 +130,12 @@ const AlbumMypage = () => {
   console.log("dday : " + dday);
   console.log("today : " + today);
   const remainDay = Math.ceil(timeGap / (1000 * 60 * 60 * 24));
+
+  function randomRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  
 
   const filteredAlbumMemories = albumMemories.filter(
     (val) => val.albumPk === params.PK
@@ -176,6 +217,14 @@ const AlbumMypage = () => {
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
+      {snowflakes.map(flake => (
+        <div
+          key={flake.id}
+          className="snow"
+          style={flake.style}
+        />
+      ))}
+
       <StyledContainer>
         <div class="sortHeader">
           <div>
