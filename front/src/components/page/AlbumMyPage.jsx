@@ -13,6 +13,7 @@ import StyledContainer from "../styledComponents/StyledContainer";
 import StyledImg from "../styledComponents/StyledImg";
 import StyledTypography from "../styledComponents/StyledTypography";
 import "../page/AlbumPage.css";
+import "../page/Snowrain.css";
 
 // component
 import CustomButton from "../button/CustomButton";
@@ -20,7 +21,7 @@ import MenuButton from "../../components/button/MenuButton";
 import "../page/Snowrain.css"
 
 // image
-import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
+import userAltImage from "../images/userAltImage.png";
 import albumFrame from "../images/albumFrame.png";
 import AlbumProfileImage from "./AlbumProfileImage";
 
@@ -45,10 +46,11 @@ const AlbumMypage = () => {
   const [specificMemory, setSpecificMemory] = useState("");
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(undefined);
-  
   const [specNickname, setSpecNickname] = useState("");
   const [specContent, setSpecContent] = useState("");
-  const [modalimage, setModalimage] = useState("")
+  const [snowflakes, setSnowflakes] = useState([]);
+  const [modalimage, setModalimage] = useState("");
+
   // 날짜 설정 변수 목록
   const openDate = moment(album.openAt);
   const dday = new Date(album.openAt);
@@ -58,27 +60,29 @@ const AlbumMypage = () => {
   
   // 페이지네이션 변수 목록
   const itemsPerPage = 4;
-  const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 6개씩 1페이지이면 2페이지일 때는 6)
+  const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 4개씩 1페이지이면 2페이지일 때는 4)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
   
   const navigate = useNavigate();
-  const [snowflakes, setSnowflakes] = useState([])
 
   useEffect(() => {
+    
+    // 벚꽃
     const snowCount = 100;
     const newSnowflakes = [];
 
     for (let i = 0; i < snowCount; i++) {
       const randomXStart = Math.random() * window.innerWidth;
+      const randomXEnd = Math.random() * window.innerWidth;
       const randomScale = Math.random() * 0.1;
       const fallDuration = randomRange(10, 30) + "s";
       const fallDelay = randomRange(-30, 0) + "s";
-
+      
       newSnowflakes.push({
         id: i,
         style: {
           opacity: Math.random(),
-          transform: `translate(${randomXStart}px, 0px) scale(${randomScale})`,
+          transform: `translate(${randomXStart}px, -10px) scale(${randomScale})`,
           animation: `fall ${fallDuration} ${fallDelay} linear infinite`,
           position: 'absolute',
           width: '15px',
@@ -86,10 +90,10 @@ const AlbumMypage = () => {
           background: 'pink',
           borderRadius: '50%',
           left: `${randomXStart}px`,
-        },
+        }
       });
     }
-    setSnowflakes(newSnowflakes)
+    setSnowflakes(newSnowflakes);
 
     if (!sessionStorage.accessToken) {  // accessToken 없으면 로그인 페이지로
       navigate("/");
@@ -216,12 +220,10 @@ const AlbumMypage = () => {
           }
         )
         .then((response) => {
-          setModalimage(response.data.imageUrl)
+          setModalimage(response.data.imageUrl);
           setSpecificMemory(response.data);
           setSpecNickname(response.data.nickname);
           setSpecContent(response.data.content);
-          console.log("spec Nickname : " + specificMemory.nickname);
-          console.log("spec Content : " + specificMemory.content);
         });
         
         return nextIndex;
@@ -245,13 +247,10 @@ const AlbumMypage = () => {
           }
         )
         .then((response) => {
-          setModalimage(response.data.imageUrl)
+          setModalimage(response.data.imageUrl);
           setSpecificMemory(response.data);
           setSpecNickname(response.data.nickname);
           setSpecContent(response.data.content);
-          console.log(specificMemory)
-          console.log("spec Nickname : " + specificMemory.nickname);
-          console.log("spec Content : " + specificMemory.content);
         });
 
         return prevIndex - 1;

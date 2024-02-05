@@ -1,26 +1,28 @@
-
+// react
 import React, { useEffect } from "react";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
-import { useNavigate, useParams } from 'react-router-dom'
-import { isLoginAtom } from "../store/atom";
-import "./AllPage.css";
+import { useNavigate } from 'react-router-dom'
 
+// recoil
+import { useRecoilState } from 'recoil';
+import { isLoginAtom } from "../store/atom";
+
+// css
+import "./AllPage.css";
 import StyledMemoryPage1 from "../styledComponents/StyledMemoryPage1";
+
+// image
 import logo from "../images/logo.png"
 
 
-// 내부 경로
-import Main from "../images/Main.jpg";
-
 
 function HomePage() {
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  
   const navigate = useNavigate()
+  
   const LoginHandler = () => {
     window.location.href = "https://congraduation.me/backapi/kakao/redirect";
   };                                                                    
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
-  const params = useParams()
-
   
   useEffect(() => {
     if (isLogin) {
@@ -36,7 +38,6 @@ function HomePage() {
         <br></br>
 
         <br></br>
-        {/* <h1 className="csstitle">얘들아 나 졸업해!!</h1> */}
         <h1 className="csstitle">
           <span> 얘 </span>
           <span> </span>

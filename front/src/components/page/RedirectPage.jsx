@@ -1,17 +1,26 @@
+// react
 import React, { useEffect, useState } from "react";
-import { useSetRecoilState, useRecoilState } from 'recoil';
 import { useNavigate } from "react-router-dom";
-import { isLoginAtom } from "../store/atom";
-import { lookingPkAtom } from "../store/atom";
-import axios from "axios";
 
+// recoil
+import { useRecoilState } from 'recoil';
+import { isLoginAtom } from "../store/atom";
+
+/**
+ * 카카오 소셜 로그인 리디렉션 페이지 입니다.
+ * @returns 
+ */
 function RedirectPage() {
-  const navigate = useNavigate();
+  // 전역 상태 변수 목록
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+
+  // 상태 변수 목록
   const [authCode, setAuthCode] = useState(null);
   const [data, setData] = useState(null);
+
+  const navigate = useNavigate();
   const code = new URL(window.location.href);
   const kakaoCode = code.searchParams.get("code");
-  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   
   useEffect(() => {
     setAuthCode(kakaoCode); // 인가 코드 상태 업데이트
@@ -39,15 +48,14 @@ function RedirectPage() {
       sessionStorage.setItem( 'accessToken' , result.accessToken)
       setIsLogin(true)
     
-      
-      
-      const localpk = sessionStorage.getItem('lookingPk')
+
+      const localpk = sessionStorage.getItem('lookingPk');
+      console.log(localpk);
       if (localpk) {
-        navigate(`/albums/${localpk}`)
+        navigate(`/albums/${localpk}`);
       } else {
         
         navigate(`/myalbum`);
-        //아직 설정안했지만 setting 페이지로 가야함
       }
     } catch (error) {
       console.error("There was a problem sending the auth code:", error);
@@ -56,9 +64,7 @@ function RedirectPage() {
 
   return (
     <div>
-      {/* <h1>Auth Code: {authCode}</h1>
 
-      <pre>{data ? JSON.stringify(data, null, 2) : "Loading..."}</pre> */}
     </div>
   );
 }
