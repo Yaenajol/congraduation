@@ -1,13 +1,23 @@
+// react
 import React, { useState, useRef } from 'react';
-import {ReactCrop, centerCrop, makeAspectCrop, convertToPixelCrop} from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
-import "./style.css"; 
-import InputFileUpload from '../button/UploadButton';
-import MemoryAdd from '../button/MemoryAdd'
+import {ReactCrop, centerCrop, makeAspectCrop } from 'react-image-crop';
+
+// recoil
 import { useRecoilState } from "recoil";
 import { albumPageMainImgAtom } from "../store/atom";
-import axios from 'axios';
+
+// css
+import 'react-image-crop/dist/ReactCrop.css';
+import "./style.css"; 
+
+// component
+import InputFileUpload from '../button/UploadButton';
+import MemoryAdd from '../button/MemoryAdd'
 import Spinner from '../spinner/Spinner';
+
+// external
+import axios from 'axios';
+
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(

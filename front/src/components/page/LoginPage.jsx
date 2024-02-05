@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useNavigate, useParams } from 'react-router-dom'
 import { isLoginAtom } from "../store/atom";
 import "./AllPage.css";
@@ -8,9 +8,6 @@ import "./AllPage.css";
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import logo from "../images/logo.png"
 
-
-// 내부 경로
-import Main from "../images/Main.jpg";
 
 
 function HomePage() {

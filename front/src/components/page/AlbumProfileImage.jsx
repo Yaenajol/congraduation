@@ -1,47 +1,64 @@
-import React, { useState, useEffect, useRef } from "react";
+// react
+import React, { useState } from "react";
+
+// css
 import StyledImg from "../styledComponents/StyledImg";
-import axios from "axios";
+import {Dialog} from "@mui/material";
+
+// component
 import UploadLoading from "./UploadLoading";
 import DragPage from "../page/DragPage";
-import {Dialog} from "@mui/material";
-import {ReactCrop, centerCrop, makeAspectCrop, convertToPixelCrop} from 'react-image-crop';
+
+// image
 import userAltImage from '../images/userAltImage.png'
 
+/**
+ * 앨범 프로필 사진을 변경합니다
+ * @param {*} imageUrl 기존 이미지
+ * @param {*} setImageUrl 바꿀 이미지
+ * @param {*} albumPk 앨범 기본키
+ * @param {*} isClickable 클릭 여부
+ * @returns 
+ */
 function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
   
   const [loading, setLoading] = useState(false);
-  const fileInput = useRef(null);
   const [openModal, setOpenModal] = useState(false);
   const [imgSrc, setImgSrc] = useState('');
 
 
+  /**
+   * 모달 끄기
+   */
   const handleCloseModal = async () => {
     setImgSrc()
     setOpenModal(false);
   };
 
+  /**
+   * 모달 키기
+   */
   const handelopenmodal = () => {
     if (isClickable) {
       setOpenModal(true)
     }
   }
   
-  const onChange = async (e) => {
-    if (e.target.files[0]) {
-      let formdata = new FormData();
-      formdata.append("image", e.target.files[0]);
-      const reader = new FileReader()
-      reader.addEventListener('load', () =>
-        setImgSrc(reader.result?.toString() || ''),
-      )
-      reader.readAsDataURL(e.target.files[0])
-    }
-  }
-  
-  
+  // const onChange = async (e) => {
+  //   if (e.target.files[0]) {
+  //     let formdata = new FormData();
+  //     formdata.append("image", e.target.files[0]);
+  //     const reader = new FileReader()
+  //     reader.addEventListener('load', () =>
+  //       setImgSrc(reader.result?.toString() || ''),
+  //     )
+  //     reader.readAsDataURL(e.target.files[0])
+  //   }
+  // }
   
   return (
     <div>
+      {/* 로딩 중이면 스피너 보여주고 아닌 떄에는 프로필 이미지 */}
       {loading ? (
         <UploadLoading />
       ) : (
@@ -57,6 +74,7 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
         />
       )}
 
+      {/* 모달을 통해 이미지를 변경 */}
       <Dialog
         open={openModal}
         onClose={handleCloseModal}
@@ -64,9 +82,6 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
       >
         <DragPage albumPk={albumPk} setImages={setImageUrl} setOpenModal={setOpenModal} />
       </Dialog>
-      
-      
-      
     </div>
   );
 }

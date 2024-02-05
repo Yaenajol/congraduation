@@ -1,5 +1,13 @@
 const TO_RADIANS = Math.PI / 180;
 
+/**
+ * 캔버스 프리뷰
+ * @param {*} image 선택한 이미지
+ * @param {*} canvas 캔버스
+ * @param {*} crop 크롭 부분
+ * @param {*} scale 비율
+ * @param {*} rotate 회전 각도
+ */
 export async function canvasPreview(
   image,
   canvas,
