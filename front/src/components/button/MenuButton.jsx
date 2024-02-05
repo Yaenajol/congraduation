@@ -14,6 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import testmenu4 from "../images/testmenu4.png";
+import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
 
 export default function MenuIntroduction({ zin }) {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
@@ -69,8 +70,11 @@ export default function MenuIntroduction({ zin }) {
         style={{ backgroundColor: "rgba( 255, 255, 255, 0 )", border: "none" }}
       >
         {/* <MoreVertIcon style={{color:"black", textAlign:"start"}}/> */}
-        <img src={testmenu4} alt="" />
+        {/* <img src={testmenu4} alt="" /> */}
         {/* <DehazeRoundedIcon/> */}
+        {/* <button style={{backgroundColor:"none"}}> */}
+        <SettingsSuggestRoundedIcon fontSize="large" sx={{color:"white"}}/>
+        {/* </button> */}
       </MenuButton>
       <Menu slots={{ listbox: Listbox }}>
         {!zin ? (
