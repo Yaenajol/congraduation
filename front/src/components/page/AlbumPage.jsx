@@ -37,7 +37,7 @@ import Dday from "./Dday";
 
 import "../page/AlbumPage.css";
 import albumFrame from "../images/albumFrame.png";
-import "../page/Snowrain.css"
+import "../page/Snowrain.css";
 
 const AlbumPage = () => {
   const params = useParams();
@@ -65,12 +65,12 @@ const AlbumPage = () => {
   const [imageUrl, setImageUrl] = useState(userAltImage);
   const [albumOpenAt, setalbumOpenAt] = useState(null);
 
-  const [snowflakes, setSnowflakes] = useState([])
+  const [snowflakes, setSnowflakes] = useState([]);
 
   useEffect(() => {
     setLookingPk(params.PK);
 
-    const snowCount = 100
+    const snowCount = 100;
     const newSnowflakes = [];
 
     for (let i = 0; i < snowCount; i++) {
@@ -79,26 +79,23 @@ const AlbumPage = () => {
       const randomScale = Math.random() * 0.1;
       const fallDuration = randomRange(10, 30) + "s";
       const fallDelay = randomRange(-30, 0) + "s";
-      
+
       newSnowflakes.push({
         id: i,
         style: {
           opacity: Math.random(),
           transform: `translate(${randomXStart}px, -10px) scale(${randomScale})`,
           animation: `fall ${fallDuration} ${fallDelay} linear infinite`,
-          position: 'absolute',
-          width: '15px',
-          height: '15px',
-          background: 'pink',
-          borderRadius: '50%',
+          position: "absolute",
+          width: "15px",
+          height: "15px",
+          background: "pink",
+          borderRadius: "50%",
           left: `${randomXStart}px`,
-
-        }
+        },
       });
-      
     }
-    setSnowflakes(newSnowflakes)
-
+    setSnowflakes(newSnowflakes);
 
     // 특정 앨범 조회
     axios
@@ -227,13 +224,16 @@ const AlbumPage = () => {
 
   // 유저 이미지 아이콘 버튼
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      {snowflakes.map(flake => (
-        <div
-          key={flake.id}
-          className="snow"
-          style={flake.style}
-        />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {snowflakes.map((flake) => (
+        <div key={flake.id} className="snow" style={flake.style} />
       ))}
       <StyledContainer>
         <div class="sortHeader">
@@ -241,19 +241,19 @@ const AlbumPage = () => {
             <StyledTypography>
               {album.nickname} 의 {album.title}
             </StyledTypography>
-            <StyledTypography style={{ color: "white" }}>
+            <StyledTypography>
               <span class="strongLetter">{memoryarray.length}장</span>의
-              메모리가 도착했어요!
+              메모리가 도착했어요
             </StyledTypography>
             <StyledTypography>
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
-                <div style={{ color: "white", fontWeight: "bolder" }}>
+                <div class="strongLetter">
                   D -{" "}
-                  <span class="strongLetter">
-                    {remainDay === 0 ? (
-                      <span> day Congraduation!</span>
+                  <span>
+                    {remainDay <= 0 ? (
+                      <span style={{fontFamily:"KyoboHand"}}> day Congraduation!</span>
                     ) : (
                       remainDay
                     )}
@@ -273,7 +273,7 @@ const AlbumPage = () => {
           </div>
         </div>
 
-        <div style={{ display: "flex", position: "relative" }}>
+        <div style={{ display: "flex", position: "relative", width: "100%", zIndex:"0" }}>
           <img
             src={albumFrame}
             alt="album"
@@ -303,9 +303,9 @@ const AlbumPage = () => {
                       style={{
                         position: "relative",
                       }}
-                      onClick={() =>
-                        handleImageClick(val.memoryPk, startIndex + index)
-                      }
+                      // onClick={() =>
+                      //   handleImageClick(val.memoryPk, startIndex + index)
+                      // }
                     />
                     <div
                       style={{
@@ -314,6 +314,7 @@ const AlbumPage = () => {
                         width: "100%",
                         marginTop: "5%",
                         textAlign: "center",
+                        fontFamily: "KyoboHand",
                       }}
                     >
                       {val.nickName}

@@ -12,8 +12,8 @@ export default function ButtonColors({onClick, isClickable}) {
       sx={{
         // display: 'flex',
         // marginRight: '10%',
-        marginBottom: '5%',
-        alignItems: 'center',
+        // marginBottom: '5%',
+        // alignItems: 'center',
         gap: 3,
       }}
     >

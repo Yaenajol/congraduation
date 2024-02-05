@@ -1,7 +1,7 @@
 // react
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import FunnyDog from "../button/FunnyDog";
 
 // recoil
 import { useRecoilState } from "recoil";
@@ -22,11 +22,13 @@ import MenuButton from "../../components/button/MenuButton";
 import userAltImage from "../images/userAltImage.png";
 import albumFrame from "../images/albumFrame.png";
 import AlbumProfileImage from "./AlbumProfileImage";
-
-// external
 import axios from "axios";
 import moment from "moment";
+import "../page/AlbumPage.css";
 
+import { fontSize } from "@mui/system";
+
+import "../page/Snowrain.css"
 
 const AlbumMypage = () => {
 
@@ -47,7 +49,7 @@ const AlbumMypage = () => {
   
   const [specNickname, setSpecNickname] = useState("");
   const [specContent, setSpecContent] = useState("");
-  
+  const [modalimage, setModalimage] = useState("")
   // 날짜 설정 변수 목록
   const openDate = moment(album.openAt);
   const dday = new Date(album.openAt);
@@ -64,21 +66,20 @@ const AlbumMypage = () => {
   const [snowflakes, setSnowflakes] = useState([])
 
   useEffect(() => {
-    const snowCount = 100
+    const snowCount = 100;
     const newSnowflakes = [];
 
     for (let i = 0; i < snowCount; i++) {
       const randomXStart = Math.random() * window.innerWidth;
-      const randomXEnd = Math.random() * window.innerWidth;
       const randomScale = Math.random() * 0.1;
       const fallDuration = randomRange(10, 30) + "s";
       const fallDelay = randomRange(-30, 0) + "s";
-      
+
       newSnowflakes.push({
         id: i,
         style: {
           opacity: Math.random(),
-          transform: `translate(${randomXStart}px, -10px) scale(${randomScale})`,
+          transform: `translate(${randomXStart}px, 0px) scale(${randomScale})`,
           animation: `fall ${fallDuration} ${fallDelay} linear infinite`,
           position: 'absolute',
           width: '15px',
@@ -86,10 +87,8 @@ const AlbumMypage = () => {
           background: 'pink',
           borderRadius: '50%',
           left: `${randomXStart}px`,
-
-        }
+        },
       });
-      
     }
     setSnowflakes(newSnowflakes)
 
@@ -152,6 +151,7 @@ const AlbumMypage = () => {
         .then((response) => {
           setSpecificMemory(response.data);
           setSpecNickname(response.data.nickname);
+          setModalimage(response.data.imageUrl)
           setSpecContent(response.data.content);
           console.log("spec Nickname : " + specificMemory.nickname);
           console.log("spec Content : " + specificMemory.content);
@@ -217,6 +217,7 @@ const AlbumMypage = () => {
           }
         )
         .then((response) => {
+          setModalimage(response.data.imageUrl)
           setSpecificMemory(response.data);
           setSpecNickname(response.data.nickname);
           setSpecContent(response.data.content);
@@ -245,9 +246,11 @@ const AlbumMypage = () => {
           }
         )
         .then((response) => {
+          setModalimage(response.data.imageUrl)
           setSpecificMemory(response.data);
           setSpecNickname(response.data.nickname);
           setSpecContent(response.data.content);
+          console.log(specificMemory)
           console.log("spec Nickname : " + specificMemory.nickname);
           console.log("spec Content : " + specificMemory.content);
         });
@@ -259,15 +262,17 @@ const AlbumMypage = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center" }}>
-      {snowflakes.map(flake => (
-        <div
-          key={flake.id}
-          className="snow"
-          style={flake.style}
-        />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {snowflakes.map((flake) => (
+        <div key={flake.id} className="snow" style={flake.style} />
       ))}
-
       <StyledContainer>
         
         {/* 내 정보 */}
@@ -278,17 +283,17 @@ const AlbumMypage = () => {
             </StyledTypography>
             <StyledTypography>
               <span class="strongLetter">{memoryarray.length}장</span>의
-              메모리가 도착했어요!
+              메모리가 도착했어요
             </StyledTypography>
             <StyledTypography>
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
-                <div style={{ color: "white", fontWeight: "bolder" }}>
+                <div class="strongLetter">
                   D -{" "}
-                  <span class="strongLetter">
-                    {remainDay === 0 ? (
-                      <span> day Congraduation!</span>
+                  <span>
+                    {remainDay <= 0 ? (
+                      <span style={{fontFamily:"KyoboHand"}}> day Congraduation!</span>
                     ) : (
                       remainDay
                     )}
@@ -307,9 +312,7 @@ const AlbumMypage = () => {
             <MenuButton zin={false} />
           </div>
         </div>
-
-        {/* 앨범 이미지 */}
-        <div style={{ display: "flex", position: "relative" }}>
+        <div style={{ position: "relative", width:"100%", zIndex:"0"}}>
           <img
             src={albumFrame}
             alt="album"
@@ -352,6 +355,7 @@ const AlbumMypage = () => {
                         width: "100%",
                         marginTop: "5%",
                         textAlign: "center",
+                        fontFamily: "KyoboHand",
                       }}
                     >
                       {val.nickName}
@@ -384,7 +388,7 @@ const AlbumMypage = () => {
             {selectedImageIndex !== null && (
               <div>
                 <StyledImg
-                  src={memoryarray[selectedImageIndex]?.imageUrl}
+                  src={modalimage}
                   alt={`Memory ${selectedImageIndex + 1}`}
                   style={{ maxWidth: "100%" }}
                 />
@@ -398,7 +402,7 @@ const AlbumMypage = () => {
                   {" "}
                   {/* wordWrap: 'break-word' 일 경우 단어가 끊김  */}
                   <p className="nickname">From. {specNickname}</p>
-                  <p className="box52">{specContent} qweqweqwewqeqweqweqwewqeqwe dfjsdklfsdlfkesfjeslkfj dkfjsdlfjsflsjdlfjlk ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ</p>
+                  <p className="box52">{specContent} </p>
                 </div>  
               </div>
             )}
@@ -424,6 +428,8 @@ const AlbumMypage = () => {
           </DialogActions>
         </Dialog>
       </StyledContainer>
+
+      <FunnyDog></FunnyDog>
     </div>
   );
 };

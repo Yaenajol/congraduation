@@ -11,8 +11,8 @@ export default function ButtonColors({onClick, value, isClickable}) {
     <Box
       sx={{
         // display: 'flex',
-        marginRight: '10%',
-        alignItems: 'center',
+        // marginRight: '10%',
+        // alignItems: 'center',
         gap: 3,
       }}
     >
@@ -21,6 +21,7 @@ export default function ButtonColors({onClick, value, isClickable}) {
           // display: 'grid',
           gridTemplateColumns: 'repeat(2, minmax(80px, 1fr))',
           gap: 1,
+          
         }}
       >
         <Button onClick={onClick} size="md" disabled={!isClickable}  variant={variant} color="primary">

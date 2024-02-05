@@ -19,7 +19,7 @@ const VisuallyHiddenInput = styled('input')`
 export default function InputFileUpload({onChange}) {
   return (
     <Button
-      style={{ marginLeft: '10%'}} 
+      style={{ left: '0%', marginLeft: '0%'}} 
       onChange={onChange}
       component="label"
       role={undefined}

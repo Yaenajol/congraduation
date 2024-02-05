@@ -1,14 +1,19 @@
 /* 강조 */
 .strongLetter {
-  color: aqua;
+  color: #F3CBCB;
   font-weight: bolder;
+  font-family: "KyoboHand";
 }
 
 /* 헤더 정렬 */
 .sortHeader {
   display: flex;
+  vertical-align: middle;
   justify-content: space-between;
-  margin: 1rem;
+  margin: 1.5rem 1.5rem 0rem 1.5rem;
+  /* background-color: rgb(255,255,255,0.3);
+  border-radius: 15px;
+  padding: 7px; */
 }
 
 /* 메모리 리스트 */
@@ -16,12 +21,9 @@
   position: absolute;
   z-index: 1;
   width: 66%;
-  transform: rotate(13deg);
-  top: 18%;
-  left: 10.5%;
   transform: rotate(12.5deg);
-  /* border: 10px solid pink; */
-  /* margin: 5vh; */
+  top: 17%;
+  left: 10.5%;
 }
 
 /* 버튼 관련*/
