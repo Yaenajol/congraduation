@@ -121,7 +121,7 @@ const SettingsPage = () => {
           marginLeft: "20px",
           marginRight: "20px",
           width: "300px", // 너비
-          height: "auto", // 높이
+          height: "100vh", // 높이
           borderRadius: "10px", // 모서리 반경
           backgroundColor: "rgb(255, 255, 255, 0.7)", // 희미한 흰색 배경
           boxShadow: "0px 0px 15px 10px rgba(232, 236, 242)", // 그림자
@@ -295,6 +295,7 @@ const SettingsPage = () => {
                         variant="outlined"
                         fullWidth
                         margin="normal"
+                        
                       />
                     )}
                   />
