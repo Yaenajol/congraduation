@@ -48,8 +48,8 @@ backend/!**/src/test/**/bin/
 *.iws
 *.iml
 *.ipr
-application.properties
-application.yml
+*.properties
+*.yml
 backend/out/
 backend/!**/src/main/**/out/
 backend/!**/src/test/**/out/
