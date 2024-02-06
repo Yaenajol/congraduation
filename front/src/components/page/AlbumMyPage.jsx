@@ -35,7 +35,6 @@ const AlbumMypage = () => {
 
   // 전역 상태 변수 목록
   const [albumPageMainImg, setAlbumPageMainImg] =useRecoilState(albumPageMainImgAtom);
-
   
   // 상태 변수 목록
   const [album, setAlbum] = useState([]);
@@ -149,15 +148,11 @@ const AlbumMypage = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  
-
-
   const handleImageClick = (imageUrl, index) => {    
     const now = moment();
     setSelectedImageIndex(index);
 
     if (now >= openDate) {
-      
       // 특정 메모리를 조회해서 구체적인 이미지를 보여준다.
       axios
         .get(
@@ -176,7 +171,6 @@ const AlbumMypage = () => {
         });
 
       setOpenModal(true);
-
     // 공개일 아닐 때
     } else {
       alert("아직 공개일이 아닙니다!");
@@ -222,9 +216,7 @@ const AlbumMypage = () => {
    */
   const handleNextImage = () => {
     setSelectedImageIndex((prevIndex) => {
-      
       const nextIndex = prevIndex + 1;
-
       // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
       if (nextIndex < memoryarray.length) {
         axios
