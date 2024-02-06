@@ -1,6 +1,5 @@
 package com.ssafy.backend.controller;
 
-import com.google.gson.Gson;
 import com.ssafy.backend.model.FeedbackDto;
 import com.ssafy.backend.model.MattermostOutgoingDto;
 import com.ssafy.backend.service.FeedbackStompService;
@@ -11,7 +10,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

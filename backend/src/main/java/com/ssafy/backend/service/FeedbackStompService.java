@@ -1,6 +1,5 @@
 package com.ssafy.backend.service;
 
-import com.ssafy.backend.domain.Feedback;
 import com.ssafy.backend.exception.CustomException;
 import com.ssafy.backend.exception.errorcode.FeedbackErrorCode;
 import com.ssafy.backend.mattermost.MMFeedbackManager;
@@ -28,10 +27,6 @@ public class FeedbackStompService {
 
   @Value("${notification.mattermost-outgoing.user_id}")
   private String feedManagerId;
-
-
-
-
 
   public FeedbackDto sendFeedbackAndMM(FeedbackDto feedbackDto) {
 
@@ -69,7 +64,7 @@ public class FeedbackStompService {
     if (mattermostOutgoingDto.getText().isEmpty()) {
       throw new CustomException(FeedbackErrorCode.NotToEmptyContent.getCode(), FeedbackErrorCode.NotToEmptyContent.getDescription());
     }
-    // Mattermost 응답형식 ==> FEEDBACK:# memberPk# 1:1 문의내용ㄹ미어림ㄴ알민가나다라마바사
+    // Mattermost 응답형식 ==> FEEDBACK:# memberPk# 1:1문의내용작성테스트작성테스트작성테스트 1:1문의내용작성테스트작성테스트작성테스트 1:1문의내용작성테스트작성테스트작성테스트
     String[] textArray = mattermostOutgoingDto.getText().split("#");
 
     // 응답 내용이 위와 같은 응답형식이 아닌경우 에러 처리
@@ -84,6 +79,8 @@ public class FeedbackStompService {
         .senderPk(feedManagerId) // 보낸 사람이 Outgoing properties에 설정된 userId는 관리자 관리자인 것을 알려주는 PK
         .content(textArray[2])
         .build();
+
+    System.out.println("FEEDBACK TO MATTERMOST Feedback answer TEST \n ==>" + feedbackDto.toString());
 
     sendingOperations.convertAndSend("/sub/feedback/" + feedbackDto.getChatRoomId(), feedbackDto);
     mmFeedbackManager.sendNotification(feedbackDto);  // 다시 mm 으로 보내서 확인하기... // 로직은 다시 고민하기.

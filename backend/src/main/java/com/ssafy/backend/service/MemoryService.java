@@ -107,7 +107,7 @@ public class MemoryService {
       String imageName = imageService.uploadImage(imageUtil.makeResize(image));
       String thumbnailImageName = imageService.uploadImage(imageUtil.makeThumbnaill(image));
       String thumbnailBlurImageName =  imageService.uploadImage(imageUtil.makeThumbnailBlur(image));
-      // 메모리 생성 : pk uuid로 설정
+      // 메모리 생성 : pk uuid 로 설정
       Memory memory = Memory.builder()
           .member(optMember.get())
           .album(album)
