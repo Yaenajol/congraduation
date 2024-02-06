@@ -1,17 +1,18 @@
 import React, {useEffect} from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useSetRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
+import { isLoginAtom } from "./components/store/atom";
 
 // 내부 경로
 import LoginPage from "./components/page/LoginPage";
 import AlbumPage from "./components/page/AlbumPage"
 import MemoryUpload from "./components/page/MemoryUpload"
 import AlbumMyPage from "./components/page/AlbumMyPage";
-
 import RedirectPage from "./components/page/RedirectPage";
 import SettingsPage from "./components/page/SettingPage";
 import DragPage from "./components/page/DragPage";
-import { isLoginAtom } from "./components/store/atom";
+import FeedbackPage from "./components/page/FeedbackPage";
+
 
 function App() {
   const setIsLogin = useSetRecoilState(isLoginAtom)
@@ -34,7 +35,7 @@ function App() {
         <Route path="/kakao/oauth" element={<RedirectPage />} />
         <Route path="/albums/drag" element={<DragPage/>} />
         <Route path="/myalbum" element={<AlbumMyPage/>} />
-        
+        <Route path="/feedback" element={<FeedbackPage/>}/>
         {/* 오류페이지 만들어야됨 */}
         <Route path="*" element={<Navigate replace to="/kakao/oauth" />} />
       </Routes>

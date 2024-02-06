@@ -14,11 +14,12 @@ import StyledImg from "../styledComponents/StyledImg";
 import StyledTypography from "../styledComponents/StyledTypography";
 import "../page/AlbumPage.css";
 import "../page/Snowrain.css";
+import "../page/Snowrain.css"
 
 // component
 import CustomButton from "../button/CustomButton";
 import MenuButton from "../../components/button/MenuButton";
-import "../page/Snowrain.css"
+import KakaoShareButton from "../button/KakaoShareButton";
 
 // image
 import userAltImage from "../images/userAltImage.png";
@@ -272,7 +273,7 @@ const AlbumMypage = () => {
         <div key={flake.id} className="snow" style={flake.style} />
       ))}
       <StyledContainer>
-        
+        {/* <KakaoShareButton/> */}
         {/* 내 정보 */}
         <div class="sortHeader">
           <div>

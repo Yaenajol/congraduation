@@ -2,24 +2,26 @@
 import * as React from "react";
 import { Dropdown } from "@mui/base/Dropdown";
 import { Menu } from "@mui/base/Menu";
+// react
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+// recoil
+import { useRecoilState } from "recoil";
+import { isLoginAtom } from "../store/atom";
+
+// css
 import { MenuButton as BaseMenuButton } from "@mui/base/MenuButton";
-import DehazeRoundedIcon from "@mui/icons-material/DehazeRounded";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { MenuItem as BaseMenuItem, menuItemClasses } from "@mui/base/MenuItem";
 import { styled } from "@mui/system";
-import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
-import { useSetRecoilState, useRecoilValue, useRecoilState } from "recoil";
-import { isLoginAtom } from "../store/atom";
-import { useNavigate, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import testmenu4 from "../images/testmenu4.png";
 import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
+
+// external
+import axios from "axios";
 
 export default function MenuIntroduction({ zin }) {
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const navigate = useNavigate();
-  const params = useParams();
   const [settingdata, setSettingdata] = useState("");
 
   useEffect(() => {
@@ -55,26 +57,10 @@ export default function MenuIntroduction({ zin }) {
 
   return (
     <Dropdown>
-      {/* <IconButton
-        aria-label="more"
-        id="long-button"
-        aria-controls={open ? 'long-menu' : undefined}
-        aria-expanded={open ? 'true' : undefined}
-        aria-haspopup="true"
-        onClick={handleClick}
-      >
-        <MoreVertIcon />
-      </IconButton> */}
-      {/* <MenuButton style={{borderRadius:"20%", width:"50%"}}> */}
       <MenuButton
         style={{ backgroundColor: "rgba( 255, 255, 255, 0 )", border: "none" }}
       >
-        {/* <MoreVertIcon style={{color:"black", textAlign:"start"}}/> */}
-        {/* <img src={testmenu4} alt="" /> */}
-        {/* <DehazeRoundedIcon/> */}
-        {/* <button style={{backgroundColor:"none"}}> */}
         <SettingsSuggestRoundedIcon fontSize="large" sx={{color:"white"}}/>
-        {/* </button> */}
       </MenuButton>
       <Menu slots={{ listbox: Listbox }}>
         {!zin ? (
