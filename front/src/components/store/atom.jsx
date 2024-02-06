@@ -22,6 +22,11 @@ export const albumState = atom({
     },
 });
 
+export const chatAtom = atom({
+    key: "TALK",
+    default: "",
+})
+
 export const isLoginAtom = atom({
     key: 'isLogin',
     default: false, 

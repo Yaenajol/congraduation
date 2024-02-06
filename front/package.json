@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/icons": "^5.3.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.6",
     "@mui/joy": "^5.0.0-beta.24",
     "@mui/material": "^5.15.6",
     "@mui/x-date-pickers": "^6.19.0",
+    "@stomp/stompjs": "^7.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -20,6 +22,7 @@
     "re-resizable": "^6.9.11",
     "react": "^18.2.0",
     "react-calendar": "^4.8.0",
+    "react-chat-engine": "^1.11.28",
     "react-countdown": "^2.3.5",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.6",
@@ -34,7 +37,8 @@
     "sass": "^1.70.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.8",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "ws": "^8.16.0"
   },
   "scripts": {
     "start": "react-scripts start",
