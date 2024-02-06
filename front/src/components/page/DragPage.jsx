@@ -46,6 +46,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   const [aspect, setAspect] = useState(1/1);
   const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom)
   const [isLoading, setIsLoading] = useState(false);
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL
 
   const [pendingCrop, setPendingCrop] = useState();
 
@@ -136,7 +137,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
         formdata.append('image', blob, 'image.jpeg')
         try {
           const response = await axios.put(
-            `https://congraduation.me/backapi/albums/${albumPk}/coverImage`, 
+            `${API_URL}/albums/${albumPk}/coverImage`, 
             formdata,  
             {
               headers : {

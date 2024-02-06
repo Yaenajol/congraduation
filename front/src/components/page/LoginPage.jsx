@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from 'react-router-dom'
 
+
 // recoil
 import { useRecoilState } from 'recoil';
 import { isLoginAtom } from "../store/atom";
@@ -16,12 +17,14 @@ import logo from "../images/logo.png"
 
 
 function HomePage() {
+ 
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
-  
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL
+  console.log('API_URL' + API_URL)
   const navigate = useNavigate()
   
   const LoginHandler = () => {
-    window.location.href = "https://congraduation.me/backapi/kakao/redirect";
+    window.location.href = "http://codakcodak.site:8001/backend/kakao/redirect";
   };                                                                    
   
   useEffect(() => {

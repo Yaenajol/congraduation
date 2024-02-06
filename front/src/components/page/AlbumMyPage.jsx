@@ -25,7 +25,8 @@ import "../page/Snowrain.css";
 // component
 import CustomButton from "../button/CustomButton";
 import MenuButton from "../../components/button/MenuButton";
-import "../page/Snowrain.css";
+import "../page/Snowrain.css"
+import Sharebutton from "../button/Sharebutton"
 
 // image
 import userAltImage from "../images/userAltImage.png";
@@ -38,9 +39,8 @@ import moment from "moment";
 
 const AlbumMypage = () => {
   // 전역 상태 변수 목록
-  const [albumPageMainImg, setAlbumPageMainImg] =
-    useRecoilState(albumPageMainImgAtom);
-
+  const [albumPageMainImg, setAlbumPageMainImg] =useRecoilState(albumPageMainImgAtom);
+  
   // 상태 변수 목록
   const [album, setAlbum] = useState([]);
   const [albumMemories, setAlbumMemories] = useState([]);
@@ -67,8 +67,11 @@ const AlbumMypage = () => {
   const itemsPerPage = 4;
   const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 4개씩 1페이지이면 2페이지일 때는 4)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-
+  const [shareButton, setShareButton] = useState(false);
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL;
+  
+
 
   useEffect(() => {
     // 벚꽃
@@ -96,6 +99,7 @@ const AlbumMypage = () => {
           left: `${randomXStart}px`,
         },
       });
+
     }
     setSnowflakes(newSnowflakes);
 
@@ -107,7 +111,7 @@ const AlbumMypage = () => {
 
     // accessToken 이 있을 때 현재 로그인 된 유저의 정보를 조회
     axios
-      .get(`https://congraduation.me/backapi/members/myAlbum`, {
+      .get(`${API_URL}/members/myAlbum`, {
         headers: { accessToken: sessionStorage.accessToken },
       })
       .then((response) => {
@@ -126,7 +130,7 @@ const AlbumMypage = () => {
       .then((albumPk) => {
         // 특정 앨범의 메모리 리스트 조회
         axios
-          .get(`https://congraduation.me/backapi/albums/${albumPk}/memories`)
+          .get(`${API_URL}/albums/${albumPk}/memories`)
           .then((response) => {
             setAlbumMemories(response.data);
             if (typeof response.data === typeof []) {
@@ -134,13 +138,24 @@ const AlbumMypage = () => {
             }
           });
       });
+    const script = document.createElement("script");
+		script.src = "https://developers.kakao.com/sdk/js/kakao.js";
+		script.async = true;
+		document.body.appendChild(script);
+
+		script.onload = () => {
+			setShareButton(true);
+		};
+		return () => {
+			document.body.removeChild(script);
+		};
   }, []);
 
   function randomRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const handleImageClick = (imageUrl, index) => {
+  const handleImageClick = (imageUrl, index) => {    
     const now = moment();
     setSelectedImageIndex(index);
 
@@ -148,7 +163,7 @@ const AlbumMypage = () => {
       // 특정 메모리를 조회해서 구체적인 이미지를 보여준다.
       axios
         .get(
-          `https://congraduation.me/backapi/memories/${albumMemories[index].memoryPk}`,
+          `${API_URL}/memories/${albumMemories[index].memoryPk}`,
           {
             headers: { accessToken: sessionStorage.accessToken },
           }
@@ -163,8 +178,7 @@ const AlbumMypage = () => {
         });
 
       setOpenModal(true);
-
-      // 공개일 아닐 때
+    // 공개일 아닐 때
     } else {
       alert("아직 공개일이 아닙니다!");
     }
@@ -210,23 +224,22 @@ const AlbumMypage = () => {
   const handleNextImage = () => {
     setSelectedImageIndex((prevIndex) => {
       const nextIndex = prevIndex + 1;
-
       // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
       if (nextIndex < memoryarray.length) {
         axios
-          .get(
-            `https://congraduation.me/backapi/memories/${albumMemories[nextIndex].memoryPk}`,
-            {
-              headers: { accessToken: sessionStorage.accessToken },
-            }
-          )
-          .then((response) => {
-            setModalimage(response.data.imageUrl);
-            setSpecificMemory(response.data);
-            setSpecNickname(response.data.nickname);
-            setSpecContent(response.data.content);
-          });
-
+        .get(
+          `${API_URL}/memories/${albumMemories[nextIndex].memoryPk}`,
+          {
+            headers: { accessToken: sessionStorage.accessToken },
+          }
+        )
+        .then((response) => {
+          setModalimage(response.data.imageUrl);
+          setSpecificMemory(response.data);
+          setSpecNickname(response.data.nickname);
+          setSpecContent(response.data.content);
+        });
+        
         return nextIndex;
       }
       return prevIndex; // 그 외의 경우에는 이전 인덱스를 반환
@@ -241,20 +254,18 @@ const AlbumMypage = () => {
       // 인덱스 값이 0 이상일 때
       if (prevIndex > 0) {
         axios
-          .get(
-            `https://congraduation.me/backapi/memories/${
-              albumMemories[prevIndex - 1].memoryPk
-            }`,
-            {
-              headers: { accessToken: sessionStorage.accessToken },
-            }
-          )
-          .then((response) => {
-            setModalimage(response.data.imageUrl);
-            setSpecificMemory(response.data);
-            setSpecNickname(response.data.nickname);
-            setSpecContent(response.data.content);
-          });
+        .get(
+          `${API_URL}/memories/${albumMemories[prevIndex - 1].memoryPk}`,
+          {
+            headers: { accessToken: sessionStorage.accessToken },
+          }
+        )
+        .then((response) => {
+          setModalimage(response.data.imageUrl);
+          setSpecificMemory(response.data);
+          setSpecNickname(response.data.nickname);
+          setSpecContent(response.data.content);
+        });
 
         return prevIndex - 1;
       }
@@ -304,6 +315,7 @@ const AlbumMypage = () => {
                 </div>
               )}
             </StyledTypography>
+          <Sharebutton/>
           </div>
 
           <div style={{ textAlign: "end", width: "25%" }}>
@@ -313,6 +325,7 @@ const AlbumMypage = () => {
               albumPk={album.albumPk}
               isClickable={true}
             />
+            <MenuButton zin={false} />  
           </div>
         </div>
         {/* 공유 버튼 */}
