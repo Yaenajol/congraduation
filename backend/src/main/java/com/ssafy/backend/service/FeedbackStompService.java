@@ -5,7 +5,6 @@ import com.ssafy.backend.exception.CustomException;
 import com.ssafy.backend.exception.errorcode.FeedbackErrorCode;
 import com.ssafy.backend.mattermost.MMFeedbackManager;
 import com.ssafy.backend.model.FeedbackDto;
-import com.ssafy.backend.model.MattermostOutgoingProperties;
 import com.ssafy.backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,7 @@ public class FeedbackStompService {
 
   public FeedbackDto sendFeedbackAndMM(FeedbackDto feedbackDto) {
 
-//    // 피드백 작성자 존재 여부
+//    // 피드백 작성자 존재 여부 && 에다가 채팅방 번호 확인이기도 하다 ( senderPk == chatRoomId )
 //    Optional<Member> optMember = memberRepository.findById(feedbackDto.getSenderPk());    // 메모리 작성자 가져오기
 //    if (optMember.isEmpty()) { //해당 멤버가 존재하는가?
 //      throw new CustomException(MemberErrorCode.NotFoundMember.getCode(), MemberErrorCode.NotFoundMember.getDescription());
