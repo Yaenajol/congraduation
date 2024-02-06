@@ -64,6 +64,9 @@ const AlbumMypage = () => {
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
   const [shareButton, setShareButton] = useState(false);
   const navigate = useNavigate();
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL;
+  
+
 
   useEffect(() => {
 
@@ -103,7 +106,7 @@ const AlbumMypage = () => {
     
     // accessToken 이 있을 때 현재 로그인 된 유저의 정보를 조회
     axios
-      .get(`https://congraduation.me/backapi/members/myAlbum`, {
+      .get(`${API_URL}/members/myAlbum`, {
         headers: { accessToken: sessionStorage.accessToken },
       })
       .then((response) => {
@@ -123,7 +126,7 @@ const AlbumMypage = () => {
         
         // 특정 앨범의 메모리 리스트 조회
         axios
-          .get(`https://congraduation.me/backapi/albums/${albumPk}/memories`)
+          .get(`${API_URL}/albums/${albumPk}/memories`)
           .then((response) => {
             setAlbumMemories(response.data);
             if (typeof response.data === typeof []) {
@@ -156,7 +159,7 @@ const AlbumMypage = () => {
       // 특정 메모리를 조회해서 구체적인 이미지를 보여준다.
       axios
         .get(
-          `https://congraduation.me/backapi/memories/${albumMemories[index].memoryPk}`,
+          `${API_URL}/memories/${albumMemories[index].memoryPk}`,
           {
             headers: { accessToken: sessionStorage.accessToken },
           }
@@ -221,7 +224,7 @@ const AlbumMypage = () => {
       if (nextIndex < memoryarray.length) {
         axios
         .get(
-          `https://congraduation.me/backapi/memories/${albumMemories[nextIndex].memoryPk}`,
+          `${API_URL}/memories/${albumMemories[nextIndex].memoryPk}`,
           {
             headers: { accessToken: sessionStorage.accessToken },
           }
@@ -248,7 +251,7 @@ const AlbumMypage = () => {
       if (prevIndex > 0) {
         axios
         .get(
-          `https://congraduation.me/backapi/memories/${albumMemories[prevIndex - 1].memoryPk}`,
+          `${API_URL}/memories/${albumMemories[prevIndex - 1].memoryPk}`,
           {
             headers: { accessToken: sessionStorage.accessToken },
           }

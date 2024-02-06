@@ -29,7 +29,8 @@ const MemoryUpload = () => {
   const [message, setMessage] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const fileInputRef = useRef(null);
-  
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL
+
   const params = useParams();
   const navigate = useNavigate();
    
@@ -40,7 +41,7 @@ const MemoryUpload = () => {
       if (params.PK) {
         axios
           .get(
-            `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
+            `${API_URL}/members/authority?albumPk=${params.PK}`,
             { headers: { accessToken: sessionStorage.accessToken } }
           )
           .then((response) => {
@@ -191,7 +192,7 @@ const MemoryUpload = () => {
         );
 
         axios
-          .post("https://congraduation.me/backapi/memories", formdata, {
+          .post(`${API_URL}/memories`, formdata, {
             headers: {
               accessToken: sessionStorage.getItem("accessToken"),
             },

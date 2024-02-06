@@ -33,6 +33,7 @@ const AlbumPage = () => {
   // 전역 상태 변수 목록
   const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom);
   const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom);
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL
 
   // 상태 변수 목록
   const [album, setAlbum] = useState([]);
@@ -60,7 +61,7 @@ const AlbumPage = () => {
   const navigate = useNavigate();
   
   // BE url
-  const BACK_URL = "http://congraduation.me/backapi";
+  
   
 
   const [snowflakes, setSnowflakes] = useState([]);
@@ -96,7 +97,7 @@ const AlbumPage = () => {
 
     // 특정 앨범 조회
     axios
-      .get(`https://congraduation.me/backapi/albums/${params.PK}`)
+      .get(`${API_URL}/albums/${params.PK}`)
       .then((response) => {
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
@@ -106,7 +107,7 @@ const AlbumPage = () => {
 
     // 앨범의 특정 메모리 조회
     axios
-      .get(`https://congraduation.me/backapi/albums/${params.PK}/memories`)
+      .get(`${API_URL}/albums/${params.PK}/memories`)
       .then((response) => {
         console.log("Album Memories Data:", response.data);
         setAlbumMemories(response.data);
@@ -121,7 +122,7 @@ const AlbumPage = () => {
       // 유저의 앨범 접근 권한 조회
       axios
         .get(
-          `https://congraduation.me/backapi/members/authority?albumPk=${params.PK}`,
+          `${API_URL}/members/authority?albumPk=${params.PK}`,
           { headers: { accessToken: sessionStorage.accessToken } }
         )
         .then((response) => {

@@ -19,6 +19,7 @@ const SettingsPage = () => {
   const location = useLocation();
   const albumdata = location.state;
   console.log("albumdata" + albumdata);
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL
 
   const RoundedRectangle = () => {
     const [nickname, setNickname] = useState(
@@ -49,7 +50,7 @@ const SettingsPage = () => {
 
         axios
           .put(
-            `https://congraduation.me/backapi/albums/${albumdata.albumPk}`,
+            `${API_URL}/albums/${albumdata.albumPk}`,
             userInfo,
             {
               headers: {
@@ -91,7 +92,7 @@ const SettingsPage = () => {
         };
         axios
           .put(
-            `https://congraduation.me/backapi/albums/${albumdata.albumPk}/graduationDate`,
+            `${API_URL}/albums/${albumdata.albumPk}/graduationDate`,
             payload,
             {
               headers: {
@@ -111,7 +112,7 @@ const SettingsPage = () => {
 
             axios
               .put(
-                `https://congraduation.me/backapi/albums/${albumdata.albumPk}`,
+                `${API_URL}/albums/${albumdata.albumPk}`,
                 userInfo,
                 {
                   headers: {

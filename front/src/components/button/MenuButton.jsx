@@ -21,11 +21,12 @@ export default function MenuIntroduction({ zin }) {
   const navigate = useNavigate();
   const params = useParams();
   const [settingdata, setSettingdata] = useState("");
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL
 
   useEffect(() => {
     if (!zin) {
       axios
-        .get(`https://congraduation.me/backapi/members/myAlbum`, {
+        .get(`${API_URL}/members/myAlbum`, {
           headers: { accessToken: sessionStorage.accessToken },
         })
         .then((response) => {

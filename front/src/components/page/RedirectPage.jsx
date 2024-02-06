@@ -21,14 +21,15 @@ function RedirectPage() {
   const navigate = useNavigate();
   const code = new URL(window.location.href);
   const kakaoCode = code.searchParams.get("code");
-  
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL
+
   useEffect(() => {
     setAuthCode(kakaoCode); // 인가 코드 상태 업데이트
     sendAuthCodeToBackend(kakaoCode); // 백엔드에 인가 코드 전송
   }, []);
 
   async function sendAuthCodeToBackend(authCode) {
-    const apiUrl = `https://congraduation.me/backapi/kakao/callback?code=${authCode}`; // 백엔드 API URL
+    const apiUrl = `${API_URL}/kakao/callback?code=${authCode}`; // 백엔드 API URL
     try {
       const response = await fetch(apiUrl, {
         method: "POST",
