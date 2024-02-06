@@ -1,13 +1,15 @@
 package com.ssafy.backend.service;
 
-import com.google.gson.Gson;
+import com.ssafy.backend.domain.Feedback;
 import com.ssafy.backend.exception.CustomException;
 import com.ssafy.backend.exception.errorcode.FeedbackErrorCode;
 import com.ssafy.backend.mattermost.MMFeedbackManager;
 import com.ssafy.backend.model.FeedbackDto;
+import com.ssafy.backend.model.FeedbackDto.MessageType;
+import com.ssafy.backend.model.MattermostOutgoingDto;
 import com.ssafy.backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,20 @@ import org.springframework.stereotype.Service;
 public class FeedbackStompService {
 
   private final SimpMessageSendingOperations sendingOperations;
-  @Autowired
+
   private final MMFeedbackManager mmFeedbackManager;
+
   private final MemberRepository memberRepository;
+
+  @Value("${notification.mattermost-outgoing.token}")
+  private String outgoingToken;
+
+  @Value("${notification.mattermost-outgoing.user_id}")
+  private String feedManagerId;
+
+
+
+
 
   public FeedbackDto sendFeedbackAndMM(FeedbackDto feedbackDto) {
 
@@ -44,14 +57,36 @@ public class FeedbackStompService {
     return feedbackDto;
   }
 
-  public FeedbackDto outgoingFromMM(Gson gson) {
+  public FeedbackDto outgoingFromMM(MattermostOutgoingDto mattermostOutgoingDto) {
 
-    // 토큰 일치 여부 판단하기yml 토큰 값이랑 현재 들어온 토큰값 비교해서 판단 다르면 예외처리
-//    MattermostOutgoingProperties
+    // 토큰 일치 여부 판단하기 yml 토큰 값이랑 현재 들어온 토큰값 비교해서 판단 다르면 예외처리
+    if (mattermostOutgoingDto.getToken().equals(outgoingToken)) {
+      throw new CustomException(FeedbackErrorCode.NotMatchToken.getCode(), FeedbackErrorCode.NotMatchToken.getDescription());
+    }
 
-    FeedbackDto feedbackDto = new FeedbackDto();
+    // GET TEXT 가공해서 전달해야한다.
+    // 1. content에서 memberPK 와 피드백내용(content) 과 에러처리
+    if (mattermostOutgoingDto.getText().isEmpty()) {
+      throw new CustomException(FeedbackErrorCode.NotToEmptyContent.getCode(), FeedbackErrorCode.NotToEmptyContent.getDescription());
+    }
+    // Mattermost 응답형식 ==> FEEDBACK:# memberPk# 1:1 문의내용ㄹ미어림ㄴ알민가나다라마바사
+    String[] textArray = mattermostOutgoingDto.getText().split("#");
+
+    // 응답 내용이 위와 같은 응답형식이 아닌경우 에러 처리
+    if (textArray.length <= 2) {
+      throw new CustomException(FeedbackErrorCode.NotToEmptyContent.getCode(), FeedbackErrorCode.NotToEmptyContent.getDescription());
+    }
+
+    // 2. FeedbackDto에 할당하기 : 가공 완료 후 Dto에 담기
+    FeedbackDto feedbackDto = FeedbackDto.builder()
+        .messageType(MessageType.TALK)
+        .chatRoomId(textArray[1])
+        .senderPk(feedManagerId) // 보낸 사람이 Outgoing properties에 설정된 userId는 관리자 관리자인 것을 알려주는 PK
+        .content(textArray[2])
+        .build();
 
     sendingOperations.convertAndSend("/sub/feedback/" + feedbackDto.getChatRoomId(), feedbackDto);
+    mmFeedbackManager.sendNotification(feedbackDto);  // 다시 mm 으로 보내서 확인하기... // 로직은 다시 고민하기.
     return feedbackDto;
   }
 

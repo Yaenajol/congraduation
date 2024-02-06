@@ -27,12 +27,11 @@ public class FeedbackStompController {
   }
 
   @PostMapping("/feedbackFromMM")
-  public ResponseEntity<MattermostOutgoingDto> outgoingFromMM(@RequestBody MattermostOutgoingDto mattermostOutgoingDto) {
+  public ResponseEntity<FeedbackDto> outgoingFromMM(@RequestBody MattermostOutgoingDto mattermostOutgoingDto) {
     System.out.println(mattermostOutgoingDto.toString());
 
-//    return ResponseEntity.ok().body(feedbackStompService.outgoingFromMM(gson));
-    return ResponseEntity.ok().body(mattermostOutgoingDto);
-
+    return ResponseEntity.ok().body(feedbackStompService.outgoingFromMM(mattermostOutgoingDto));
+//    return ResponseEntity.ok().body(mattermostOutgoingDto);
   }
 
 }
