@@ -24,7 +24,7 @@ function HomePage() {
   const navigate = useNavigate()
   
   const LoginHandler = () => {
-    window.location.href = "http://codakcodak.site:8001/backend/kakao/redirect";
+    window.location.href = `${API_URL}/kakao/redirect`;
   };                                                                    
   
   useEffect(() => {
