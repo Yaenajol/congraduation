@@ -27,7 +27,7 @@ public class FeedbackStompController {
   }
 
   @PostMapping("/feedbackFromMM")
-  public ResponseEntity<MattermostOutgoingDto> outgoingFromMM(MattermostOutgoingDto mattermostOutgoingDto) {
+  public ResponseEntity<MattermostOutgoingDto> outgoingFromMM(@RequestBody MattermostOutgoingDto mattermostOutgoingDto) {
     System.out.println(mattermostOutgoingDto.toString());
 
 //    return ResponseEntity.ok().body(feedbackStompService.outgoingFromMM(gson));
