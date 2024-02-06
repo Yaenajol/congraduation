@@ -11,7 +11,7 @@ function FunnyDog() {
         height: "120px",
       }}
     >
-      <input class="toggle" type="checkbox" id="ball" />
+      <input className="toggle" type="checkbox" id="ball" />
       <label
         style={{
           position: "relative",
@@ -19,11 +19,11 @@ function FunnyDog() {
           zIndex: "3",
           width: "65px",
         }}
-        for="ball"
+        htmlFor="ball"
       >
         Ball
       </label>
-      <input class="toggle" type="checkbox" id="feed" />
+      <input className="toggle" type="checkbox" id="feed" />
       <label
         style={{
           position: "relative",
@@ -31,27 +31,27 @@ function FunnyDog() {
           zIndex: "3",
           width: "65px",
         }}
-        for="feed"
+        htmlFor="feed"
       >
         Food
       </label>
-      <div class="dog">
-        <div class="ball"></div>
-        <div class="feed">
-          <div class="feed__part"></div>
+      <div className="dog">
+        <div className="ball"></div>
+        <div className="feed">
+          <div className="feed__part"></div>
         </div>
         <img className="dog__hat" src={dogHatImage}></img>
-        <div class="dog__ear"></div>
-        <div class="dog__face">
-          <div class="dog__eye dog__eye--left"></div>
-          <div class="dog__eye dog__eye--right"></div>
-          <div class="dog__nose"></div>
-          <div class="dog__mouse"></div>
+        <div className="dog__ear"></div>
+        <div className="dog__face">
+          <div className="dog__eye dog__eye--left"></div>
+          <div className="dog__eye dog__eye--right"></div>
+          <div className="dog__nose"></div>
+          <div className="dog__mouse"></div>
         </div>
-        <div class="dog__body"></div>
-        <div class="dog__foot dog__foot--left"></div>
-        <div class="dog__foot dog__foot--right"></div>
-        <div class="dog__tail"></div>
+        <div className="dog__body"></div>
+        <div className="dog__foot dog__foot--left"></div>
+        <div className="dog__foot dog__foot--right"></div>
+        <div className="dog__tail"></div>
       </div>
     </div>
   );

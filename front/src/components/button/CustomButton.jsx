@@ -10,7 +10,7 @@ function CustomButton({
   let width = customWidth ? customWidth : "50%";
   let margin_top = marginTop ? marginTop : "35px";
   let margin_bottom = marginBottom ? marginBottom : "30px";
-  console.log(width);
+  
   return (
     <div
       style={{

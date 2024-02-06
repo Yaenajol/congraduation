@@ -71,7 +71,9 @@ const AlbumMypage = () => {
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
   
+  const ShareUrl = `${window.location.origin}/albums/${album.albumPk}`
 
+  
 
   useEffect(() => {
     // 벚꽃
@@ -121,7 +123,6 @@ const AlbumMypage = () => {
 
         // 공개일자가 정해지지 않았으면 앨범 정보와 함께 설정 페이지로 이동
         if (response.data.openAt === null) {
-          console.log(response.data);
           navigate("/myalbum/setting", { state: response.data });
         }
         setAlbumPageMainImg(response.data.coverUrl);
@@ -138,17 +139,6 @@ const AlbumMypage = () => {
             }
           });
       });
-    const script = document.createElement("script");
-		script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-		script.async = true;
-		document.body.appendChild(script);
-
-		script.onload = () => {
-			setShareButton(true);
-		};
-		return () => {
-			document.body.removeChild(script);
-		};
   }, []);
 
   function randomRange(min, max) {
@@ -173,8 +163,7 @@ const AlbumMypage = () => {
           setSpecNickname(response.data.nickname);
           setModalimage(response.data.imageUrl);
           setSpecContent(response.data.content);
-          console.log("spec Nickname : " + specificMemory.nickname);
-          console.log("spec Content : " + specificMemory.content);
+         
         });
 
       setOpenModal(true);
@@ -199,12 +188,11 @@ const AlbumMypage = () => {
    */
   const handlerCopyClipBoard = async (albumPk) => {
     try {
-      console.log(albumPk);
+     
       const domain = window.location.origin;
       const address = `${domain}/albums/${albumPk}`;
       await navigator.clipboard.writeText(address);
       alert("링크가 복사됐습니다!");
-      console.log(albumPk);
     } catch (err) {
       console.log("error :", err);
     }
@@ -272,7 +260,18 @@ const AlbumMypage = () => {
       return prevIndex; // 이미지 인덱스가 0보다 작을 때는 현재 인덱스를 반환
     });
   };
+  const ShareMessage = () => {
+    window.Kakao.Link.sendDefault({
+      objectType: 'feed',
+      text: 'test',
+      link: {
+        weburl: 'http://localhost:3000'
+      }
+      
+    })
+  }
 
+  
   return (
     <div
       style={{
@@ -287,20 +286,20 @@ const AlbumMypage = () => {
       ))}
       <StyledContainer>
         {/* 내 정보 */}
-        <div class="sortHeader">
+        <div className="sortHeader">
           <div>
             <StyledTypography>
               {album.nickname} 의 {album.title}
             </StyledTypography>
             <StyledTypography>
-              <span class="strongLetter">{memoryarray.length}장</span>의
+              <span className="strongLetter">{memoryarray.length}장</span>의
               메모리가 도착했어요
             </StyledTypography>
             <StyledTypography>
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
-                <div class="strongLetter">
+                <div className="strongLetter">
                   D -{" "}
                   <span>
                     {remainDay <= 0 ? (
@@ -315,7 +314,8 @@ const AlbumMypage = () => {
                 </div>
               )}
             </StyledTypography>
-          <Sharebutton/>
+          <button onClick={() => ShareMessage()}>kakao</button>
+          <Sharebutton ShareUrl={ShareUrl}/>
           </div>
 
           <div style={{ textAlign: "end", width: "25%" }}>
@@ -325,7 +325,7 @@ const AlbumMypage = () => {
               albumPk={album.albumPk}
               isClickable={true}
             />
-            <MenuButton zin={false} />  
+           
           </div>
         </div>
         {/* 공유 버튼 */}
@@ -357,7 +357,7 @@ const AlbumMypage = () => {
           />
 
           {/* 메모리 리스트 */}
-          <div class="memoryList">
+          <div className="memoryList">
             <Grid container spacing={2}>
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
                 <Grid item xs={5} key={index} style={{ marginLeft: "5%" }}>
@@ -403,7 +403,7 @@ const AlbumMypage = () => {
         </div>
 
         {/* 페이지네이션 */}
-        <div class="alignCenter">
+        <div className="alignCenter">
           <Pagination
             count={Math.ceil(memoryarray.length / itemsPerPage)}
             page={currentPage}

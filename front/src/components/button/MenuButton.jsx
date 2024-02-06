@@ -30,7 +30,6 @@ export default function MenuIntroduction({ zin }) {
           headers: { accessToken: sessionStorage.accessToken },
         })
         .then((response) => {
-          console.log("Album Data:", response.data);
           setSettingdata(response.data);
         });
     }
@@ -42,7 +41,6 @@ export default function MenuIntroduction({ zin }) {
       if (menuItem === 'Logout') {
         sessionStorage.removeItem('accessToken')
         setIsLogin(false)
-        console.log('로그아웃')
         navigate('/')
       } else if (menuItem === 'Profile' ) {
         navigate(`/myalbum/setting` , { state : settingdata})

@@ -20,7 +20,6 @@ function HomePage() {
  
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   const API_URL = process.env.REACT_APP_BACKEND_API_URL
-  console.log('API_URL' + API_URL)
   const navigate = useNavigate()
   
   const LoginHandler = () => {
