@@ -1,22 +1,15 @@
 package com.ssafy.backend.service;
 
 import com.ssafy.backend.domain.Album;
-import com.ssafy.backend.domain.Member;
 import com.ssafy.backend.exception.CustomException;
 import com.ssafy.backend.exception.errorcode.FeedbackErrorCode;
-import com.ssafy.backend.exception.errorcode.MemberErrorCode;
 import com.ssafy.backend.jwt.JwtService;
 import com.ssafy.backend.mattermost.MMFeedbackManager;
-import com.ssafy.backend.mattermost.sender.MattermostSender;
 import com.ssafy.backend.model.FeedbackDto;
 import com.ssafy.backend.model.FeedbackDto.MessageType;
 import com.ssafy.backend.model.MattermostOutgoingDto;
 import com.ssafy.backend.repository.AlbumRepository;
-import com.ssafy.backend.repository.MemberRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
@@ -26,22 +19,12 @@ import org.springframework.stereotype.Service;
 public class FeedbackStompService {
 
   private final SimpMessageSendingOperations sendingOperations;
-
   private final MMFeedbackManager mmFeedbackManager;
-
-  private final MemberRepository memberRepository;
-
   private final AlbumRepository albumRepository;
-
   private final JwtService jwtService;
-
-  private Logger log = LoggerFactory.getLogger(MattermostSender.class);
 
   @Value("${notification.mattermost-outgoing.token}")
   private String outgoingToken;
-
-  @Value("${notification.mattermost-outgoing.user_id}")
-  private String feedManagerId;
 
   public FeedbackDto sendFeedbackAndMM(FeedbackDto feedbackDto) {
 
@@ -60,12 +43,13 @@ public class FeedbackStompService {
     if (feedbackDto.getContent().trim().isEmpty()) {
       throw new CustomException(FeedbackErrorCode.NotToEmptyContent.getCode(), FeedbackErrorCode.NotToEmptyContent.getDescription());
     }
-    
-    // ENTER 입장의 경우 내용은 feedback 보낸 형태 처리 : 수정 필요
-    if (FeedbackDto.MessageType.ENTER.equals(feedbackDto.getMessageType())) {
-      feedbackDto.setContent( "SenderPk : " + feedbackDto.getSenderPk() + "님이 feedback 을 보내셨습니다.");
-    }
 
+    // ENTER 입장의 경우 내용은 feedback 보낸 형태 처리 : 수정 필요
+//    if (FeedbackDto.MessageType.ENTER.equals(feedbackDto.getMessageType())) {
+//      feedbackDto.setContent( "SenderPk : " + feedbackDto.getSenderPk() + "님이 feedback 을 보내셨습니다.");
+//    }
+
+    feedbackDto.setMessageType(MessageType.ANSWER); // 채팅 내용 응답 세팅
     sendingOperations.convertAndSend("/sub/feedback/" + feedbackDto.getAlbumPk(), feedbackDto);
     mmFeedbackManager.sendNotification(feedbackDto);
 
@@ -95,19 +79,16 @@ public class FeedbackStompService {
     // 관리자가 보낸 응답에 포함되어있는 memberPk로 앨범pk 전달 : 전달시 앨범pk전달할건지 맴버pk 전달할건지 고민필요
     String memberPk = textArray[1].trim();
     Album album = albumRepository.findByMemberPk(memberPk);
-
     String content = textArray[2];
 
     // 2. FeedbackDto에 할당하기 : 가공 완료 후 Dto에 담기
     FeedbackDto feedbackDto = FeedbackDto.builder()
-        .messageType(MessageType.TALK)
+        .messageType(MessageType.ANSWER)
         .albumPk(album.getPk())
         .senderPk("feedManager")
         .accessToken("feedManager") // 보낸 사람이 Outgoing properties에 설정된 userId는 관리자 관리자인 것을 알려주는 PK
         .content(content)
         .build();
-
-    log.info("FEEDBACK TO MATTERMOST Feedback answer TEST \n ==>" + feedbackDto.toString());
 
     sendingOperations.convertAndSend("/sub/feedback/" + feedbackDto.getAlbumPk(), feedbackDto);
     mmFeedbackManager.sendNotification(feedbackDto);  // 다시 mm 으로 보내서 확인하기... // 로직은 다시 고민하기.

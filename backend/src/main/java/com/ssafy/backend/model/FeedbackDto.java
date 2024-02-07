@@ -13,7 +13,7 @@ public class FeedbackDto {
 
   // 메시지  타입 : 입장, 채팅
   public enum MessageType{
-    ENTER, TALK
+    ENTER, TALK, QUESTION, ANSWER
   }
   private MessageType messageType; // 메시지 타입
   private String accessToken;  // 보낸사람pk를 accessToken으로 말한다. 따라서 accesstoken 을 파싱해서 알아내기로 간다.

@@ -20,16 +20,12 @@ public class FeedbackStompController {
 
   @MessageMapping("/feedback")
   public ResponseEntity<FeedbackDto> sendFeedbackAndMM(@Payload FeedbackDto feedbackDto) {
-    System.out.println(feedbackDto.toString());
     return ResponseEntity.ok().body(feedbackStompService.sendFeedbackAndMM(feedbackDto));
   }
 
-//  @PostMapping("/feedbackFromMM")
-//  public ResponseEntity<String> outgoingFromMM(@RequestBody MattermostOutgoingDto mattermostOutgoingDto) {
-//    System.out.println(mattermostOutgoingDto.toString());
-//
-//    return ResponseEntity.ok().body(feedbackStompService.outgoingFromMM(mattermostOutgoingDto));
-////    return ResponseEntity.ok().body(mattermostOutgoingDto);
-//  }
+  @PostMapping("/feedbackFromMM")
+  public ResponseEntity<String> outgoingFromMM(@RequestBody MattermostOutgoingDto mattermostOutgoingDto) {
+    return ResponseEntity.ok().body(feedbackStompService.outgoingFromMM(mattermostOutgoingDto));
+  }
 
 }
