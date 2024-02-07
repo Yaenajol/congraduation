@@ -164,9 +164,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
     <div className="App">
       
       <div className="upload" >
-        
         <InputFileUpload onChange={onSelectFile} />
-      
         <MemoryAdd isClickable={imgSrc !== '' && !!crop  && !!crop.width && !!crop.height} onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
       </div>
         

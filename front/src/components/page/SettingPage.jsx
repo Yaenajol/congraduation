@@ -81,7 +81,7 @@ const SettingsPage = () => {
         }
         if (
           !window.confirm(
-            "졸업일자는 확정시 수정 불가능합니다.진행하시겠습니까?"
+            "졸업일자는 확정시 수정 불가능합니다. \n진행하시겠습니까?"
           )
         ) {
           return;
@@ -164,11 +164,12 @@ const SettingsPage = () => {
               fontSize: "25px",
               textShadow: "0px 0px 10px rgb(108, 0, 174)",
               fontFamily: "TheJamsil5Bold",
+              marginLeft: "10px"
             }}
           >
             앨범 설정
           </div>
-          <HomeIcon sx={{ fontSize: 50 }} onClick={gotoAlbumPage} />
+          <HomeIcon sx={{ fontSize: 45 }} onClick={gotoAlbumPage} />
         </div>
         <div>
           <div
