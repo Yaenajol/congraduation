@@ -288,6 +288,15 @@ const AlbumMypage = () => {
       <StyledContainer>
         {/* 내 정보 */}
         <div class="sortHeader">
+          <div style={{ width: "20%", display:"flex", alignItems:"center" }}>
+            <AlbumProfileImage
+              imageUrl={imageUrl}
+              setImageUrl={setImageUrl}
+              albumPk={album.albumPk}
+              isClickable={true}
+            />
+            {/* <MenuButton zin={false} />   */}
+          </div>
           <div>
             <StyledTypography>
               {album.nickname} 의 {album.title}
@@ -316,18 +325,9 @@ const AlbumMypage = () => {
                 </div>
               )}
             </StyledTypography>
-            <Sharebutton />
+            {/* <Sharebutton /> */}
           </div>
 
-          <div style={{ textAlign: "end", width: "25%", position:"relative", zIndex:"1" }}>
-            <AlbumProfileImage
-              imageUrl={imageUrl}
-              setImageUrl={setImageUrl}
-              albumPk={album.albumPk}
-              isClickable={true}
-            />
-            {/* <MenuButton zin={false} />   */}
-          </div>
         </div>
         {/* 공유 버튼 */}
         <div
