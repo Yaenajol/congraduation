@@ -1,47 +1,4 @@
 
-/* 눈누 더잠실체 폰트크기 700 */
-@font-face {
-  font-family: "TheJamsil5Bold";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2")
-    format("woff2");
-  font-weight: 700;
-  font-style: normal;
-}
-
-/* 눈누 더잠실체 폰트크기 300 */
-@font-face {
-  font-family: "TheJamsil2Light";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil2Light.woff2")
-    format("woff2");
-  font-weight: 300;
-  font-style: normal;
-}
-
-/* 눈누 평창평화체 폰트적용되었는지 테스트용 */
-@font-face {
-  font-family: "PyeongChangPeace-Bold";
-  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/PyeongChangPeace-Bold.woff2")
-    format("woff2");
-  font-weight: 700;
-  font-style: normal;
-}
-
-.font700 {
-  font-family: "TheJamsil5Bold";
-}
-
-.fonttest {
-  font-family: "PyeongChangPeace-Bold";
-  color: red;
-}
-
-body {
-  background-color: rgb(18, 1, 104);
-}
-
-/* YourComponent.css */
-/*  */
-
 .container {
   display: flex;
   flex-direction: column;
@@ -80,14 +37,16 @@ body {
   margin-bottom: 0.25rem;
   color: rgba(255, 255, 255);
   /* text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff; */
-  font-family: "TheJamsil5Bold"; 
-
   /* letter-spacing: -1px;   */
 }
 
-.instatext {
-  font-family: "TheJamsil2Light";
+span {
+  font-family: "KyoboHand";
+}
 
+.instatext {
+  font-family: "KyoboHand";
+  font-size: larger;
   color: white;
   /* text-shadow: -1.5px -1.5px 0 #050000, 1.5px -1.5px 0 #050000, -1.5px 1.5px 0 #050000, 1.5px 1.5px 0 #050000; */
   margin-top: 5px;
@@ -135,7 +94,7 @@ h1 span {
   animation: bounce 0.6s ease 2 alternate;
   /* font-family: 'Titan One', cursive; */
   font-size: 30px;
-  color: #fff;
+  color: #ffffff;
   text-shadow: 0 1px 0 #ccc, 0 2px 0 #ccc, 0 3px 0 #ccc, 0 4px 0 #ccc,
     0 5px 0 #ccc, 0 6px 0 transparent, 0 7px 0 transparent, 0 8px 0 transparent,
     0 9px 0 transparent, 0 10px 10px rgba(0, 0, 0, 0.4);

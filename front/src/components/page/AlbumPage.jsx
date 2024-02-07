@@ -68,8 +68,8 @@ const AlbumPage = () => {
   const navigate = useNavigate();
 
   // BE url
-  
-  
+
+
 
   const [snowflakes, setSnowflakes] = useState([]);
 
@@ -226,7 +226,8 @@ const AlbumPage = () => {
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
                 <div class="strongLetter">
-                  D -{" "}
+                  <span style={{ fontFamily: "TheJamsil2Light" }}>
+                    D -{" "}</span>
                   <span>
                     {remainDay <= 0 ? (
                       <span style={{ fontFamily: "KyoboHand" }}>
@@ -241,7 +242,7 @@ const AlbumPage = () => {
               )}
             </StyledTypography>
           </div>
-          <div style={{ textAlign: "end", width: "25%" }}>
+          <div style={{ textAlign: "end", width: "25%", position:"relative", zIndex:"1" }}>
             <AlbumProfileImage
               imageUrl={imageUrl}
               setImageUrl={setImageUrl}
@@ -255,6 +256,11 @@ const AlbumPage = () => {
           {/* 메모리 작성 버튼 */}
           <CustomButton
             clickCallback={() => {
+              if (remainDay<=0) {
+                console.log("끝남");
+                window.alert('작성 가능한 날짜가 지났습니다!');
+                return;
+              }
               if (!sessionStorage.accessToken) {
                 sessionStorage.setItem("lookingPk", params.PK);
                 navigate("/");
