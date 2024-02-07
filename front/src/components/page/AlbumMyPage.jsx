@@ -24,14 +24,17 @@ import "../page/Snowrain.css";
 
 // component
 import CustomButton from "../button/CustomButton";
+import CustomButton1 from "../button/CustomButton1";
 import MenuButton from "../../components/button/MenuButton";
 import "../page/Snowrain.css"
 import Sharebutton from "../button/Sharebutton"
+import fileDownload from 'js-file-download'
 
 // image
 import userAltImage from "../images/userAltImage.png";
 import albumFrame from "../images/albumFrame.png";
 import AlbumProfileImage from "./AlbumProfileImage";
+
 
 // external
 import axios from "axios";
@@ -55,6 +58,7 @@ const AlbumMypage = () => {
   const [specContent, setSpecContent] = useState("");
   const [snowflakes, setSnowflakes] = useState([]);
   const [modalimage, setModalimage] = useState("");
+  const [downalbumPk, setDownalbumPk] = useState("")
 
   // 날짜 설정 변수 목록
   const openDate = moment(album.openAt);
@@ -120,7 +124,8 @@ const AlbumMypage = () => {
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
-
+        setDownalbumPk(response.data.albumPk)
+        
         // 공개일자가 정해지지 않았으면 앨범 정보와 함께 설정 페이지로 이동
         if (response.data.openAt === null) {
           navigate("/myalbum/setting", { state: response.data });
@@ -163,7 +168,6 @@ const AlbumMypage = () => {
           setSpecNickname(response.data.nickname);
           setModalimage(response.data.imageUrl);
           setSpecContent(response.data.content);
-         
         });
 
       setOpenModal(true);
@@ -260,17 +264,39 @@ const AlbumMypage = () => {
       return prevIndex; // 이미지 인덱스가 0보다 작을 때는 현재 인덱스를 반환
     });
   };
-  const ShareMessage = () => {
-    window.Kakao.Link.sendDefault({
-      objectType: 'feed',
-      text: 'test',
-      link: {
-        weburl: 'http://localhost:3000'
-      }
-      
-    })
-  }
+  
+  
+  const download = (filename) => {
+    axios({
+      url: `${API_URL}/albums/${downalbumPk}/memories`,  // 이 url은 블라처리 된 이미지와 , 닉네임만 나옴 
+      method: 'GET',
+      responseType: 'blob', 
+    }).then((response) => {
+      console.log(response.data); // Blob 데이터 로깅
+      fileDownload(response.data, 'filename.html');  // 여기서 파일 확징자를 바꿀 수 있음
+    }).catch(error => {
+      console.error('Download error:', error);
+    });
+  };
 
+  const downloadImages = () => {
+    albumMemories.forEach((memory, index) => {
+      
+      const { imageUrl, nickName } = memory;
+      
+      
+      const link = document.createElement('a');
+      link.href = imageUrl; // 이미지 URL을 href로 설정합니다.
+      
+      
+      link.download = `memory-${nickName}-${index + 1}.png`;
+      
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  };
   
   return (
     <div
@@ -306,16 +332,14 @@ const AlbumMypage = () => {
                       <span style={{ fontFamily: "KyoboHand" }}>
                         {" "}
                         day Congraduation!
-                      </span>
+                      </span> 
                     ) : (
                       remainDay
                     )}
                   </span>
                 </div>
               )}
-            </StyledTypography>
-          <button onClick={() => ShareMessage()}>kakao</button>
-          <Sharebutton ShareUrl={ShareUrl}/>
+            </StyledTypography>          
           </div>
 
           <div style={{ textAlign: "end", width: "25%" }}>
@@ -337,15 +361,32 @@ const AlbumMypage = () => {
             justifyContent: "space-around",
           }}
         >
-          <CustomButton
-            customWidth={"50%"}
+           <CustomButton
+            customWidth={"30%"}
             marginTop={"20px"}
             marginBottom={"0px"}
             clickCallback={() => handlerCopyClipBoard(album.albumPk)}
-            buttonName={"공유하러가기"}
+            buttonName={"링크 복사"}
+            ShareUrl={ShareUrl}
           ></CustomButton>
+
+          <CustomButton1
+            customWidth={"30%"}
+            marginTop={"20px"}
+            marginBottom={"0px"}
+            clickCallback={() => handlerCopyClipBoard(album.albumPk)}
+            buttonName={"카톡 공유"}
+            isImage={true}
+            ShareUrl={ShareUrl}
+          ></CustomButton1>
+
+          {/* <button onClick={()=>download(`${album.nickname}의 앨범`)}>download test button</button> */}
           <MenuButton zin={false} />
         </div>
+
+
+        
+        {/* <button onClick={downloadImages}>Download Images</button> */}
 
         <div style={{ position: "relative", width: "100%", zIndex: "0" }}>
           <img

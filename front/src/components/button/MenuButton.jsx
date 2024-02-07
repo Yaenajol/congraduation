@@ -47,7 +47,6 @@ export default function MenuIntroduction({ zin }) {
       } else if (menuItem === 'Inquiry') {
         window.location.href = 'https://www.instagram.com/yaenajol.official/'
         
-
       }
     };
   };

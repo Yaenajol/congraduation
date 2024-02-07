@@ -24,6 +24,7 @@ import "../page/Snowrain.css";
 
 // component
 import CustomButton from "../button/CustomButton";
+import CustomButton1 from "../button/CustomButton1";
 import MenuButton from "../../components/button/MenuButton";
 
 // image
@@ -68,10 +69,7 @@ const AlbumPage = () => {
   const navigate = useNavigate();
 
   const ShareUrl = `${window.location.origin}/albums/${lookingPk}`
-  console.log(ShareUrl)
-  console.log(album)
-  console.log(lookingPk)
-  
+
   const [snowflakes, setSnowflakes] = useState([]);
 
   useEffect(() => {
@@ -247,7 +245,7 @@ const AlbumPage = () => {
               isClickable={false}
             />
           </div>
-          <Sharebutton ShareUrl={ShareUrl}/>
+          
         </div>
 
         <div class="alignCenter">

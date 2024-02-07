@@ -6,8 +6,17 @@ export default function KakaoShare({ShareUrl}) {
     // console.log(albumPk.albumPk)
     const requestUrl =  ShareUrl;
     console.log(requestUrl)
-    window.Kakao.Share.sendScrap({
-      requestUrl,
+    window.Kakao.Link.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: '얘들아 나 졸업해!!',
+        description: '나만의 졸업앨범을 어쩌고 저쩌고',
+        imageUrl: 'https://ifh.cc/g/O5Yb9r.png',
+        link: {
+          mobileWebUrl: requestUrl,
+          webUrl: requestUrl
+        }
+      }
     });
   };
 	
