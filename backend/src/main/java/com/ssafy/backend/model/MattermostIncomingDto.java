@@ -61,6 +61,9 @@ public class MattermostIncomingDto {
       sb.append(":raised_hands: **Feedback Sender** : ").append("```").append(feedbackDto.getSenderPk()).append("```")
           .append("\n").append("\n");
 
+      sb.append(":notebook_with_decorative_cover: **Feedback Sender Album** : ").append("```").append(feedbackDto.getAlbumPk()).append("```")
+          .append("\n").append("\n");
+
       sb.append(":question_block: **Feedback Content** : ").append("```").append(feedbackDto.getContent()).append("```")
           .append("\n").append("\n");
 
