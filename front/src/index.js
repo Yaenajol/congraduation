@@ -7,6 +7,10 @@ import { RecoilRoot } from "recoil";
 import GlobalStyle from "./globalStyle";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const API_KEY = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY
+
+window.Kakao.init(API_KEY);
+window.Kakao.isInitialized();
 root.render(
   // <React.StrictMode>
   <RecoilRoot>
