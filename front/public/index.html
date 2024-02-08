@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="margin-inline: auto">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link rel="shortcut icon" href="/favicon1.png" type="image/x-icon" />
+    <link id="favicon" rel="icon" href="#" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="ෆ 모두에게 알리는 졸업 소식! 사진으로 함께 나누는 기쁨 ෆ"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -15,7 +16,7 @@
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="/manifest" href="%PUBLIC_URL%/manifest.json" />
-    
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -26,9 +27,29 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>얘들아 나 졸업해!</title>
+    <script>
+      // favicon
+      var faviconRoute = "/";
+      var faviconNames = [
+        "favicon1.png",
+        "favicon2.png",
+        "favicon3.png",
+        "favicon4.png",
+        "favicon5.png",
+      ];
+      var idx = 0;
+
+      setInterval(func, 100);
+
+      function func() {
+        document
+          .querySelector("#favicon")
+          .setAttribute("href", faviconRoute + faviconNames[idx++]);
+        idx %= faviconNames.length;
+      }
+    </script>
   </head>
   <body>
-    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <!--

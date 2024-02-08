@@ -610,7 +610,7 @@ input[type="checkbox"] + label {
   display: block;
   position: relative;
   padding-left: 25px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   color: #333;
   cursor: pointer;
   font-size: 25px;

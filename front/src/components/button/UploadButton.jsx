@@ -19,7 +19,7 @@ const VisuallyHiddenInput = styled('input')`
 export default function InputFileUpload({onChange}) {
   return (
     <Button
-      style={{ left: '0%', marginLeft: '0%'}} 
+      style={{ left: '0%', marginLeft: '0%', marginBottom:'2%'}} 
       onChange={onChange}
       component="label"
       role={undefined}
@@ -44,7 +44,7 @@ export default function InputFileUpload({onChange}) {
         </SvgIcon>
       }
     >
-      Upload a file
+      이미지 선택
       <VisuallyHiddenInput type="file" />
     </Button>
   );

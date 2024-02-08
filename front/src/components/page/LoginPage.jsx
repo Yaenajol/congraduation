@@ -20,11 +20,11 @@ function HomePage() {
  
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
   const API_URL = process.env.REACT_APP_BACKEND_API_URL
-  console.log('API_URL' + API_URL)
   const navigate = useNavigate()
-  
+
   const LoginHandler = () => {
     window.location.href = `${API_URL}/kakao/redirect`;
+    
   };                                                                    
   
   useEffect(() => {
@@ -43,18 +43,14 @@ function HomePage() {
         <br></br>
         <h1 className="csstitle">
           <span> 얘 </span>
-          <span> </span>
           <span> 들 </span>
           <span> 아 </span>
-          <span> </span>
           <span> 나 </span>
-          <span> </span>
           <span> 졸 </span>
           <span> 업 </span>
           <span> 해 </span>
           <span> !  </span>
           <span> ! </span>
-          {/* <span>!</span> */}
         </h1>
         <br></br>
         
@@ -77,7 +73,7 @@ function HomePage() {
             className="kakaoballoon"
             alt="no img"
           ></img>
-          <h4 >카카오 계정 로그인</h4>
+          <h4 style={{fontFamily:"KyoboHand"}}>카카오 계정 로그인</h4>
         </li>
         <br></br>
         <br></br>

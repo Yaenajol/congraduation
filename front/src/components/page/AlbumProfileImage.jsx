@@ -46,7 +46,7 @@ function AlbumProfileImage({ imageUrl, setImageUrl, albumPk , isClickable}) {
   }
   
   return (
-    <div>
+    <div style={{position:"relative", zIndex:"1" }}>
       {/* 로딩 중이면 스피너 보여주고 아닌 떄에는 프로필 이미지 */}
       {loading ? (
         <UploadLoading />

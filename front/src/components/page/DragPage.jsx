@@ -49,7 +49,8 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   const API_URL = process.env.REACT_APP_BACKEND_API_URL
 
   const [pendingCrop, setPendingCrop] = useState();
-
+  
+  const currentpagename = window.location.href.split('/')[window.location.href.split('/').length -1]
   const debounceSetCrop = useCallback((percentCrop) => {
     setPendingCrop(percentCrop)
   },[])
@@ -76,8 +77,10 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
     }
   }
 
+  
   async function onDownloadCropClick(page) {
     setIsLoading(true)
+    console.log(page)
     try {
       const updateImage = (imageData) => {
         setImages((prevImages) => ({
@@ -158,15 +161,13 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
     }
   }
   
-
+  
 
   return (
     <div className="App">
       
       <div className="upload" >
-        
         <InputFileUpload onChange={onSelectFile} />
-      
         <MemoryAdd isClickable={imgSrc !== '' && !!crop  && !!crop.width && !!crop.height} onClick={onDownloadCropClick} page={window.location.href.split('/')[window.location.href.split('/').length -1]} ></MemoryAdd>
       </div>
         
