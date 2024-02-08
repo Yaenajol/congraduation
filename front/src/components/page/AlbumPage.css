@@ -9,8 +9,8 @@
 .sortHeader {
   display: flex;
   vertical-align: middle;
-  justify-content: space-between;
-  margin: 1.5rem 1.5rem 0rem 1.5rem;
+  justify-content: space-around;
+  margin: 1.5rem 1rem;
   /* background-color: rgb(255,255,255,0.3);
   border-radius: 15px;
   padding: 7px; */

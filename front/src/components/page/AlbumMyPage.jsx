@@ -24,14 +24,17 @@ import "../page/Snowrain.css";
 
 // component
 import CustomButton from "../button/CustomButton";
+import CustomButton1 from "../button/CustomButton1";
 import MenuButton from "../../components/button/MenuButton";
 import "../page/Snowrain.css"
 import Sharebutton from "../button/Sharebutton"
+import fileDownload from 'js-file-download'
 
 // image
 import userAltImage from "../images/userAltImage.png";
 import albumFrame from "../images/albumFrame.png";
 import AlbumProfileImage from "./AlbumProfileImage";
+
 
 // external
 import axios from "axios";
@@ -55,6 +58,7 @@ const AlbumMypage = () => {
   const [specContent, setSpecContent] = useState("");
   const [snowflakes, setSnowflakes] = useState([]);
   const [modalimage, setModalimage] = useState("");
+  const [downalbumPk, setDownalbumPk] = useState("")
 
   // 날짜 설정 변수 목록
   const openDate = moment(album.openAt);
@@ -70,8 +74,10 @@ const AlbumMypage = () => {
   const [shareButton, setShareButton] = useState(false);
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
+  
+  const ShareUrl = `${window.location.origin}/albums/${album.albumPk}`
 
-
+  
 
   useEffect(() => {
     // 벚꽃
@@ -118,10 +124,10 @@ const AlbumMypage = () => {
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
-
+        setDownalbumPk(response.data.albumPk)
+        
         // 공개일자가 정해지지 않았으면 앨범 정보와 함께 설정 페이지로 이동
         if (response.data.openAt === null) {
-          console.log(response.data);
           navigate("/myalbum/setting", { state: response.data });
         }
         setAlbumPageMainImg(response.data.coverUrl);
@@ -138,17 +144,6 @@ const AlbumMypage = () => {
             }
           });
       });
-    const script = document.createElement("script");
-    script.src = "https://developers.kakao.com/sdk/js/kakao.js";
-    script.async = true;
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      setShareButton(true);
-    };
-    return () => {
-      document.body.removeChild(script);
-    };
   }, []);
 
   function randomRange(min, max) {
@@ -173,8 +168,6 @@ const AlbumMypage = () => {
           setSpecNickname(response.data.nickname);
           setModalimage(response.data.imageUrl);
           setSpecContent(response.data.content);
-          console.log("spec Nickname : " + specificMemory.nickname);
-          console.log("spec Content : " + specificMemory.content);
         });
 
       setOpenModal(true);
@@ -199,12 +192,11 @@ const AlbumMypage = () => {
    */
   const handlerCopyClipBoard = async (albumPk) => {
     try {
-      console.log(albumPk);
+     
       const domain = window.location.origin;
       const address = `${domain}/albums/${albumPk}`;
       await navigator.clipboard.writeText(address);
       alert("링크가 복사됐습니다!");
-      console.log(albumPk);
     } catch (err) {
       console.log("error :", err);
     }
@@ -272,7 +264,40 @@ const AlbumMypage = () => {
       return prevIndex; // 이미지 인덱스가 0보다 작을 때는 현재 인덱스를 반환
     });
   };
+  
+  
+  const download = (filename) => {
+    axios({
+      url: `${API_URL}/albums/${downalbumPk}/memories`,  // 이 url은 블라처리 된 이미지와 , 닉네임만 나옴 
+      method: 'GET',
+      responseType: 'blob', 
+    }).then((response) => {
+      console.log(response.data); // Blob 데이터 로깅
+      fileDownload(response.data, 'filename.html');  // 여기서 파일 확징자를 바꿀 수 있음
+    }).catch(error => {
+      console.error('Download error:', error);
+    });
+  };
 
+  const downloadImages = () => {
+    albumMemories.forEach((memory, index) => {
+      
+      const { imageUrl, nickName } = memory;
+      
+      
+      const link = document.createElement('a');
+      link.href = imageUrl; // 이미지 URL을 href로 설정합니다.
+      
+      
+      link.download = `memory-${nickName}-${index + 1}.png`;
+      
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  };
+  
   return (
     <div
       style={{
@@ -288,12 +313,21 @@ const AlbumMypage = () => {
       <StyledContainer>
         {/* 내 정보 */}
         <div class="sortHeader">
+          <div style={{ width: "20%", display:"flex", alignItems:"center" }}>
+            <AlbumProfileImage
+              imageUrl={imageUrl}
+              setImageUrl={setImageUrl}
+              albumPk={album.albumPk}
+              isClickable={true}
+            />
+            {/* <MenuButton zin={false} />   */}
+          </div>
           <div>
             <StyledTypography>
               {album.nickname} 의 {album.title}
             </StyledTypography>
             <StyledTypography>
-              <span class="strongLetter">{memoryarray.length}장</span>의
+              <span className="strongLetter">{memoryarray.length}장</span>의
               메모리가 도착했어요
             </StyledTypography>
             <StyledTypography>
@@ -308,7 +342,7 @@ const AlbumMypage = () => {
                       <span style={{ fontFamily: "KyoboHand" }}>
                         {" "}
                         day Congraduation!
-                      </span>
+                      </span> 
                     ) : (
                       remainDay
                     )}
@@ -316,17 +350,7 @@ const AlbumMypage = () => {
                 </div>
               )}
             </StyledTypography>
-            <Sharebutton />
-          </div>
-
-          <div style={{ textAlign: "end", width: "25%", position:"relative", zIndex:"1" }}>
-            <AlbumProfileImage
-              imageUrl={imageUrl}
-              setImageUrl={setImageUrl}
-              albumPk={album.albumPk}
-              isClickable={true}
-            />
-            {/* <MenuButton zin={false} />   */}
+            {/* <Sharebutton /> */}
           </div>
         </div>
         {/* 공유 버튼 */}
@@ -338,15 +362,32 @@ const AlbumMypage = () => {
             justifyContent: "space-around",
           }}
         >
-          <CustomButton
-            customWidth={"50%"}
+           <CustomButton
+            customWidth={"30%"}
             marginTop={"20px"}
             marginBottom={"0px"}
             clickCallback={() => handlerCopyClipBoard(album.albumPk)}
-            buttonName={"공유하러가기"}
+            buttonName={"링크 복사"}
+            ShareUrl={ShareUrl}
           ></CustomButton>
+
+          <CustomButton1
+            customWidth={"30%"}
+            marginTop={"20px"}
+            marginBottom={"0px"}
+            clickCallback={() => handlerCopyClipBoard(album.albumPk)}
+            buttonName={"카톡 공유"}
+            isImage={true}
+            ShareUrl={ShareUrl}
+          ></CustomButton1>
+
+          {/* <button onClick={()=>download(`${album.nickname}의 앨범`)}>download test button</button> */}
           <MenuButton zin={false} />
         </div>
+
+
+        
+        {/* <button onClick={downloadImages}>Download Images</button> */}
 
         <div style={{ position: "relative", width: "100%", zIndex: "0" }}>
           <img
@@ -358,7 +399,7 @@ const AlbumMypage = () => {
           />
 
           {/* 메모리 리스트 */}
-          <div class="memoryList">
+          <div className="memoryList">
             <Grid container spacing={2}>
               {albumMemories.slice(startIndex, endIndex).map((val, index) => (
                 <Grid item xs={5} key={index} style={{ marginLeft: "5%" }}>
@@ -404,7 +445,7 @@ const AlbumMypage = () => {
         </div>
 
         {/* 페이지네이션 */}
-        <div class="alignCenter">
+        <div className="alignCenter">
           <Pagination
             count={Math.ceil(memoryarray.length / itemsPerPage)}
             page={currentPage}

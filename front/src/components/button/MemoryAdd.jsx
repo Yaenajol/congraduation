@@ -5,7 +5,7 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 
 
-export default function ButtonColors({onClick, value, isClickable}) {
+export default function ButtonColors({onClick, value, isClickable, page}) {
   const [variant, setVariant] = React.useState('soft');
   return (
     <Box

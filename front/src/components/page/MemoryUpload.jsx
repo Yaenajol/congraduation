@@ -171,8 +171,6 @@ const MemoryUpload = () => {
 
     const file = dataURLtoFile(mergedImageDataURL, "sample.png");
     setMergedImage(mergedImageDataURL);
-    console.log(mergedImageDataURL);
-    console.log(mergedImage);
     const blob = await (await fetch(mergedImageDataURL)).blob();
     const imageSize1 = blob.size;
 
@@ -184,7 +182,6 @@ const MemoryUpload = () => {
           nickname,
           content: message,
         };
-        console.log(payload);
         const formdata = new FormData();
         formdata.append("image", file);
         formdata.append(
@@ -199,11 +196,7 @@ const MemoryUpload = () => {
             },
           })
           .then((response) => {
-            console.log(response.data);
             navigate(`/albums/${params.PK}`);
-            console.log(imageSize1);
-            console.log(canvasHeight);
-            console.log(canvasWidth);
           })
           .catch((error) => {
             console.log(error);

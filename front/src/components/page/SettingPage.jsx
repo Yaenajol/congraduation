@@ -18,7 +18,6 @@ import "./AllPage.css";
 const SettingsPage = () => {
   const location = useLocation();
   const albumdata = location.state;
-  console.log("albumdata" + albumdata);
   const API_URL = process.env.REACT_APP_BACKEND_API_URL
 
   const RoundedRectangle = () => {
@@ -59,7 +58,6 @@ const SettingsPage = () => {
             }
           )
           .then((response) => {
-            console.log(response.data);
             gotoAlbumPage();
           })
           .catch((error) => {
