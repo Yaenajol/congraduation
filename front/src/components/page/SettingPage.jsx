@@ -75,10 +75,6 @@ const SettingsPage = () => {
         const dateFormat = dayjs(graduationDate).format("YYYYMMDD");
         const todayDateFormat = dayjs(new Date()).format("YYYYMMDD");
 
-        if (dateFormat < todayDateFormat) {
-          window.alert("날짜를 오늘 이상으로 설정해 주세요.");
-          return;
-        }
         if (
           !window.confirm(
             "졸업일자는 확정시 수정 불가능합니다.진행하시겠습니까?"
