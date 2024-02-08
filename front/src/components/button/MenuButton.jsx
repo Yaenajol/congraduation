@@ -76,7 +76,7 @@ export default function PositionedMenu({zin}) {
           vertical: 'top',
           horizontal: 'center',
         }}
-        style={{zIndex: 6}}
+        style={{zIndex: 6, }}
       >
         {!zin ? (
           <MenuItem onClick={createHandleMenuClick("Profile")}>
