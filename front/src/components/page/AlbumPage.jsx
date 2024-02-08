@@ -388,7 +388,7 @@ const AlbumPage = () => {
           </DialogActions>
         </Dialog>
       </StyledContainer>
-      <FunnyDog></FunnyDog>
+      <FunnyDog style="layer"></FunnyDog>
     </div>
   );
 };
