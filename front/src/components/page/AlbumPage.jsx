@@ -247,11 +247,6 @@ const AlbumPage = () => {
           {/* 메모리 작성 버튼 */}
           <CustomButton
             clickCallback={() => {
-              if (remainDay <= 0) {
-                console.log("끝남");
-                window.alert("작성 가능한 날짜가 지났습니다!");
-                return;
-              }
               if (!sessionStorage.accessToken) {
                 sessionStorage.setItem("lookingPk", params.PK);
                 navigate("/");
