@@ -1,7 +1,7 @@
 // react
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
+import Sharebutton from "../button/Sharebutton"
 // recoil
 import { useRecoilState } from "recoil";
 import { lookingPkAtom, albumPageMainImgAtom } from "../store/atom";
@@ -24,6 +24,7 @@ import "../page/Snowrain.css";
 
 // component
 import CustomButton from "../button/CustomButton";
+import CustomButton1 from "../button/CustomButton1";
 import MenuButton from "../../components/button/MenuButton";
 
 // image
@@ -67,9 +68,7 @@ const AlbumPage = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  // BE url
-
-
+  const ShareUrl = `${window.location.origin}/albums/${lookingPk}`
 
   const [snowflakes, setSnowflakes] = useState([]);
 
@@ -116,7 +115,6 @@ const AlbumPage = () => {
     axios
       .get(`${API_URL}/albums/${params.PK}/memories`)
       .then((response) => {
-        console.log("Album Memories Data:", response.data);
         setAlbumMemories(response.data);
         if (typeof response.data === typeof []) {
           setMemoryarray(response.data);
@@ -132,8 +130,6 @@ const AlbumPage = () => {
           { headers: { accessToken: sessionStorage.accessToken } }
         )
         .then((response) => {
-          console.log("check" + response.data);
-
           // 만약 접근한 유저의 권한이 true 이면 내 앨범 페이지로 이동
           if (typeof response.data === typeof true) {
             if (response.data === true) {
@@ -250,6 +246,7 @@ const AlbumPage = () => {
               isClickable={false}
             />
           </div>
+          
         </div>
 
         <div class="alignCenter">

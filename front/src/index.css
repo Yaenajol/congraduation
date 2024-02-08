@@ -1,11 +1,23 @@
 html,
 body,
-
-#app
+#App
  {
   /* height: 100%; */
   margin: 0px;
+  max-width: 400px;
+  position: relative;
 }
+
+#root {
+  /* width: 100vw;
+  height: 100vh;
+  background: rgb(212, 169, 212); */
+
+  /* display: flex; */
+  align-items: center;
+  justify-content: center;
+}
+
 
 /* 폰트 */
 @font-face {
