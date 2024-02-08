@@ -192,7 +192,7 @@ const AlbumMypage = () => {
    */
   const handlerCopyClipBoard = async (albumPk) => {
     try {
-     
+      console.log(albumPk);
       const domain = window.location.origin;
       const address = `${domain}/albums/${albumPk}`;
       await navigator.clipboard.writeText(address);
