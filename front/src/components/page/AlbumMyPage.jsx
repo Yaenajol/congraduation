@@ -42,8 +42,8 @@ import moment from "moment";
 
 const AlbumMypage = () => {
   // 전역 상태 변수 목록
-  const [albumPageMainImg, setAlbumPageMainImg] =useRecoilState(albumPageMainImgAtom);
-  
+  const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom);
+
   // 상태 변수 목록
   const [album, setAlbum] = useState([]);
   const [albumMemories, setAlbumMemories] = useState([]);
@@ -150,7 +150,7 @@ const AlbumMypage = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const handleImageClick = (imageUrl, index) => {    
+  const handleImageClick = (imageUrl, index) => {
     const now = moment();
     setSelectedImageIndex(index);
 
@@ -171,7 +171,7 @@ const AlbumMypage = () => {
         });
 
       setOpenModal(true);
-    // 공개일 아닐 때
+      // 공개일 아닐 때
     } else {
       alert("아직 공개일이 아닙니다!");
     }
@@ -219,19 +219,19 @@ const AlbumMypage = () => {
       // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
       if (nextIndex < memoryarray.length) {
         axios
-        .get(
-          `${API_URL}/memories/${albumMemories[nextIndex].memoryPk}`,
-          {
-            headers: { accessToken: sessionStorage.accessToken },
-          }
-        )
-        .then((response) => {
-          setModalimage(response.data.imageUrl);
-          setSpecificMemory(response.data);
-          setSpecNickname(response.data.nickname);
-          setSpecContent(response.data.content);
-        });
-        
+          .get(
+            `${API_URL}/memories/${albumMemories[nextIndex].memoryPk}`,
+            {
+              headers: { accessToken: sessionStorage.accessToken },
+            }
+          )
+          .then((response) => {
+            setModalimage(response.data.imageUrl);
+            setSpecificMemory(response.data);
+            setSpecNickname(response.data.nickname);
+            setSpecContent(response.data.content);
+          });
+
         return nextIndex;
       }
       return prevIndex; // 그 외의 경우에는 이전 인덱스를 반환
@@ -246,18 +246,18 @@ const AlbumMypage = () => {
       // 인덱스 값이 0 이상일 때
       if (prevIndex > 0) {
         axios
-        .get(
-          `${API_URL}/memories/${albumMemories[prevIndex - 1].memoryPk}`,
-          {
-            headers: { accessToken: sessionStorage.accessToken },
-          }
-        )
-        .then((response) => {
-          setModalimage(response.data.imageUrl);
-          setSpecificMemory(response.data);
-          setSpecNickname(response.data.nickname);
-          setSpecContent(response.data.content);
-        });
+          .get(
+            `${API_URL}/memories/${albumMemories[prevIndex - 1].memoryPk}`,
+            {
+              headers: { accessToken: sessionStorage.accessToken },
+            }
+          )
+          .then((response) => {
+            setModalimage(response.data.imageUrl);
+            setSpecificMemory(response.data);
+            setSpecNickname(response.data.nickname);
+            setSpecContent(response.data.content);
+          });
 
         return prevIndex - 1;
       }
@@ -325,8 +325,9 @@ const AlbumMypage = () => {
               {albumOpenAt === null ? (
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
-                <div className="strongLetter">
-                  D -{" "}
+                <div class="strongLetter">
+                  <span style={{ fontFamily: "TheJamsil2Light" }}>
+                    D -{" "}</span>
                   <span>
                     {remainDay <= 0 ? (
                       <span style={{ fontFamily: "KyoboHand" }}>
@@ -342,7 +343,7 @@ const AlbumMypage = () => {
             </StyledTypography>          
           </div>
 
-          <div style={{ textAlign: "end", width: "25%" }}>
+          <div style={{ textAlign: "end", width: "25%", position:"relative", zIndex:"1" }}>
             <AlbumProfileImage
               imageUrl={imageUrl}
               setImageUrl={setImageUrl}
