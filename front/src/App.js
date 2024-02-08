@@ -35,9 +35,9 @@ function App() {
         <Route path="/kakao/oauth" element={<RedirectPage />} />
         <Route path="/albums/drag" element={<DragPage/>} />
         <Route path="/myalbum" element={<AlbumMyPage/>} />
-        {/* <Route path="/feedback" element={<FeedbackPage/>}/>
-         */}
-        <Route path="/feedback" element={<FeedbackPage2/>}/>
+        <Route path="/feedback" element={<FeedbackPage/>}/>
+        
+        {/* <Route path="/feedback" element={<FeedbackPage2/>}/> */}
 
         {/* 오류페이지 만들어야됨 */}
         <Route path="*" element={<Navigate replace to="/kakao/oauth" />} />

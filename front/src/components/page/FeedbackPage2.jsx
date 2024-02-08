@@ -35,31 +35,71 @@ function FeedbackPage2() {
   console.log(userId);
 
   const msgBox = chatList.map((item, idx) => {
-
     if(chat_room_id !== userId) {
-      
       console.log("Admin : " + item);
-
       return (
-        <div key={idx} className='chat-message'>
-          <div>
-            <img src={userAltImage} alt="" />
+        <div className='chat-message-list cs-message-list'>
+          <div 
+            data-cs-message-list 
+            className='scrollbar-container cs-message-list__scroll-wrapper ps' 
+            style={{
+              overscrollBehaviorY: 'none',
+              overflowAnchor: 'auto',
+              touchAction: 'none'
+            }}
+          >
+            <section className='cs-message-group cs-message-group--incoming' data-cs-message-group>
+              <div className='cs-message-group__content'>
+                <div className= 'cs-message-group__messages'>
+                  <section className='cs-message' data-cs-message>
+                    <div className='cs-message__content-wrapper'>
+                      <div className='cs-message__content'>
+                        <div key={idx} className='chat-message'>
+                          <div>
+                            <img src={userAltImage} alt="" />
+                          </div>
+                          <span>{item}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </section>
           </div>
-          <span>{item}</span>
         </div>
       )
     } else {
-      
-      console.log("loginUser : " + item);
-      
-      return (
-        <div key={idx} className='chat-message'>
-          <div>
-            <img src={userInfo.imageUrl} alt="" />
-          </div>
-          <span>{item}</span>
+      <div className='chat-message-list cs-message-list'>
+          <div 
+            data-cs-message-list 
+            className='scrollbar-container cs-message-list__scroll-wrapper ps' 
+            style={{
+              overscrollBehaviorY: 'none',
+              overflowAnchor: 'auto',
+              touchAction: 'none'
+            }}
+          >
+          <section className='cs-message-group cs-message-group--incoming' data-cs-message-group>
+            <div className='cs-message-group__content'>
+              <div className= 'cs-message-group__messages'>
+                <section className='cs-message' data-cs-message>
+                  <div className='cs-message__content-wrapper'>
+                    <div className='cs-message__content'>
+                      <div key={idx} className='chat-message'>
+                        <div>
+                          <img src={userInfo.imageUrl} alt="" />
+                        </div>
+                        <span>{item}</span>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </section>
         </div>
-      )
+      </div>
     }
   })
 
@@ -226,3 +266,34 @@ function FeedbackPage2() {
 }
 
 export default FeedbackPage2;
+
+
+
+
+
+// 챗이미지
+// if(chat_room_id !== userId) {
+      
+//   console.log("Admin : " + item);
+
+//   return (
+//     <div key={idx} className='chat-message'>
+//       <div>
+//         <img src={userAltImage} alt="" />
+//       </div>
+//       <span>{item}</span>
+//     </div>
+//   )
+// } else {
+  
+//   console.log("loginUser : " + item);
+  
+//   return (
+//     <div key={idx} className='chat-message'>
+//       <div>
+//         <img src={userInfo.imageUrl} alt="" />
+//       </div>
+//       <span>{item}</span>
+//     </div>
+//   )
+// }

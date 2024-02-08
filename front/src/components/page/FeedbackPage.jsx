@@ -19,14 +19,15 @@ function FeedbackPage() {
 
   const params = useParams();
   const accessToken = sessionStorage.getItem('accessToken');
-  
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL;
+
 
   useEffect(() => {
     connect();
 
     if( accessToken) {
       axios
-        .get(`https://congraduation.me/backapi/members/myAlbum`, {
+        .get(`${API_URL}/members/myAlbum`, {
             headers: { accessToken: sessionStorage.accessToken },
         })
         .then((response) => {
@@ -132,30 +133,30 @@ function FeedbackPage() {
               touchAction: 'none'
             }}
           >
-            <section className='cs-message-group cs-message-group--incoming' data-cs-message-group>
-              <div className='cs-message-group__content'>
-                <div className= 'cs-message-group__messages'>
-                  <section className='cs-message' data-cs-message>
-                    <div className='cs-message__content-wrapper'>
-                      <div className='cs-message__content'>
-                        {chatList.map((message, index) => (
-                          <div key={index} className='chat-message'>
+            {chatList.map((message, index) => (
+              <section key={index} className='cs-message-group cs-message-group--incoming' data-cs-message-group>
+                <div className='cs-message-group__content'>
+                  <div className= 'cs-message-group__messages'>
+                    <section className='cs-message' data-cs-message>
+                      <div className='cs-message__content-wrapper'>
+                        <div className='cs-message__content'>
+                          <div className='chat-message'>
                             {message}
                           </div>
-                        ))}
+                        </div>
                       </div>
-                    </div>
-                  </section>
+                    </section>
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            ))}
           </div>
         </div>
 
         {/* 입력 창 */}
         <div className='chat-message-form-container'>
           <div className='chat-message-form-input'>
-            <div className='chat-message-content'>
+            <div className='chat-message-content' style={{ display: 'flex', alignItems: 'center' }}>
               <form onSubmit={(event) => handleSubmit(event, chat)}>
                 <input 
                   type={'text'} 
