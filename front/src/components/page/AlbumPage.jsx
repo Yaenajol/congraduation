@@ -1,7 +1,7 @@
 // react
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Sharebutton from "../button/Sharebutton"
+import Sharebutton from "../button/Sharebutton";
 // recoil
 import { useRecoilState } from "recoil";
 import { lookingPkAtom, albumPageMainImgAtom } from "../store/atom";
@@ -41,7 +41,7 @@ const AlbumPage = () => {
   const [albumPageMainImg, setAlbumPageMainImg] =
     useRecoilState(albumPageMainImgAtom);
   const [lookingPk, setLookingPk] = useRecoilState(lookingPkAtom);
-  const API_URL = process.env.REACT_APP_BACKEND_API_URL
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
   // 상태 변수 목록
   const [album, setAlbum] = useState([]);
@@ -68,7 +68,7 @@ const AlbumPage = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const ShareUrl = `${window.location.origin}/albums/${lookingPk}`
+  const ShareUrl = `${window.location.origin}/albums/${lookingPk}`;
 
   const [snowflakes, setSnowflakes] = useState([]);
 
@@ -102,33 +102,28 @@ const AlbumPage = () => {
     setSnowflakes(newSnowflakes);
 
     // 특정 앨범 조회
-    axios
-      .get(`${API_URL}/albums/${params.PK}`)
-      .then((response) => {
-        setAlbum(response.data);
-        setImageUrl(response.data.coverUrl);
-        setalbumOpenAt(response.data.openAt);
-        setAlbumPageMainImg(response.data.coverUrl);
-      });
+    axios.get(`${API_URL}/albums/${params.PK}`).then((response) => {
+      setAlbum(response.data);
+      setImageUrl(response.data.coverUrl);
+      setalbumOpenAt(response.data.openAt);
+      setAlbumPageMainImg(response.data.coverUrl);
+    });
 
     // 앨범의 특정 메모리 조회
-    axios
-      .get(`${API_URL}/albums/${params.PK}/memories`)
-      .then((response) => {
-        setAlbumMemories(response.data);
-        if (typeof response.data === typeof []) {
-          setMemoryarray(response.data);
-        }
-      });
+    axios.get(`${API_URL}/albums/${params.PK}/memories`).then((response) => {
+      setAlbumMemories(response.data);
+      if (typeof response.data === typeof []) {
+        setMemoryarray(response.data);
+      }
+    });
 
     // accessToken 이 있을 때
     if (sessionStorage.accessToken) {
       // 유저의 앨범 접근 권한 조회
       axios
-        .get(
-          `${API_URL}/members/authority?albumPk=${params.PK}`,
-          { headers: { accessToken: sessionStorage.accessToken } }
-        )
+        .get(`${API_URL}/members/authority?albumPk=${params.PK}`, {
+          headers: { accessToken: sessionStorage.accessToken },
+        })
         .then((response) => {
           // 만약 접근한 유저의 권한이 true 이면 내 앨범 페이지로 이동
           if (typeof response.data === typeof true) {
@@ -209,6 +204,15 @@ const AlbumPage = () => {
       <StyledContainer>
         {/* 졸업자 정보 */}
         <div class="sortHeader">
+          <div style={{ width: "20%", display: "flex", alignItems: "center" }}>
+            <AlbumProfileImage
+              imageUrl={imageUrl}
+              setImageUrl={setImageUrl}
+              albumPk={params.PK}
+              isClickable={false}
+            />
+            {/* <MenuButton zin={false} />   */}
+          </div>
           <div>
             <StyledTypography>
               {album.nickname} 의 {album.title}
@@ -222,8 +226,7 @@ const AlbumPage = () => {
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
                 <div class="strongLetter">
-                  <span style={{ fontFamily: "TheJamsil2Light" }}>
-                    D -{" "}</span>
+                  <span style={{ fontFamily: "TheJamsil2Light" }}>D - </span>
                   <span>
                     {remainDay <= 0 ? (
                       <span style={{ fontFamily: "KyoboHand" }}>
@@ -238,24 +241,15 @@ const AlbumPage = () => {
               )}
             </StyledTypography>
           </div>
-          <div style={{ textAlign: "end", width: "25%", position:"relative", zIndex:"1" }}>
-            <AlbumProfileImage
-              imageUrl={imageUrl}
-              setImageUrl={setImageUrl}
-              albumPk={params.PK}
-              isClickable={false}
-            />
-          </div>
-          
         </div>
 
         <div class="alignCenter">
           {/* 메모리 작성 버튼 */}
           <CustomButton
             clickCallback={() => {
-              if (remainDay<=0) {
+              if (remainDay <= 0) {
                 console.log("끝남");
-                window.alert('작성 가능한 날짜가 지났습니다!');
+                window.alert("작성 가능한 날짜가 지났습니다!");
                 return;
               }
               if (!sessionStorage.accessToken) {
