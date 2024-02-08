@@ -1,5 +1,5 @@
 import "./CustomButton.css";
-import kakao from "../images/kakao.png"
+import kakao from "../images/kakao.png";
 
 function CustomButton({
   clickCallback,
@@ -12,26 +12,26 @@ function CustomButton({
 }) {
   const kakaoButton = () => {
     // console.log(albumPk.albumPk)
-    const requestUrl =  ShareUrl;
-    console.log(requestUrl)
+    const requestUrl = ShareUrl;
+    console.log(requestUrl);
     window.Kakao.Link.sendDefault({
-      objectType: 'feed',
+      objectType: "feed",
       content: {
-        title: '얘들아 나 졸업해!!',
-        description: '나만의 졸업앨범을 어쩌고 저쩌고',
-        imageUrl: 'https://ifh.cc/g/O5Yb9r.png',
+        title: "얘들아 나 졸업해!!",
+        description: "나만의 졸업앨범을 꾸며줘 :)",
+        imageUrl: "https://ifh.cc/g/O5Yb9r.png",
         link: {
           mobileWebUrl: requestUrl,
-          webUrl: requestUrl
-        }
-      }
+          webUrl: requestUrl,
+        },
+      },
     });
   };
 
   let width = customWidth ? customWidth : "50%";
   let margin_top = marginTop ? marginTop : "35px";
   let margin_bottom = marginBottom ? marginBottom : "30px";
-  const imageUrl = kakao
+  const imageUrl = kakao;
 
   return (
     <div
@@ -43,11 +43,12 @@ function CustomButton({
       className="settingButtonContainer"
       onClick={kakaoButton}
     >
-      <div className="settingButton" >
+      <div className="settingButton">
         {/* <button type="button">{buttonName}</button> */}
         {/* <img src={imageUrl} alt="" /> */}
-        <a href="javascript:;" >{buttonName}
-        {/* {isImage? (
+        <a href="javascript:;">
+          {buttonName}
+          {/* {isImage? (
             <img src={imageUrl} style={{ width: "40%", marginBottom:margin_bottom }}></img>
           ) : (
             buttonName
