@@ -18,21 +18,30 @@ function FeedbackPage2() {
   const [ userInfo, setUserInfo ] = useState([]); // 유저 정보
   
   const params = useParams();
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL;
+  const FE_URL = 'https://congraduation.me/backapi';
+
   
   const accessToken = sessionStorage.getItem('accessToken');  // 로그인 사용자 토큰
-  
+
+
   let [client, changeClient] = useState(null);
   
   const chat_room_id = params.PK;     // 로그인한 유저의 albumPk
   const userId = userInfo.albumPk;    // 현재 로그인된 사용자의 albumPk
 
+  console.log(chat_room_id);
+  console.log(chatList);
+  console.log(userId);
+
   const msgBox = chatList.map((item, idx) => {
+
     if(chat_room_id !== userId) {
       
       console.log("Admin : " + item);
 
       return (
-        <div key={idx}>
+        <div key={idx} className='chat-message'>
           <div>
             <img src={userAltImage} alt="" />
           </div>
@@ -44,7 +53,7 @@ function FeedbackPage2() {
       console.log("loginUser : " + item);
       
       return (
-        <div key={idx}>
+        <div key={idx} className='chat-message'>
           <div>
             <img src={userInfo.imageUrl} alt="" />
           </div>
@@ -60,7 +69,7 @@ function FeedbackPage2() {
   const connect = () => {
     try {
       const clientdata = new StompJs.Client({
-          brokerURL: 'ws://codakcodak.site:8001/backend/ws/chat',
+          brokerURL: `ws://codakcodak.site:8001/backend/ws/chat`,
           debug: function(str) {
               console.log(str);
           },
@@ -68,8 +77,14 @@ function FeedbackPage2() {
 
       // 구독
       clientdata.onConnect = function() {
-          console.log('success');
-          client.current.subscribe('/sub/feedback/' + userInfo.albumPk, callback);
+        console.log('success');
+        console.log(userInfo.albumPk);  // 여기서부터 못 받네?
+        clientdata.subscribe('/sub/feedback/' + userInfo.albumPk, (body) => {
+          const json_body = JSON.parse(body.body);
+          setChatList((_chat_list) => [
+            ..._chat_list, json_body
+          ]);
+        });
       };
 
       clientdata.activate();  // 클라이언트 활성화
@@ -89,15 +104,6 @@ function FeedbackPage2() {
     client.current.deactivate();
   };
 
-  const callback = function (message) {
-    console.log(message);
-    if (message.body) {
-      const msg = JSON.parse(message.body);
-      console.log("Received message:", msg); // 받은 메시지 로그로 출력
-      setChatList((chats) => [...chats, msg]);
-      console.log("Updated chatList:", chatList); // 업데이트된 chatList 로그로 출력
-    }
-  };
 
   /**
    * 채팅을 서버에 보내기
@@ -119,22 +125,26 @@ function FeedbackPage2() {
         content : chat,
       }),
     });
+
     
     setChat('');
   };
 
   useEffect(() => {
-    connect();
-
     // 현재 로그인한 유저의 정보를 조회
     if(accessToken) {
       axios
-        .get(`https://congraduation.me/backapi/members/myAlbum`, {
+        .get(`${FE_URL}/members/myAlbum`, {
             headers: { accessToken: sessionStorage.accessToken },
         })
         .then((response) => {
             console.log("Album Data:", response.data);
             setUserInfo(response.data);
+
+            connect();
+        })
+        .catch((error) => {
+          console.error("Error fetching user info:", error);
         });
     }
 
@@ -182,8 +192,8 @@ function FeedbackPage2() {
         </div>
 
         {/* 중앙 대화 창 */}
-        <div> {msgBox}</div>
-
+        <div className='cs-message__content'> {msgBox}</div>
+        
         {/* 입력 창 */}
         <div className='chat-message-form-container'>
           <div className='chat-message-form-input'>
