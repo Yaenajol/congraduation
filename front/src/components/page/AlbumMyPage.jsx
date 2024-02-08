@@ -192,10 +192,11 @@ const AlbumMypage = () => {
    */
   const handlerCopyClipBoard = async (albumPk) => {
     try {
-     
+      
       const domain = window.location.origin;
       const address = `${domain}/albums/${albumPk}`;
       await navigator.clipboard.writeText(address);
+      
       alert("링크가 복사됐습니다!");
     } catch (err) {
       console.log("error :", err);
