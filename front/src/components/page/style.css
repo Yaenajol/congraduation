@@ -90,12 +90,11 @@
 }
 
 .upload {
-  /* justify-content: space-between;
-  display: flex; */
-  text-align: center;
+  justify-content: space-evenly;
+  display: flex;
+  /* align-items: center; */
   margin-bottom: 5%;
-  margin-top: 5%; 
-  
+  margin-top: 6%; 
 }
 
 .image-box {
