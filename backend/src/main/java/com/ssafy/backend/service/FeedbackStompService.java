@@ -77,7 +77,7 @@ public class FeedbackStompService {
     }
 
     // 관리자가 보낸 응답에 포함되어있는 memberPk로 앨범pk 전달 : 전달시 앨범pk전달할건지 맴버pk 전달할건지 고민필요
-    String memberPk = textArray[1].trim();
+    String memberPk = textArray[1].trim();  // String albumPk = textArray[1].trim();
     Album album = albumRepository.findByMemberPk(memberPk);
     String content = textArray[2];
 
