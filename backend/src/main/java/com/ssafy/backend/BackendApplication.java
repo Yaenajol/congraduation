@@ -1,5 +1,6 @@
 package com.ssafy.backend;
 
+import java.time.LocalDateTime;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class BackendApplication {
 
 	public static void main(String[] args) {
+		System.out.println(LocalDateTime.now());
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
