@@ -18,7 +18,7 @@ import "./AllPage.css";
 const SettingsPage = () => {
   const location = useLocation();
   const albumdata = location.state;
-  const API_URL = process.env.REACT_APP_BACKEND_API_URL
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
   const RoundedRectangle = () => {
     const [nickname, setNickname] = useState(
@@ -48,15 +48,11 @@ const SettingsPage = () => {
         const accessToken = sessionStorage.getItem("accessToken");
 
         axios
-          .put(
-            `${API_URL}/albums/${albumdata.albumPk}`,
-            userInfo,
-            {
-              headers: {
-                accessToken: accessToken,
-              },
-            }
-          )
+          .put(`${API_URL}/albums/${albumdata.albumPk}`, userInfo, {
+            headers: {
+              accessToken: accessToken,
+            },
+          })
           .then((response) => {
             gotoAlbumPage();
           })
@@ -71,12 +67,7 @@ const SettingsPage = () => {
     const handleSaveAlbumSettingsWithGraduationDate = async () => {
       try {
         const dateFormat = dayjs(graduationDate).format("YYYYMMDD");
-        const todayDateFormat = dayjs(new Date()).format("YYYYMMDD");
 
-        if (dateFormat < todayDateFormat) {
-          window.alert("날짜를 오늘 이상으로 설정해 주세요.");
-          return;
-        }
         if (
           !window.confirm(
             "졸업일자는 확정시 수정 불가능합니다. \n진행하시겠습니까?"
@@ -109,15 +100,11 @@ const SettingsPage = () => {
             const accessToken = sessionStorage.getItem("accessToken");
 
             axios
-              .put(
-                `${API_URL}/albums/${albumdata.albumPk}`,
-                userInfo,
-                {
-                  headers: {
-                    accessToken: accessToken,
-                  },
-                }
-              )
+              .put(`${API_URL}/albums/${albumdata.albumPk}`, userInfo, {
+                headers: {
+                  accessToken: accessToken,
+                },
+              })
               .then((response) => {
                 gotoAlbumPage();
               });
@@ -162,7 +149,7 @@ const SettingsPage = () => {
               fontSize: "25px",
               textShadow: "0px 0px 10px rgb(108, 0, 174)",
               fontFamily: "TheJamsil5Bold",
-              marginLeft: "10px"
+              marginLeft: "10px",
             }}
           >
             앨범 설정
