@@ -5,9 +5,14 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // 프로필 아이콘
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // 로그아웃 아이콘
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'; // 1:1 문의 아이콘
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'; // 회원 탈퇴 아이콘
 import { isLoginAtom } from "../store/atom";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import "./MenuButton.css"
 
 export default function PositionedMenu({zin}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -46,8 +51,10 @@ export default function PositionedMenu({zin}) {
         navigate(`/myalbum/setting` , { state : settingdata})
       } else if (menuItem === 'Inquiry') {
         window.location.href = 'https://www.instagram.com/yaenajol.official/'
-        
+      } else if (menuItem === 'Withdrawal') {
+        console.log('회원탈퇴')
       }
+
     };
   };
   return (
@@ -70,7 +77,7 @@ export default function PositionedMenu({zin}) {
         onClose={handleClose}
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'center',
+          horizontal: 'left',
         }}
         transformOrigin={{
           vertical: 'top',
@@ -80,15 +87,20 @@ export default function PositionedMenu({zin}) {
       >
         {!zin ? (
           <MenuItem onClick={createHandleMenuClick("Profile")}>
-            앨범 설정
+            <AccountCircleIcon fontSize="small" style={{marginRight: 8}} /> 앨범 설정
           </MenuItem>
         ) : null}
-        <MenuItem onClick={createHandleMenuClick("Inquiry")}>1:1 문의</MenuItem>
+        <MenuItem onClick={createHandleMenuClick("Inquiry")}>
+          <HelpOutlineIcon fontSize="small" style={{marginRight: 8}} /> 1:1 문의
+        </MenuItem>
         {isLogin ? (
           <MenuItem onClick={createHandleMenuClick("Logout")}>
-            로그 아웃
+            <ExitToAppIcon fontSize="small" style={{marginRight: 8}} /> 로그 아웃
           </MenuItem>
         ) : null}
+        <MenuItem onClick={createHandleMenuClick("Withdrawal")}>
+          <DeleteForeverIcon fontSize="small" style={{marginRight: 8}} /> 회원 탈퇴
+        </MenuItem>
       </Menu>
     </div>
   );

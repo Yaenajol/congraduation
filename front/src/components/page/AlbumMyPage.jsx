@@ -266,6 +266,9 @@ const AlbumMypage = () => {
     });
   };
   
+  const deleteMemory = () => {
+
+  }
   
   const download = (filename) => {
     axios({
@@ -480,6 +483,11 @@ const AlbumMypage = () => {
             )}
           </DialogContent>
           <DialogActions>
+            <Button onClick={() => deleteMemory()} style={{marginRight: '10%',}}>
+              <p style={{ color: 'red'}}>삭제</p>
+            </Button>
+
+
             <Button
               onClick={handlePrevImage}
               disabled={selectedImageIndex === 0}
