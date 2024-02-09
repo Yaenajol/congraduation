@@ -5,22 +5,25 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import GlobalStyle from "./globalStyle";
-
-
-
+import ReactGa from "react-ga";
+import { BrowserRouter } from "react-router-dom";
+const gaTrackingID = process.env.REACT_APP_GA_TRACKING_APP;
+console.log("index  " + gaTrackingID);
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const API_KEY = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY
+const API_KEY = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
 
 window.Kakao.init(API_KEY);
 window.Kakao.isInitialized();
 
 root.render(
   // <React.StrictMode>
-  <RecoilRoot>
-    <GlobalStyle />
-    <App />
-  </RecoilRoot>
-  // </React.StrictMode>
+  <BrowserRouter>
+    <RecoilRoot>
+      <GlobalStyle />
+      <App />
+    </RecoilRoot>
+    {/* // </React.StrictMode> */}
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

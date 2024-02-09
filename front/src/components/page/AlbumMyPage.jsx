@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import FunnyDog from "../button/FunnyDog";
-
 // recoil
 import { useRecoilState } from "recoil";
 import { albumPageMainImgAtom } from "../store/atom";
@@ -26,15 +25,14 @@ import "../page/Snowrain.css";
 import CustomButton from "../button/CustomButton";
 import CustomButton1 from "../button/CustomButton1";
 import MenuButton from "../../components/button/MenuButton";
-import "../page/Snowrain.css"
-import Sharebutton from "../button/Sharebutton"
-import fileDownload from 'js-file-download'
+import "../page/Snowrain.css";
+import Sharebutton from "../button/Sharebutton";
+import fileDownload from "js-file-download";
 
 // image
 import userAltImage from "../images/userAltImage.png";
 import albumFrame from "../images/albumFrame.png";
 import AlbumProfileImage from "./AlbumProfileImage";
-
 
 // external
 import axios from "axios";
@@ -42,7 +40,8 @@ import moment from "moment";
 
 const AlbumMypage = () => {
   // 전역 상태 변수 목록
-  const [albumPageMainImg, setAlbumPageMainImg] = useRecoilState(albumPageMainImgAtom);
+  const [albumPageMainImg, setAlbumPageMainImg] =
+    useRecoilState(albumPageMainImgAtom);
 
   // 상태 변수 목록
   const [album, setAlbum] = useState([]);
@@ -58,7 +57,7 @@ const AlbumMypage = () => {
   const [specContent, setSpecContent] = useState("");
   const [snowflakes, setSnowflakes] = useState([]);
   const [modalimage, setModalimage] = useState("");
-  const [downalbumPk, setDownalbumPk] = useState("")
+  const [downalbumPk, setDownalbumPk] = useState("");
 
   // 날짜 설정 변수 목록
   const openDate = moment(album.openAt);
@@ -74,10 +73,8 @@ const AlbumMypage = () => {
   const [shareButton, setShareButton] = useState(false);
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
-  
-  const ShareUrl = `${window.location.origin}/albums/${album.albumPk}`
 
-  
+  const ShareUrl = `${window.location.origin}/albums/${album.albumPk}`;
 
   useEffect(() => {
     // 벚꽃
@@ -105,7 +102,6 @@ const AlbumMypage = () => {
           left: `${randomXStart}px`,
         },
       });
-
     }
     setSnowflakes(newSnowflakes);
 
@@ -124,8 +120,8 @@ const AlbumMypage = () => {
         setAlbum(response.data);
         setImageUrl(response.data.coverUrl);
         setalbumOpenAt(response.data.openAt);
-        setDownalbumPk(response.data.albumPk)
-        
+        setDownalbumPk(response.data.albumPk);
+
         // 공개일자가 정해지지 않았으면 앨범 정보와 함께 설정 페이지로 이동
         if (response.data.openAt === null) {
           navigate("/myalbum/setting", { state: response.data });
@@ -135,14 +131,12 @@ const AlbumMypage = () => {
       })
       .then((albumPk) => {
         // 특정 앨범의 메모리 리스트 조회
-        axios
-          .get(`${API_URL}/albums/${albumPk}/memories`)
-          .then((response) => {
-            setAlbumMemories(response.data);
-            if (typeof response.data === typeof []) {
-              setMemoryarray(response.data);
-            }
-          });
+        axios.get(`${API_URL}/albums/${albumPk}/memories`).then((response) => {
+          setAlbumMemories(response.data);
+          if (typeof response.data === typeof []) {
+            setMemoryarray(response.data);
+          }
+        });
       });
   }, []);
 
@@ -157,12 +151,9 @@ const AlbumMypage = () => {
     if (now >= openDate) {
       // 특정 메모리를 조회해서 구체적인 이미지를 보여준다.
       axios
-        .get(
-          `${API_URL}/memories/${albumMemories[index].memoryPk}`,
-          {
-            headers: { accessToken: sessionStorage.accessToken },
-          }
-        )
+        .get(`${API_URL}/memories/${albumMemories[index].memoryPk}`, {
+          headers: { accessToken: sessionStorage.accessToken },
+        })
         .then((response) => {
           setSpecificMemory(response.data);
           setSpecNickname(response.data.nickname);
@@ -192,11 +183,10 @@ const AlbumMypage = () => {
    */
   const handlerCopyClipBoard = async (albumPk) => {
     try {
-      
       const domain = window.location.origin;
       const address = `${domain}/albums/${albumPk}`;
       await navigator.clipboard.writeText(address);
-      
+
       alert("링크가 복사됐습니다!");
     } catch (err) {
       console.log("error :", err);
@@ -220,12 +210,9 @@ const AlbumMypage = () => {
       // 전체 길이보다 작을 때에만 다음 이미지로 바꿔줌
       if (nextIndex < memoryarray.length) {
         axios
-          .get(
-            `${API_URL}/memories/${albumMemories[nextIndex].memoryPk}`,
-            {
-              headers: { accessToken: sessionStorage.accessToken },
-            }
-          )
+          .get(`${API_URL}/memories/${albumMemories[nextIndex].memoryPk}`, {
+            headers: { accessToken: sessionStorage.accessToken },
+          })
           .then((response) => {
             setModalimage(response.data.imageUrl);
             setSpecificMemory(response.data);
@@ -247,12 +234,9 @@ const AlbumMypage = () => {
       // 인덱스 값이 0 이상일 때
       if (prevIndex > 0) {
         axios
-          .get(
-            `${API_URL}/memories/${albumMemories[prevIndex - 1].memoryPk}`,
-            {
-              headers: { accessToken: sessionStorage.accessToken },
-            }
-          )
+          .get(`${API_URL}/memories/${albumMemories[prevIndex - 1].memoryPk}`, {
+            headers: { accessToken: sessionStorage.accessToken },
+          })
           .then((response) => {
             setModalimage(response.data.imageUrl);
             setSpecificMemory(response.data);
@@ -265,40 +249,37 @@ const AlbumMypage = () => {
       return prevIndex; // 이미지 인덱스가 0보다 작을 때는 현재 인덱스를 반환
     });
   };
-  
-  
+
   const download = (filename) => {
     axios({
-      url: `${API_URL}/albums/${downalbumPk}/memories`,  // 이 url은 블라처리 된 이미지와 , 닉네임만 나옴 
-      method: 'GET',
-      responseType: 'blob', 
-    }).then((response) => {
-      console.log(response.data); // Blob 데이터 로깅
-      fileDownload(response.data, 'filename.html');  // 여기서 파일 확징자를 바꿀 수 있음
-    }).catch(error => {
-      console.error('Download error:', error);
-    });
+      url: `${API_URL}/albums/${downalbumPk}/memories`, // 이 url은 블라처리 된 이미지와 , 닉네임만 나옴
+      method: "GET",
+      responseType: "blob",
+    })
+      .then((response) => {
+        console.log(response.data); // Blob 데이터 로깅
+        fileDownload(response.data, "filename.html"); // 여기서 파일 확징자를 바꿀 수 있음
+      })
+      .catch((error) => {
+        console.error("Download error:", error);
+      });
   };
 
   const downloadImages = () => {
     albumMemories.forEach((memory, index) => {
-      
       const { imageUrl, nickName } = memory;
-      
-      
-      const link = document.createElement('a');
+
+      const link = document.createElement("a");
       link.href = imageUrl; // 이미지 URL을 href로 설정합니다.
-      
-      
+
       link.download = `memory-${nickName}-${index + 1}.png`;
-      
-      
+
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     });
   };
-  
+
   return (
     <div
       style={{
@@ -314,7 +295,7 @@ const AlbumMypage = () => {
       <StyledContainer>
         {/* 내 정보 */}
         <div class="sortHeader">
-          <div style={{ width: "20%", display:"flex", alignItems:"center" }}>
+          <div style={{ width: "20%", display: "flex", alignItems: "center" }}>
             <AlbumProfileImage
               imageUrl={imageUrl}
               setImageUrl={setImageUrl}
@@ -336,14 +317,13 @@ const AlbumMypage = () => {
                 <div>졸업일자를 설정해주세요.</div>
               ) : (
                 <div class="strongLetter">
-                  <span style={{ fontFamily: "TheJamsil2Light" }}>
-                    D -{" "}</span>
+                  <span style={{ fontFamily: "TheJamsil2Light" }}>D - </span>
                   <span>
                     {remainDay <= 0 ? (
                       <span style={{ fontFamily: "KyoboHand" }}>
                         {" "}
                         day Congraduation!
-                      </span> 
+                      </span>
                     ) : (
                       remainDay
                     )}
@@ -363,7 +343,7 @@ const AlbumMypage = () => {
             justifyContent: "space-around",
           }}
         >
-           <CustomButton
+          <CustomButton
             customWidth={"30%"}
             marginTop={"20px"}
             marginBottom={"0px"}
@@ -386,8 +366,6 @@ const AlbumMypage = () => {
           <MenuButton zin={false} />
         </div>
 
-
-        
         {/* <button onClick={downloadImages}>Download Images</button> */}
 
         <div style={{ position: "relative", width: "100%", zIndex: "0" }}>
