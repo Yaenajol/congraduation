@@ -6,10 +6,18 @@ import reportWebVitals from "./reportWebVitals";
 import { RecoilRoot } from "recoil";
 import GlobalStyle from "./globalStyle";
 import { BrowserRouter } from "react-router-dom";
+import ReactGA from "react-ga4";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-const API_KEY = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
 
+const API_KEY = process.env.REACT_APP_KAKAO_JAVASCRIPT_KEY;
+console.log(
+  "REACT_APP_GOOGLE_ANALYTICS: " + process.env.REACT_APP_GOOGLE_ANALYTICS
+);
+
+if (process.env.REACT_APP_GOOGLE_ANALYTICS) {
+  ReactGA.initialize(process.env.REACT_APP_GOOGLE_ANALYTICS);
+}
 window.Kakao.init(API_KEY);
 window.Kakao.isInitialized();
 
