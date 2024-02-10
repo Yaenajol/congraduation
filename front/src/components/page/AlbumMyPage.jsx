@@ -27,14 +27,15 @@ import CustomButton from "../button/CustomButton";
 import CustomButton1 from "../button/CustomButton1";
 import MenuButton from "../../components/button/MenuButton";
 import "../page/Snowrain.css"
-import Sharebutton from "../button/Sharebutton"
 import fileDownload from 'js-file-download'
 
 // image
 import userAltImage from "../images/userAltImage.png";
 import albumFrame from "../images/albumFrame.png";
 import AlbumProfileImage from "./AlbumProfileImage";
-
+import dogBall from "../images/dogBall.png"
+import dogHat from "../images/dogHat.png"
+import background3 from "../images/background3.png"
 
 // external
 import axios from "axios";
@@ -86,7 +87,6 @@ const AlbumMypage = () => {
 
     for (let i = 0; i < snowCount; i++) {
       const randomXStart = Math.random() * window.innerWidth;
-      const randomXEnd = Math.random() * window.innerWidth;
       const randomScale = Math.random() * 0.1;
       const fallDuration = randomRange(10, 30) + "s";
       const fallDelay = randomRange(-30, 0) + "s";
@@ -266,9 +266,7 @@ const AlbumMypage = () => {
     });
   };
   
-  const deleteMemory = () => {
 
-  }
   
   const download = (filename) => {
     axios({
@@ -283,25 +281,17 @@ const AlbumMypage = () => {
     });
   };
 
-  const downloadImages = () => {
-    albumMemories.forEach((memory, index) => {
-      
-      const { imageUrl, nickName } = memory;
-      
-      
-      const link = document.createElement('a');
-      link.href = imageUrl; // 이미지 URL을 href로 설정합니다.
-      
-      
-      link.download = `memory-${nickName}-${index + 1}.png`;
-      
-      
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-  };
-  
+
+  // test 
+  const dummyData = {
+    0: dogBall,
+    1: dogHat,
+    2: albumFrame,
+    3: background3,
+    4: userAltImage,
+  }
+
+
   return (
     <div
       style={{
@@ -324,7 +314,7 @@ const AlbumMypage = () => {
               albumPk={album.albumPk}
               isClickable={true}
             />
-            {/* <MenuButton zin={false} />   */}
+
           </div>
           <div>
             <StyledTypography>
@@ -354,7 +344,7 @@ const AlbumMypage = () => {
                 </div>
               )}
             </StyledTypography>
-            {/* <Sharebutton /> */}
+
           </div>
         </div>
         {/* 공유 버튼 */}
@@ -385,14 +375,11 @@ const AlbumMypage = () => {
             ShareUrl={ShareUrl}
           ></CustomButton1>
 
-          {/* <button onClick={()=>download(`${album.nickname}의 앨범`)}>download test button</button> */}
-          <MenuButton zin={false} />
+          <MenuButton zin={false} dummyData={dummyData}/>
         </div>
 
 
         
-        {/* <button onClick={downloadImages}>Download Images</button> */}
-
         <div style={{ position: "relative", width: "100%", zIndex: "0" }}>
           <img
             src={albumFrame}
@@ -483,11 +470,6 @@ const AlbumMypage = () => {
             )}
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => deleteMemory()} style={{marginRight: '10%',}}>
-              <p style={{ color: 'red'}}>삭제</p>
-            </Button>
-
-
             <Button
               onClick={handlePrevImage}
               disabled={selectedImageIndex === 0}

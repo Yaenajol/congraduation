@@ -13,8 +13,9 @@ import { isLoginAtom } from "../store/atom";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import "./MenuButton.css"
+import ImageDownload from '../page/ImageDownload';
 
-export default function PositionedMenu({zin}) {
+export default function PositionedMenu({zin, dummyData}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [settingdata, setSettingdata] = useState("");
@@ -53,8 +54,7 @@ export default function PositionedMenu({zin}) {
         window.location.href = 'https://www.instagram.com/yaenajol.official/'
       } else if (menuItem === 'Withdrawal') {
         console.log('회원탈퇴')
-      }
-
+      } 
     };
   };
   return (
@@ -87,20 +87,26 @@ export default function PositionedMenu({zin}) {
       >
         {!zin ? (
           <MenuItem onClick={createHandleMenuClick("Profile")}>
-            <AccountCircleIcon fontSize="small" style={{marginRight: 8}} /> 앨범 설정
+            <AccountCircleIcon fontSize="small" style={{marginRight: 20}} /> <p>앨범 설정</p>
+          </MenuItem>
+        ) : null}
+        {!zin ? (
+          <MenuItem  style={{justifyContent: 'space-between'}}>
+           <ImageDownload images={dummyData} /> 
           </MenuItem>
         ) : null}
         <MenuItem onClick={createHandleMenuClick("Inquiry")}>
-          <HelpOutlineIcon fontSize="small" style={{marginRight: 8}} /> 1:1 문의
+          <HelpOutlineIcon fontSize="small" style={{marginRight: 20}} /> <p>1:1 문의</p>
         </MenuItem>
         {isLogin ? (
           <MenuItem onClick={createHandleMenuClick("Logout")}>
-            <ExitToAppIcon fontSize="small" style={{marginRight: 8}} /> 로그 아웃
+            <ExitToAppIcon fontSize="small" style={{marginRight: 20}} /> <p>로그 아웃</p>
           </MenuItem>
         ) : null}
         <MenuItem onClick={createHandleMenuClick("Withdrawal")}>
-          <DeleteForeverIcon fontSize="small" style={{marginRight: 8}} /> 회원 탈퇴
+          <DeleteForeverIcon fontSize="small" style={{marginRight: 20}} /> <p>회원 탈퇴</p>
         </MenuItem>
+        
       </Menu>
     </div>
   );
