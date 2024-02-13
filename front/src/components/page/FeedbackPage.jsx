@@ -25,29 +25,29 @@ function FeedbackPage() {
 
 
   useEffect(() => {
-    connect();
-
+    
     if( accessToken) {
       axios
-        .get(`${API_URL}/members/myAlbum`, {
-            headers: { accessToken: sessionStorage.accessToken },
-        })
-        .then((response) => {
-          console.log("Album Data:", response.data);
-          setUserInfo(response.data);
-          setImageUrl(response.data.coverUrl);
-        });
+      .get(`${API_URL}/members/myAlbum`, {
+        headers: { accessToken: sessionStorage.accessToken },
+      })
+      .then((response) => {
+        console.log("Album Data:", response.data);
+        setUserInfo(response.data);
+        setImageUrl(response.data.coverUrl);
+        connect(response.data.albumPk);
+      });
     }
 
     return () => disconnect();
   },[])
 
-  const connect = () => {
+  const connect = (albumPk) => {
     client.current = new StompJs.Client({
       brokerURL: 'ws://codakcodak.site:8001/backend/ws/chat',
       onConnect: () => {
         console.log('success');
-        subscribe();
+        subscribe(albumPk);
       },
     });
     client.current.activate();
@@ -72,16 +72,17 @@ function FeedbackPage() {
     setChat('');
   };
 
-  const subscribe = () => {
+  const subscribe = (albumPk) => {
     // chatList 에 수신을 담음
-    client.current.subscribe('/sub/feedback/' + userInfo.albumPk, (body) => {
-      console.log("subscribe in")
-      try{
+    client.current.subscribe("/sub/feedback/" + albumPk, (body) => {
+      console.log("subscribe in");
+      console.log("/sub/feedback/" + albumPk);
+      try {
         const json_body = JSON.parse(body.body);
-        setChatList((_chat_list) => [
-          ..._chat_list, json_body
-        ]);
-      } catch(err) {
+        console.log(json_body);
+
+        setChatList([...chatList, json_body.content]);
+      } catch (err) {
         console.log("Subscribe Error : " + err);
       }
     });
