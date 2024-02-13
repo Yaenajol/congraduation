@@ -134,12 +134,13 @@
   padding: 0 1.2em 0 0.8em;
 }
 
+/* 내가 입력한 글 위치 조정*/
 .cs-message-list .cs-message-group.cs-message-group--incoming, .cs-message-list .cs-message.cs-message--incoming {
   margin-right: auto;
 }
 
 .cs-message-list__scroll-wrapper>.cs-message, .cs-message-list__scroll-wrapper>.cs-message-group {
-  max-width: 85%;
+  max-width: 100%;
 }
 
 .cs-message-group--incoming {
@@ -226,7 +227,7 @@
   border: solid #d1dbe3;
   border-width: 1px 0 0;
   margin-top: auto;
-  padding: 0.3em 0;
+  /* padding: 0.3em 0; */
   color: rgba(0,0,0,.87);
   background-color: #fff;
   display: flex;
@@ -237,11 +238,13 @@
   flex-shrink: 0;
 }
 
+/* 채팅 입력창 크기 조절*/
 .chat-message-form-wrapper {
+  width: 330px;
   margin-left: 0.8em;
   box-sizing: border-box;
   position: relative;
-  background-color: #c6e3fa;
+  /* background-color: #c6e3fa; */
   margin: 0;
   padding: 0.6em 0.9em;
   border-radius: 0.7em;
@@ -251,8 +254,9 @@
 
 .chat-message-content {
   box-sizing: border-box;
+  width: 200px;
   flex-grow: 1;
-  background-color: #c6e3fa;
+  /* background-color: #c6e3fa; */
   font-family: Helvetica Neue,Segoe UI,Helvetica,Arial,sans-serif;
   outline: 0;
   border: 0;

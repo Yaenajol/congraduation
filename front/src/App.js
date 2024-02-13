@@ -12,6 +12,7 @@ import SettingsPage from "./components/page/SettingPage";
 import DragPage from "./components/page/DragPage";
 import FeedbackPage from "./components/page/FeedbackPage";
 import FeedbackPage2 from "./components/page/FeedbackPage2";
+import { isLoginAtom } from "./components/store/atom";
 
 function App() {
   const setIsLogin = useSetRecoilState(isLoginAtom);
@@ -24,7 +25,7 @@ function App() {
   }, [setIsLogin])
  
   return ( 
-    <BrowserRouter>
+    // <BrowserRouter>
      
       <Routes>
         <Route path="/" element={<LoginPage />} />
@@ -41,7 +42,7 @@ function App() {
         {/* 오류페이지 만들어야됨 */}
         <Route path="*" element={<Navigate replace to="/kakao/oauth" />} />
       </Routes>
-    </BrowserRouter>
+    // </BrowserRouter>
   );
 }
 

@@ -8,12 +8,14 @@ import axios from 'axios';
 import StyledMemoryPage1 from "../styledComponents/StyledMemoryPage1";
 import AlbumProfileImage from './AlbumProfileImage';
 import { Button } from '@mui/material';
+import userAltImage from "../images/userAltImage.png";
 
 function FeedbackPage() {
   const [chatList, setChatList] = useState([]);
   const [chat, setChat] = useState('');
   const { chat_room_id } = useParams();
   const client = useRef({});
+  const [imageUrl, setImageUrl] = useState(userAltImage);
 
   const [ userInfo, setUserInfo ] = useState([]);
 
@@ -33,6 +35,7 @@ function FeedbackPage() {
         .then((response) => {
           console.log("Album Data:", response.data);
           setUserInfo(response.data);
+          setImageUrl(response.data.coverUrl);
         });
     }
 
@@ -57,10 +60,10 @@ function FeedbackPage() {
     client.current.publish({
       destination: '/pub/feedback',
       body: JSON.stringify({
-        messageType : "TALK",
+        messageType : "QUESTION",
         accessToken : accessToken,
-        chatRoomId : "adkd7n82qw-dkazbv",
-        senderPk : "adkd7n82qw-dkazbv",
+        chatRoomId : userInfo.albumPk,
+        senderPk : "",
         albumPk : userInfo.albumPk,
         content : chat
       }),
@@ -72,6 +75,7 @@ function FeedbackPage() {
   const subscribe = () => {
     // chatList 에 수신을 담음
     client.current.subscribe('/sub/feedback/' + userInfo.albumPk, (body) => {
+      console.log("subscribe in")
       try{
         const json_body = JSON.parse(body.body);
         setChatList((_chat_list) => [
@@ -82,6 +86,17 @@ function FeedbackPage() {
       }
     });
   };
+
+  // const subscribe = client.current.subscribe('/sub/feedback/', callback, {id: userInfo.albumPk});
+
+  // callback = function(message) {
+  //   if(message.body) {
+  //     alert("got message with body " + message.body);
+  //   }
+  //   else {
+  //     alert("got empty message");
+  //   }
+  // }
 
   const disconnect = () => {
     client.current.deactivate();
@@ -113,7 +128,7 @@ function FeedbackPage() {
           <ArrowBackIcon />
           <div style={{ width: "10%" }}>
             <AlbumProfileImage 
-              imageUrl={userInfo.imageUrl}
+              imageUrl={imageUrl}
               setImageUrl={setUserInfo.ImageUrl}
               albumPk={params.PK}
               isClickable={false}
