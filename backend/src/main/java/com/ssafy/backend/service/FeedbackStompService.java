@@ -9,6 +9,7 @@ import com.ssafy.backend.model.FeedbackDto;
 import com.ssafy.backend.model.FeedbackDto.MessageType;
 import com.ssafy.backend.model.MattermostOutgoingDto;
 import com.ssafy.backend.repository.AlbumRepository;
+import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -58,11 +59,9 @@ public class FeedbackStompService {
 
   public String outgoingFromMM(MattermostOutgoingDto mattermostOutgoingDto) {
 
-    // 토큰 일치 여부 판단하기 yml 토큰 값이랑 현재 들어온 토큰값 비교해서 판단 다르면 예외처리
-    if (mattermostOutgoingDto.getToken().equals(outgoingToken)) {
+    if (!mattermostOutgoingDto.getToken().equals(outgoingToken)) {
       throw new CustomException(FeedbackErrorCode.NotMatchToken.getCode(), FeedbackErrorCode.NotMatchToken.getDescription());
     }
-
     // GET TEXT 가공해서 전달
     // 1. content 에서 memberPK 와 피드백내용(content) 과 에러처리
     if (mattermostOutgoingDto.getText().isEmpty()) {
@@ -70,7 +69,6 @@ public class FeedbackStompService {
     }
     // Mattermost 응답형식 ==> FEEDBACK:# sendPk# 1:1문의내용작성테스트작성테스트작성테스트 1:1문의내용작성테스트작성테스트작성테스트 1:1문의내용작성테스트작성테스트작성테스트
     String[] textArray = mattermostOutgoingDto.getText().split("#");
-
     // 응답 내용이 위와 같은 응답형식이 아닌경우 에러 처리
     if (textArray.length <= 2) {
       throw new CustomException(FeedbackErrorCode.NotToEmptyContent.getCode(), FeedbackErrorCode.NotToEmptyContent.getDescription());
