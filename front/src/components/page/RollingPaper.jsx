@@ -1,6 +1,8 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState} from "react";
 import axios from "axios";
 import html2canvas from 'html2canvas';
+import JSZip from "jszip";
+import saveAs from "file-saver";
 
 import userAltImage from "../images/userAltImage.png";
 import albumFrame from "../images/albumFrame.png";
@@ -8,125 +10,144 @@ import AlbumProfileImage from "./AlbumProfileImage";
 import dogBall from "../images/dogBall.png"
 import dogHat from "../images/dogHat.png"
 import background3 from "../images/background3.png"
+import { useLocation, useNavigate } from "react-router";
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import { CardActionArea, Button, Box} from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, Button, Box,CardActionArea, Grid} from '@mui/material';
 
 function RollingPaper() {
-
-  const [currentPage, setCurrentPage] = useState(0);
+  const API_URL = process.env.REACT_APP_BACKEND_API_URL;
+  const [currentPage, setCurrentPage] = useState(1);
+  const imagesPerPage = 4;
   const [selectedImages, setSelectedImages] = useState({});
-  const [isDownloadMode, setIsDownloadMode] = useState(false)
-  const cardRef = useRef(null);
+  // const [messages, setMessages] = useState({})
+  const location = useLocation();
+  const navigate = useNavigate()
 
+  // useEffect(() => {
+  //   axios
+  //     .get(`${API_URL}/members/myMemories`, {
+  //       headers: { accessToken: sessionStorage.accessToken },
+  //     })
+  //     .then((response) => {
+  //       setMessages(response.data); 
+  //   })
+  // }, []); 
+
+  
+  
+  // 더미 데이터 
   const messages = [
     { id: 1, image: dogBall, nickname: 'test1', message: "아으디라으니안이라ㅣㄴㅇ란일" },
     { id: 2, image: dogHat, nickname: 'test2', message: "123123123" },
     { id: 3, image: albumFrame, nickname: 'test3', message: "가나다라마바사" },
     { id: 4, image: background3, nickname: 'test4', message: "asdasfvfsdfsf" },
-    { id: 5, image: userAltImage, nickname: 'test5', message: "테스트용 더미 데이터 테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터" },
+    { id: 5, image: userAltImage, nickname: 'test5', message: "테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터 테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터" },
   ];
 
-  
+
+  const totalPages = Math.ceil(messages.length / imagesPerPage)
+
   const handleNext = () => {
-    setCurrentPage((prevPage) => (prevPage + 1) % messages.length);
+    setCurrentPage(currentPage < totalPages ? currentPage + 1 : currentPage);
   };
 
   const handlePrev = () => {
-    setCurrentPage((prevPage) => (prevPage - 1 + messages.length) % messages.length);
+    setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage);
   };
 
-  const toggleImageSelection = (id) => {
+  const toggleImageSelection = (index) => {
     setSelectedImages((prevSelected) => ({
       ...prevSelected,
-      [id]: !prevSelected[id]
+      [index]: !prevSelected[index]
     }));
   };
-
-  // const downloadSelectedImages = () => {
-  //   messages.forEach((message) => {
-  //     if (selectedImages[message.id]) {
-  //       const link = document.createElement('a');
-  //       link.href = message.image;
-  //       link.download = `download_${message.nickname}`; // or extract filename from URL
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
-  //     }
-  //   });
-  // };
-
+  
   const downloadSelectedImages = async () => {
-    setIsDownloadMode(true); // 다운로드 모드 활성화
+    const zip = new JSZip()
+    for (const id of Object.keys(selectedImages)) {
+      if (selectedImages[id]) {
+        const message = messages.find(message => message.id.toString() === id);
+        if (message) {
+          const imageContainer = document.createElement("div");
+          imageContainer.style.padding = "10px";
+          imageContainer.style.background = "white";
+          imageContainer.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+          // 다운받는 사진의 css 건드리는곳 
+          imageContainer.innerHTML = `
+            <img src="${message.image}" alt="${message.nickname}" style="max-width: 100%; display: block; margin-bottom: 10px; border: 1px solid black" />
+            <h5 style="margin: 0;">${message.nickname}</h5>
+            <p style="margin: 0;">${message.message}</p>
+          `;
+  
+          document.body.appendChild(imageContainer);
 
-    setTimeout(async () => {
-      const card = cardRef.current; // 현재 CardActionArea의 DOM 레퍼런스
-      if (card) {
-        const canvas = await html2canvas(card);
-        const image = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.download = 'rolling-paper.png';
-        link.href = image;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+          await html2canvas(imageContainer).then(canvas => {
+            const image = canvas.toDataURL("image/png");
+            zip.file(`image_${id}.png`, image.split('base64,')[1], { base64: true })
+          });
+          document.body.removeChild(imageContainer)
+        }
       }
-      setIsDownloadMode(false); // 다운로드 모드 비활성화
-    }, 100); // 잠시 후 실행하여 CSS 변경이 화면에 반영되도록 함
+      
+    }
+    zip.generateAsync({ type: "blob"}).then( function (content) {
+      saveAs(content, "congraduation.zip")
+    })
+    navigate('/myalbum')
   };
+
+ 
 
   return (
     <Box>
-      <Card ref={cardRef}>
-        <CardActionArea style={{ border: "1px black solid", position: 'relative' }} onClick={() => toggleImageSelection(messages[currentPage].id)}>
-          <div>
-            <CardMedia component="img" image={messages[currentPage].image} sx={{ maxWidth: 500, maxHeight: 500 }} />
-            {selectedImages[messages[currentPage].id] && !isDownloadMode && (
-              <div style={{
-                position: 'absolute',
-                top: '0',
-                left: '0',
-                right: '0',
-                bottom: '0',
-                backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-                fontSize: '24px',
-              }}>
-                ✓
-              </div>
-            )}
-          </div>
-          
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-              {messages[currentPage].nickname}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {messages[currentPage].message}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+      <Grid container spacing={2}>
+        {messages.slice((currentPage - 1) * imagesPerPage, currentPage * imagesPerPage).map((message, index) => (
+          <Grid item xs={6} key={index} onClick={() => toggleImageSelection(index)}>
+            <Card sx={{ maxWidth: 500, maxHeight: 500, position: 'relative' }}>
+              <CardActionArea>
+                <CardMedia
+                  component="img"
+                  image={message.image}
+                  alt={message.nickname}
+                  sx={{ height: 250 }}   // 사이트에서 보여지는 사진 크기 
+                  id={`image-${index}`}
+                />
+                {selectedImages[index] && (
+                  <Box sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: 'white',
+                    fontSize: '24px',
+                  }}>
+                    ✓
+                  </Box>
+                )}
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {message.nickname}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {message.message}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
       <Box sx={{ display: "flex", justifyContent: "center", marginTop: 2 }}>
-        <Button variant="contained" onClick={handlePrev} sx={{ marginRight: 1 }}>
-          이전
-        </Button>
-        <Button variant="contained" onClick={handleNext} sx={{ marginRight: 1 }}>
-          다음
-        </Button>
-        <Button variant="contained" onClick={downloadSelectedImages}>
-          다운로드
-        </Button>
+        <Button variant="contained" onClick={handlePrev} disabled={currentPage === 1}>이전</Button>
+        <Button variant="contained" onClick={handleNext} disabled={currentPage === totalPages}>다음</Button>
+        <Button variant="contained" onClick={downloadSelectedImages} sx={{ ml: 2 }}>선택 다운로드</Button>
       </Box>
-      <p style={{ justifyContent: 'center', display: 'flex' , marginTop: '10%'}}>원하는 이미지를 선택해주세요</p>
     </Box>
-    
   );
 }
 

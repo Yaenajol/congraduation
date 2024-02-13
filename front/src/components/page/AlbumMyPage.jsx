@@ -1,6 +1,6 @@
 // react
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FunnyDog from "../button/FunnyDog";
 // recoil
 import { useRecoilState } from "recoil";
@@ -27,15 +27,13 @@ import CustomButton1 from "../button/CustomButton1";
 import MenuButton from "../../components/button/MenuButton";
 
 import "../page/Snowrain.css"
-import fileDownload from 'js-file-download'
+
 
 // image
 import userAltImage from "../images/userAltImage.png";
 import albumFrame from "../images/albumFrame.png";
 import AlbumProfileImage from "./AlbumProfileImage";
-import dogBall from "../images/dogBall.png"
-import dogHat from "../images/dogHat.png"
-import background3 from "../images/background3.png"
+
 
 // external
 import axios from "axios";
@@ -254,31 +252,7 @@ const AlbumMypage = () => {
   
 
   
-  const download = (filename) => {
-    axios({
-      url: `${API_URL}/albums/${downalbumPk}/memories`, // 이 url은 블라처리 된 이미지와 , 닉네임만 나옴
-      method: "GET",
-      responseType: "blob",
-    })
-      .then((response) => {
-        console.log(response.data); // Blob 데이터 로깅
-        fileDownload(response.data, "filename.html"); // 여기서 파일 확징자를 바꿀 수 있음
-      })
-      .catch((error) => {
-        console.error("Download error:", error);
-      });
-  };
-
-
-  // test 
-  const dummyData = {
-    0: dogBall,
-    1: dogHat,
-    2: albumFrame,
-    3: background3,
-    4: userAltImage,
-  }
-
+  
 
   return (
     <div
@@ -362,7 +336,7 @@ const AlbumMypage = () => {
             ShareUrl={ShareUrl}
           ></CustomButton1>
 
-          <MenuButton zin={false} dummyData={dummyData}/>
+          <MenuButton zin={false} albumPk={album.albumPk}/>
         </div>
 
 

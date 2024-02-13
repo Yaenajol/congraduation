@@ -13,6 +13,7 @@ import SettingsPage from "./components/page/SettingPage";
 import DragPage from "./components/page/DragPage";
 import { isLoginAtom } from "./components/store/atom";
 import RollingPaper from "./components/page/RollingPaper";
+import UnlinkRedirect from "./components/page/UnlinkRedirect";
 
 function App() {
   const setIsLogin = useSetRecoilState(isLoginAtom);
@@ -23,10 +24,8 @@ function App() {
       setIsLogin(true);
     }
   }, [setIsLogin])
- 
+
   return ( 
-    
-    
     <Routes>
       <Route path="/" element={<LoginPage />} />
       <Route path='/albums/:PK' element={<AlbumPage />} />
@@ -35,8 +34,9 @@ function App() {
       <Route path="/kakao/oauth" element={<RedirectPage />} />
       <Route path="/albums/drag" element={<DragPage/>} />
       <Route path="/myalbum" element={<AlbumMyPage/>} />
-      <Route path="/albums/Rolling" element={<RollingPaper/>}/>
-      
+      <Route path="/myalbum/download" element={<RollingPaper/>}/>
+      <Route path="/kakao/unlink" element={<UnlinkRedirect/>}/>
+
       {/* 오류페이지 만들어야됨 */}
       <Route path="*" element={<Navigate replace to="/kakao/oauth" />} />
     </Routes>

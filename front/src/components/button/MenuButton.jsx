@@ -5,17 +5,19 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState, useEffect } from "react";
 import axios from "axios";
 import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'; // 프로필 아이콘
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'; // 로그아웃 아이콘
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline'; // 1:1 문의 아이콘
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'; // 회원 탈퇴 아이콘
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'; 
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'; 
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'; 
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DownloadIcon from '@mui/icons-material/Download'; 
+
 import { isLoginAtom } from "../store/atom";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import "./MenuButton.css"
-import ImageDownload from '../page/ImageDownload';
 
-export default function PositionedMenu({zin, dummyData}) {
+
+export default function PositionedMenu({zin, albumPk }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [settingdata, setSettingdata] = useState("");
@@ -53,10 +55,14 @@ export default function PositionedMenu({zin, dummyData}) {
       } else if (menuItem === 'Inquiry') {
         window.location.href = 'https://www.instagram.com/yaenajol.official/'
       } else if (menuItem === 'Withdrawal') {
+        window.location.href = `${API_URL}/kakao/unlinkRedirect`;
         console.log('회원탈퇴')
-      } 
+      } else if (menuItem === 'Download') {
+        navigate('/myalbum/download' , { state : albumPk})
+      }
     };
   };
+
   return (
     <div style={{alignItems: "center", display:"flex"}}>
       <Button
@@ -91,8 +97,8 @@ export default function PositionedMenu({zin, dummyData}) {
           </MenuItem>
         ) : null}
         {!zin ? (
-          <MenuItem  style={{justifyContent: 'space-between'}}>
-           <ImageDownload images={dummyData} /> 
+          <MenuItem onClick={createHandleMenuClick("Download")} style={{justifyContent: 'space-between'}}>
+            <DownloadIcon  fontSize="small" style={{marginRight: 20}}/> <p>앨범 다운로드</p>
           </MenuItem>
         ) : null}
         <MenuItem onClick={createHandleMenuClick("Inquiry")}>

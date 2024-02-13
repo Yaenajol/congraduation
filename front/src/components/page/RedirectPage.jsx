@@ -22,7 +22,7 @@ function RedirectPage() {
   const code = new URL(window.location.href);
   const kakaoCode = code.searchParams.get("code");
   const API_URL = process.env.REACT_APP_BACKEND_API_URL
-
+ 
   useEffect(() => {
     setAuthCode(kakaoCode); // 인가 코드 상태 업데이트
     sendAuthCodeToBackend(kakaoCode); // 백엔드에 인가 코드 전송
