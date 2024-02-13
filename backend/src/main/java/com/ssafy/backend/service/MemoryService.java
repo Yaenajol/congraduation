@@ -92,11 +92,11 @@ public class MemoryService {
       throw new CustomException(AlbumErrorCode.NotSettingOpenAt.getCode(),AlbumErrorCode.NotSettingOpenAt.getDescription());
     }
 
-    LocalDateTime albumOpenAt = album.getOpenAt();
-    LocalDateTime now = LocalDateTime.now();
-    if(now.isAfter(albumOpenAt)){//작성하는 시점이 해당 앨범의 공개일을 넘겼는가?
-      throw new CustomException(AlbumErrorCode.NotWritable.getCode(), AlbumErrorCode.NotWritable.getDescription());
-    }
+//    LocalDateTime albumOpenAt = album.getOpenAt();
+//    LocalDateTime now = LocalDateTime.now();
+//    if(now.isAfter(albumOpenAt)){//작성하는 시점이 해당 앨범의 공개일을 넘겼는가?
+//      throw new CustomException(AlbumErrorCode.NotWritable.getCode(), AlbumErrorCode.NotWritable.getDescription());
+//    }
 
     if (image.isEmpty()) {//업로드하는 이미지가 존재하는가?
       throw new CustomException(ImageErrorCode.NotFoundImage.getCode(), ImageErrorCode.NotFoundImage.getDescription());
@@ -107,7 +107,7 @@ public class MemoryService {
       String imageName = imageService.uploadImage(imageUtil.makeResize(image));
       String thumbnailImageName = imageService.uploadImage(imageUtil.makeThumbnaill(image));
       String thumbnailBlurImageName =  imageService.uploadImage(imageUtil.makeThumbnailBlur(image));
-      // 메모리 생성 : pk uuid로 설정
+      // 메모리 생성 : pk uuid 로 설정
       Memory memory = Memory.builder()
           .member(optMember.get())
           .album(album)
