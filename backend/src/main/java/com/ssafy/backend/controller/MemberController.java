@@ -81,4 +81,5 @@ public class MemberController {
     String memberPk=jwtService.parseJwtToken(accessToken);
     return new ResponseEntity<MyAlbumResponseDto>(memberService.getMyAlbumByPk(memberPk),HttpStatus.OK);
   }
+
 }
