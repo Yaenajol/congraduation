@@ -50,7 +50,7 @@ public class FeedbackStompService {
 //      feedbackDto.setContent( "SenderPk : " + feedbackDto.getSenderPk() + "님이 feedback 을 보내셨습니다.");
 //    }
 
-    feedbackDto.setMessageType(MessageType.ANSWER); // 채팅 내용 응답 세팅
+    feedbackDto.setMessageType(MessageType.QUESTION); // 채팅 내용 응답 세팅
     sendingOperations.convertAndSend("/sub/feedback/" + feedbackDto.getAlbumPk(), feedbackDto);
     mmFeedbackManager.sendNotification(feedbackDto);
 
