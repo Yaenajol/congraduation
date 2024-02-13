@@ -1,12 +1,11 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useSetRecoilState } from 'recoil';
-import { isLoginAtom } from "./components/store/atom";
-
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import RouteChangeTracker from "./components/page/RouteChangeTracker";
 // 내부 경로
 import LoginPage from "./components/page/LoginPage";
-import AlbumPage from "./components/page/AlbumPage"
-import MemoryUpload from "./components/page/MemoryUpload"
+import AlbumPage from "./components/page/AlbumPage";
+import MemoryUpload from "./components/page/MemoryUpload";
 import AlbumMyPage from "./components/page/AlbumMyPage";
 import RedirectPage from "./components/page/RedirectPage";
 import SettingsPage from "./components/page/SettingPage";
@@ -15,12 +14,12 @@ import FeedbackPage from "./components/page/FeedbackPage";
 import FeedbackPage2 from "./components/page/FeedbackPage2";
 
 function App() {
-  const setIsLogin = useSetRecoilState(isLoginAtom)
-  
+  const setIsLogin = useSetRecoilState(isLoginAtom);
+  RouteChangeTracker();
   useEffect(() => {
-    const accessToken = sessionStorage.getItem('accessToken')
-    if (typeof(accessToken) === typeof("")) {
-      setIsLogin(true)
+    const accessToken = sessionStorage.getItem("accessToken");
+    if (typeof accessToken === typeof "") {
+      setIsLogin(true);
     }
   }, [setIsLogin])
  
