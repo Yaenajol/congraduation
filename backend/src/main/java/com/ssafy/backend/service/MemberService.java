@@ -222,4 +222,105 @@ public class MemberService {
         .coverUrl(coverUrl)
         .openAt(album.getOpenAt()).build();
   }
+
+    /**
+   * 회원 탈퇴를 위한 토큰 받아오기
+   **/
+  public String getAccessTokenForDelete(String code) {
+    KakaoTokenDto kakaoTokenDto = null;
+    String reqUrl = "https://kauth.kakao.com/oauth/token";
+    // 1. connection 생성, 2. POST로 보낼 Body 작성, 3. 받아온 결과를 json 파싱
+    try {
+      URL url = new URL(reqUrl);
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+      // POST 요청을 위해 기본값이 false인 setDoOutput을 true로
+      conn.setRequestMethod("POST");
+      conn.setDoOutput(true);
+      // POST 요청에 필요로 하는 파라미터를 출력스트림을 통해 전송
+      BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+      StringBuilder sb = new StringBuilder();
+      sb.append("grant_type=authorization_code");
+      sb.append("&redirect_uri=" + oauthKakaoUnlinkRedirectUri);
+      sb.append("&client_id=" + oauthKakaoClientId);
+      sb.append("&code=" + code);
+
+      bw.write(sb.toString());
+      bw.flush();
+
+      // 요청을 통해 얻은 Response 메세지 읽어오기
+      BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+      String line = "";
+      String result = "";
+      while ((line = br.readLine()) != null) {
+        result += line;
+      }
+
+      // Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성 (자바에서 쉽게 다뤄주기 위함)
+      JsonParser parser = new JsonParser();
+      JsonElement element = parser.parse(result);
+
+      String accessToken = element.getAsJsonObject().get("access_token").getAsString();
+      String refreshToken = element.getAsJsonObject().get("refresh_token").getAsString();
+      int expiresIn = element.getAsJsonObject().get("expires_in").getAsInt();
+      String idToken = element.getAsJsonObject().get("id_token").getAsString();
+      String scope = element.getAsJsonObject().get("scope").getAsString();
+      int refreshTokenExpiresIn = element.getAsJsonObject().get("refresh_token_expires_in")
+          .getAsInt();
+
+      kakaoTokenDto = KakaoTokenDto.builder()
+          .idToken((idToken))
+          .accessToken(accessToken)
+          .refreshToken(refreshToken)
+          .refreshTokenExpiresin(refreshTokenExpiresIn)
+          .scope(scope)
+          .expiresIn(expiresIn)
+          .build();
+
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return kakaoTokenDto.getAccessToken();
+  }
+
+  /**
+   * 연결 끊기 = 회원탈퇴
+   **/
+  public String kakaoUnlink(String code) {
+    String accessToken = getAccessTokenForDelete(code);
+    String result = "";
+    String reqUrl = "https://kapi.kakao.com/v1/user/unlink";
+
+    try {
+      URL url = new URL(reqUrl);
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+      conn.setRequestMethod("POST");
+      conn.setDoOutput(true);
+      conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+      int responseCode = conn.getResponseCode();
+
+      BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+      String line;
+      if ((line = br.readLine()) != null) {
+        result = line;
+      }
+      br.close();
+
+      JsonParser parser = new JsonParser();
+      JsonElement element = parser.parse(result);
+      String memberPk  = element.getAsJsonObject().get("id").getAsString();
+      Optional<Member> optMember = memberRepository.findById(memberPk);
+      if (!optMember.isEmpty()) {
+        Member member = optMember.get();
+        member.setDeletedAt(LocalDateTime.now());
+        memberRepository.saveAndFlush(member);
+      }
+
+      return memberPk;
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }

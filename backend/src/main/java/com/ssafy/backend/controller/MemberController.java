@@ -2,11 +2,10 @@ package com.ssafy.backend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.backend.jwt.JwtService;
-import com.ssafy.backend.model.response.AlbumResponseDto;
 import com.ssafy.backend.model.response.LoginResponseDto;
-import com.ssafy.backend.model.response.MyAlbumResponseDto;
 import com.ssafy.backend.service.MemberService;
 import io.jsonwebtoken.Claims;
+import jakarta.transaction.Transactional;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,10 +31,21 @@ public class MemberController {
   @Value("${oauth.kakao.login_uri}")
   private String oauthKakaoLoginUrl;
 
+  @Value("${oauth.kakao.unlink_login_uri}")
+  private String oauthKakaoUnlinkLoginUri;
+
+
   @GetMapping("/kakao/redirect")
   public RedirectView redirect() {
     RedirectView redirectView = new RedirectView();
     redirectView.setUrl(oauthKakaoLoginUrl);
+    return redirectView;
+  }
+
+  @GetMapping("/kakao/unlinkRedirect")
+  public RedirectView unlinkRedirect() {
+    RedirectView redirectView = new RedirectView();
+    redirectView.setUrl(oauthKakaoUnlinkLoginUri);
     return redirectView;
   }
 
@@ -47,6 +57,7 @@ public class MemberController {
     return ResponseEntity.ok().body(memberService.kakaoSignUp(code));
   }
 
+
   /**
    * 앨범 권한 조회
    **/
@@ -55,6 +66,14 @@ public class MemberController {
     String memberPk=jwtService.parseJwtToken(accessToken);
     return new ResponseEntity<Boolean>(memberService.checkAuthorizationToAlbum(albumPk,memberPk),
         HttpStatus.OK);
+  }
+
+  /**
+   * 회원탈퇴 = 연결끊기
+   **/
+  @PostMapping("/kakao/unlinkCallback")
+  public ResponseEntity<String> kakaoUnlink(@RequestParam("code") String code) {
+    return ResponseEntity.ok().body(memberService.kakaoUnlink(code));
   }
 
   @GetMapping("/members/myAlbum")
