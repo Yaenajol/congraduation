@@ -72,10 +72,14 @@ function FeedbackPage() {
   const subscribe = () => {
     // chatList 에 수신을 담음
     client.current.subscribe('/sub/feedback/' + userInfo.albumPk, (body) => {
-      const json_body = JSON.parse(body.body);
-      setChatList((_chat_list) => [
-        ..._chat_list, json_body
-      ]);
+      try{
+        const json_body = JSON.parse(body.body);
+        setChatList((_chat_list) => [
+          ..._chat_list, json_body
+        ]);
+      } catch(err) {
+        console.log("Subscribe Error : " + err);
+      }
     });
   };
 
