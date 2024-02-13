@@ -11,6 +11,7 @@ import com.ssafy.backend.jwt.JwtService;
 import com.ssafy.backend.model.response.KakaoTokenDto;
 import com.ssafy.backend.model.response.KakaoInfoDto;
 import com.ssafy.backend.model.response.LoginResponseDto;
+import com.ssafy.backend.model.response.MyAlbumResponseDto;
 import com.ssafy.backend.repository.AlbumRepository;
 import com.ssafy.backend.repository.MemberRepository;
 import java.io.BufferedReader;
@@ -47,6 +48,8 @@ public class MemberService {
   private MemberRepository memberRepository;
   @Autowired
   private AlbumRepository albumRepository;
+  @Autowired
+  private ImageService imageService;
   @Autowired
   private JwtService jwtService;
 
