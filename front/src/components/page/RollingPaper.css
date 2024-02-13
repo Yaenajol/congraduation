@@ -1,0 +1,16 @@
+.rolling-paper {
+  width: 210mm; /* A4 size */
+  height: 297mm;
+  margin: auto;
+  background: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20mm;
+  box-sizing: border-box;
+  overflow-y: auto; /* 내용이 많을 경우 스크롤 */
+}
+
+.message {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 20px;
+}
