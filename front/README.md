@@ -64,7 +64,7 @@
 <br>
 
 ## 파일 구조 
-
+```
 📦front
  ┣ 📂build
  ┣ 📂node_modules
@@ -93,7 +93,7 @@
  ┣ 📜package-lock.json
  ┣ 📜package.json
  ┗ 📜README.md
-
+```
 
 ## 개발환경
 
