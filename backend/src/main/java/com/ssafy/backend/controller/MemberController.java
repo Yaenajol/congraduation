@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.backend.jwt.JwtService;
 import com.ssafy.backend.model.response.LoginResponseDto;
 import com.ssafy.backend.model.response.MyAlbumResponseDto;
+import com.ssafy.backend.model.response.MyMemoryResponseDto;
 import com.ssafy.backend.service.MemberService;
 import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,4 +86,9 @@ public class MemberController {
     return new ResponseEntity<MyAlbumResponseDto>(memberService.getMyAlbumByPk(memberPk),HttpStatus.OK);
   }
 
+  @GetMapping("/members/myMemories")
+  public ResponseEntity<List<MyMemoryResponseDto>> myMomories(@RequestHeader(value = "accessToken",required = false) String accessToken) {
+    String memberPk=jwtService.parseJwtToken(accessToken);
+    return new ResponseEntity<List<MyMemoryResponseDto>>(memberService.getMyMemoriesByPk(memberPk),HttpStatus.OK);
+  }
 }

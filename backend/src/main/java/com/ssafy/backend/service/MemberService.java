@@ -5,13 +5,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.ssafy.backend.domain.Album;
 import com.ssafy.backend.domain.Member;
+import com.ssafy.backend.domain.Memory;
 import com.ssafy.backend.exception.CustomException;
 import com.ssafy.backend.exception.errorcode.AlbumErrorCode;
+import com.ssafy.backend.exception.errorcode.MemberErrorCode;
 import com.ssafy.backend.jwt.JwtService;
+import com.ssafy.backend.model.response.AlbumMemoryResponseDto;
 import com.ssafy.backend.model.response.KakaoTokenDto;
 import com.ssafy.backend.model.response.KakaoInfoDto;
 import com.ssafy.backend.model.response.LoginResponseDto;
 import com.ssafy.backend.model.response.MyAlbumResponseDto;
+import com.ssafy.backend.model.response.MyMemoryResponseDto;
 import com.ssafy.backend.repository.AlbumRepository;
 import com.ssafy.backend.repository.MemberRepository;
 import java.io.BufferedReader;
@@ -23,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -330,4 +335,29 @@ public class MemberService {
         .openAt(album.getOpenAt()).build();
   }
 
+  public List<MyMemoryResponseDto> getMyMemoriesByPk(String memberPk) {
+    Album album = albumRepository.findByMemberPk(memberPk);
+    //아직 앨범의 공개일이 설정이 되지 않았거나 지나지 않았으면 에러
+    if(album.getOpenAt() == null){//해당 앨범의 공개날짜가 설정이 되어 있는가?
+      throw new CustomException(AlbumErrorCode.NotSettingOpenAt.getCode(),AlbumErrorCode.NotSettingOpenAt.getDescription());
+    }
+    LocalDateTime albumOpenAt = album.getOpenAt();
+    LocalDateTime now = LocalDateTime.now();
+    if(!now.isAfter(albumOpenAt)){//작성하는 시점이 해당 앨범의 공개일을 넘겼는가?
+      throw new CustomException(MemberErrorCode.NotGettableMemoryList.getCode(), MemberErrorCode.NotGettableMemoryList.getDescription());
+    }
+    List<Memory> memoryList=album.getMemoryList();
+    List<MyMemoryResponseDto> myMemoryList=new ArrayList<>();
+
+    int index=1;
+    for(Memory memory:memoryList){
+      myMemoryList.add(MyMemoryResponseDto.builder()
+          .id(index++)
+          .content(memory.getContent())
+          .nickname(memory.getContent())
+          .image(imageService.getPresingendURL(memory.getImageName()))
+          .build());
+    }
+    return myMemoryList;
+  }
 }
