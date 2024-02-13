@@ -1,16 +1,16 @@
 .chat-container {
   box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-width: 180px;
-    color: rgba(0,0,0,.87);
-    background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 180px;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #fff;
 }
 
 .chat-container-header {
   box-sizing: border-box;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   background-color: #f6fbff;
   /* font-family: Helvetica Neue,Segoe UI,Helvetica,Arial,sans-serif; */
   font-size: 1em;
@@ -51,7 +51,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 700;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   background-color: #f6fbff;
 }
 
@@ -88,7 +88,6 @@
   scroll-padding: 0;
 } */
 
-
 .chat-message-list {
   display: flex;
   flex-direction: column;
@@ -102,7 +101,7 @@
   overflow: hidden;
   min-height: 1.25em;
   position: relative;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   background-color: #fff;
 }
 
@@ -116,7 +115,7 @@
 }
 
 .ps {
-  overflow: hidden!important;
+  overflow: hidden !important;
   overflow-anchor: none;
   -ms-overflow-style: none;
   touch-action: auto;
@@ -135,18 +134,22 @@
 }
 
 /* 내가 입력한 글 위치 조정*/
-.cs-message-list .cs-message-group.cs-message-group--incoming, .cs-message-list .cs-message.cs-message--incoming {
+.cs-message-list .cs-message-group.cs-message-group--incoming,
+.cs-message-list .cs-message.cs-message--incoming {
   margin-right: auto;
 }
 
-.cs-message-list__scroll-wrapper>.cs-message, .cs-message-list__scroll-wrapper>.cs-message-group {
+.cs-message-list__scroll-wrapper > .cs-message,
+.cs-message-list__scroll-wrapper > .cs-message-group {
   max-width: 100%;
 }
 
 .cs-message-group--incoming {
   justify-content: flex-end;
 }
-
+.cs-message-group--outcoming {
+  justify-content: flex-start;
+}
 .cs-message-group {
   box-sizing: border-box;
   display: flex;
@@ -158,7 +161,8 @@
   order: 1;
 }
 
-.cs-message-group__avatar, .cs-message-group__content {
+.cs-message-group__avatar,
+.cs-message-group__content {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -172,15 +176,16 @@
   margin-top: 0;
 }
 
-.cs-message:not(:only-child), .cs-message:only-child {
+.cs-message:not(:only-child),
+.cs-message:only-child {
   margin: 0.2em 0 0;
 }
 
 .cs-message {
   box-sizing: border-box;
   font-size: 1em;
-  font-family: Helvetica Neue,Segoe UI,Helvetica,Arial,sans-serif;
-  color: rgba(0,0,0,.87);
+  font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+  color: rgba(0, 0, 0, 0.87);
   display: flex;
   flex-direction: row;
   padding: 0;
@@ -189,26 +194,37 @@
   border-radius: 0;
 }
 
-.cs-message__avatar, .cs-message__content-wrapper {
+.cs-message__avatar,
+.cs-message__content-wrapper {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
 
-.cs-message-group--incoming .cs-message-group__messages .cs-message:first-child .cs-message__content {
+.cs-message-group--incoming
+  .cs-message-group__messages
+  .cs-message:first-child
+  .cs-message__content {
   border-radius: 0 0.7em 0.7em 0;
 }
 
-.cs-message-group--incoming .cs-message-group__messages .cs-message .cs-message__content {
+.cs-message-group--incoming
+  .cs-message-group__messages
+  .cs-message
+  .cs-message__content {
   border-radius: 0 0.7em 0.7em 0;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   background-color: #c6e3fa;
 }
 
-
-
-
-
+.cs-message-group--outcoming
+  .cs-message-group__messages
+  .cs-message
+  .cs-message__content {
+  border-radius: 0 0.7em 0.7em 0;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #f7a2c8;
+}
 
 /*----------------input------------------*/
 
@@ -228,7 +244,7 @@
   border-width: 1px 0 0;
   margin-top: auto;
   /* padding: 0.3em 0; */
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   background-color: #fff;
   display: flex;
   flex-direction: row;
@@ -257,18 +273,18 @@
   width: 200px;
   flex-grow: 1;
   /* background-color: #c6e3fa; */
-  font-family: Helvetica Neue,Segoe UI,Helvetica,Arial,sans-serif;
+  font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
   outline: 0;
   border: 0;
   overflow: visible;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   overflow-wrap: anywhere;
   word-break: break-word;
   flex-direction: row;
 }
 
 .chat-message-form-button {
-  width: 40px; 
+  width: 40px;
   margin-left: 8px;
 }
 

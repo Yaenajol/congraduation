@@ -152,25 +152,33 @@ function FeedbackPage() {
               touchAction: "none",
             }}
           >
-            {chatList.current.map((message, index) => (
-              <section
-                key={index}
-                className="cs-message-group cs-message-group--incoming"
-                data-cs-message-group
-              >
-                <div className="cs-message-group__content">
-                  <div className="cs-message-group__messages">
-                    <section className="cs-message" data-cs-message>
-                      <div className="cs-message__content-wrapper">
-                        <div className="cs-message__content">
-                          <div className="chat-message">{message}</div>
+            {chatList.current.map((message, index) => {
+              let className =
+                message.messageType == "ANSWER"
+                  ? "cs-message-group cs-message-group--outcoming"
+                  : "cs-message-group cs-message-group--incoming";
+              return (
+                <section
+                  key={index}
+                  className={className}
+                  data-cs-message-group
+                >
+                  <div className="cs-message-group__content">
+                    <div className="cs-message-group__messages">
+                      <section className="cs-message" data-cs-message>
+                        <div className="cs-message__content-wrapper">
+                          <div className="cs-message__content">
+                            <div className="chat-message">
+                              {message.content}
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </section>
+                      </section>
+                    </div>
                   </div>
-                </div>
-              </section>
-            ))}
+                </section>
+              );
+            })}
           </div>
         </div>
 
