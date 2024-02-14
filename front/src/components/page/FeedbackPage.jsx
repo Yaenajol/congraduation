@@ -9,9 +9,8 @@ import StyledMemoryPage1 from "../styledComponents/StyledMemoryPage1";
 import AlbumProfileImage from "./AlbumProfileImage";
 import { Button } from "@mui/material";
 import userAltImage from "../images/userAltImage.png";
-import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
+import HeadsetMicIcon from "@mui/icons-material/HeadsetMic";
 import adminIcon from "../images/adminIcon.png";
-
 
 function FeedbackPage() {
   const chatList = useRef([]);
@@ -26,7 +25,7 @@ function FeedbackPage() {
   const params = useParams();
   const accessToken = sessionStorage.getItem("accessToken");
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
-  const DOMAIN_URL = process.env.REACT_APP_BACKEND_DOMAIN_URL;
+  const SOCKET_URL = process.env.REACT_APP_BACKEND_SOCKET_URL;
 
   const navigate = useNavigate();
 
@@ -45,14 +44,14 @@ function FeedbackPage() {
 
     if( accessToken) {
       axios
-      .get(`${API_URL}/members/myAlbum`, {
-        headers: { accessToken: sessionStorage.accessToken },
-      })
-      .then((response) => {
-        setUserInfo(response.data);
-        setImageUrl(response.data.coverUrl);
-        connect(response.data.albumPk);
-      });
+        .get(`${API_URL}/members/myAlbum`, {
+          headers: { accessToken: sessionStorage.accessToken },
+        })
+        .then((response) => {
+          setUserInfo(response.data);
+          setImageUrl(response.data.coverUrl);
+          connect(response.data.albumPk);
+        });
     }
 
     return () => disconnect();
@@ -60,7 +59,7 @@ function FeedbackPage() {
 
   const connect = (albumPk) => {
     client.current = new StompJs.Client({
-      brokerURL: `ws://${DOMAIN_URL}/ws/chat`,
+      brokerURL: `${SOCKET_URL}/ws/chat`,
       onConnect: () => {
         subscribe(albumPk);
       },
@@ -90,7 +89,7 @@ function FeedbackPage() {
     client.current.subscribe("/sub/feedback/" + albumPk, (body) => {
       try {
         const json_body = JSON.parse(body.body);
-
+        console.log(json_body)
         chatList.current.push({
           messageType: json_body.messageType,
           content: json_body.content,
@@ -134,14 +133,14 @@ function FeedbackPage() {
         {/* 헤더 창 */}
         <div className="chat-container-header">
           <div className="chat-header-back" />
-          <ArrowBackIcon 
+          <ArrowBackIcon
             onClick={gotoAlbumPage}
             style={{
               width: "1.3em",
               height: "1.3em",
               border: "solid",
               borderRadius: "50%",
-              marginRight: "0.5rem"
+              marginRight: "0.5rem",
             }}
           />
           <div style={{ width: "11%" }}>
@@ -183,35 +182,53 @@ function FeedbackPage() {
                 >
                   {/* 채팅창 */}
                   <div className="cs-message-group__content">
-                      {message.messageType == "ANSWER" ? 
-                        <img src= {adminIcon} style={{ width: "15%", borderRadius: "50%", backgroundColor: "white",}}/>
-                        : null   
-                      }
-                      {message.messageType == "ANSWER" ? 
-                        <div style={{color: "white", margin: "0.2em, 0"}}>관리자</div>
-                        : null   
-                      }
+                    {message.messageType == "ANSWER" ? (
+                      <img
+                        src={adminIcon}
+                        style={{
+                          width: "15%",
+                          borderRadius: "50%",
+                          backgroundColor: "white",
+                        }}
+                        alt="adminIcon"
+                      />
+                    ) : null}
+                    {message.messageType == "ANSWER" ? (
+                      <div style={{ color: "white", margin: "0.2em, 0" }}>
+                        관리자
+                      </div>
+                    ) : null}
                     <div className="cs-message-group__messages">
                       <section className="cs-message" data-cs-message>
                         <div className="cs-message__content-wrapper">
                           <div className="cs-message__content">
-                            <div className="chat-message" style={{ fontFamily: "TheJamsil2Light", fontWeight: "bolder", fontFamily: "KyoboHand" }}>
+                            <div
+                              className="chat-message"
+                              style={{
+                                fontFamily: "TheJamsil2Light",
+                                fontWeight: "bolder",
+                                fontFamily: "KyoboHand",
+                              }}
+                            >
                               {message.content}
                             </div>
                           </div>
                         </div>
                       </section>
                       {/* 채팅창 시간*/}
-                      {
-                        message.messageType == "ANSWER" ? 
-                        <div className="chat-date-outcoming" >
-                          {message.time.getHours() + ":" + message.time.getMinutes()}
+                      {message.messageType == "ANSWER" ? (
+                        <div className="chat-date-outcoming">
+                          {message.time.getHours() +
+                            ":" +
+                            message.time.getMinutes()}
                         </div>
-                        :
-                        <div className="chat-date-incoming" >
-                          {message.time.getHours() + ":" + message.time.getMinutes()}
+                      ) : (
+                        <div className="chat-date-incoming">
+                          {message.time.getHours() +
+                            ":" +
+                            message.time.getMinutes()}
                         </div>
-                      }
+                      )}
                     </div>
                   </div>
                 </section>
@@ -240,11 +257,8 @@ function FeedbackPage() {
                 onClick={(event) => handleSubmit(event, chat)}
                 className="chat-message-form-button"
               >
-                <ArrowUpwardIcon 
-                  style=
-                  {{borderRadius: "50%",
-                    border: "solid",
-                  }}
+                <ArrowUpwardIcon
+                  style={{ borderRadius: "50%", border: "solid" }}
                 />
               </Button>
             </div>

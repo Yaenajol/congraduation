@@ -100,20 +100,24 @@
 
 ### Front
 
-- Node v
-- React v
-- react-router (버전쓰기)
+- Node v20.10.0
+- React v18.2.0
+- react-router v6.21.3
 - 상태관리 라이브러리
   - recoil v0.7.7
-- Socket.io-client v
+- Socket.io-client v1.0.34
 - JSX
 
 - APIs
-
+  - KAKAOLINK API
   - KAKAO LOGIN API
-
+- Library
+	- html2canvas v1.4.1
+	- @mui 
+	- js-file-download v0.4.12
+	
 ### Back
-
+- 작성해야됨 
 
 ### DB
 

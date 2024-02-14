@@ -335,7 +335,7 @@ const AlbumMypage = () => {
             ShareUrl={ShareUrl}
           ></CustomButton1>
 
-          <MenuButton zin={false} albumPk={album.albumPk}/>
+          <MenuButton zin={false} albumPk={album.albumPk} albumOpenAt={albumOpenAt}/>
         </div>
 
 
