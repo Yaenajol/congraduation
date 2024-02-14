@@ -45,8 +45,7 @@ export default function PositionedMenu({zin}) {
       } else if (menuItem === 'Profile' ) {
         navigate(`/myalbum/setting` , { state : settingdata})
       } else if (menuItem === 'Inquiry') {
-        window.location.href = 'https://www.instagram.com/yaenajol.official/'
-        
+        navigate('/feedback');
       }
     };
   };

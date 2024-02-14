@@ -13,7 +13,7 @@
   color: rgba(0, 0, 0, 0.87);
   background-color: #f6fbff;
   /* font-family: Helvetica Neue,Segoe UI,Helvetica,Arial,sans-serif; */
-  font-size: 1em;
+  font-size: 1.3em;
   flex-shrink: 0;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -23,7 +23,7 @@
   align-items: stretch;
   border: solid #d1dbe3;
   border-width: 0 0 1px;
-  padding: 0.6em 0.9em;
+  padding: 0.6em 1em;
 }
 
 .chat-header-back {
@@ -92,7 +92,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 
 .cs-message-list {
@@ -104,6 +104,8 @@
   position: relative;
   color: rgba(0, 0, 0, 0.87);
   background-color: #fff;
+  border: solid;
+  border-color: white;
 }
 
 .cs-message-list__scroll-wrapper {
@@ -113,14 +115,16 @@
 .scrollbar-container {
   position: relative;
   height: 100%;
-  overflow: scroll;
+  /* overflow: scroll; */
   background-image: url('../images/background3.png');
   background-size: cover;
   background-position: center;
 }
 
+/* 채팅창 스크롤바 기능*/
 .ps {
   overflow: scroll !important;
+  scrollbar-width: none;
   overflow-anchor: none;
   -ms-overflow-style: none;
   touch-action: auto;
@@ -175,6 +179,8 @@
 
 .cs-message-group__messages {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
 }
 
 .cs-message-group__messages .cs-message:first-child {
@@ -188,7 +194,7 @@
 
 .cs-message {
   box-sizing: border-box;
-  font-size: 1em;
+  font-size: 1.5em;
   font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
@@ -207,40 +213,46 @@
   flex-direction: column;
 }
 
-.cs-message-group--incoming
+/* .cs-message-group--incoming
   .cs-message-group__messages
   .cs-message:first-child
   .cs-message__content {
-  border-radius: 0.7em 0 0 0.7em;
-}
+  border-radius: 0.7em;
+} */
 
 
 .cs-message-group--incoming
   .cs-message-group__messages
   .cs-message
   .cs-message__content {
-  border-radius: 0.7em 0 0 0.7em;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #c6e3fa;
+  border-radius: 0.9em;
+  color: rgb(255, 255, 255);
+  background-color: #f3cbcb;
+  padding: 0 0.3em;
 }
 
 .cs-message-group--outcoming
   .cs-message-group__messages
   .cs-message
   .cs-message__content {
-  border-radius: 0 0.7em 0.7em 0;
-  color: rgba(0, 0, 0, 0.87);
-  background-color: #f7a2c8;
+  border-radius: 0.9em;
+  color:  rgb(0, 0, 0, 0.827);
+  background-color: #f3cbcb;
+  padding: 0 0.3em;
 }
 
 .chat-date-incoming {
-  font-size: 0.5rem;
+  font-size: 0.7rem;
+  color: rgba(197, 197, 197, 0.849);
   text-align: end;
+  vertical-align: bottom;
 }
 
 .chat-date-outcoming {
-  font-size: 0.5rem;
+  font-size: 0.7rem;
+  color: rgba(197, 197, 197, 0.849);
   text-align: start;
+  vertical-align: bottom;
 }
 
 /*----------------input------------------*/
@@ -273,7 +285,7 @@
 
 /* 채팅 입력창 크기 조절*/
 .chat-message-form-wrapper {
-  width: 330px;
+  width: 320px;
   margin-left: 0.8em;
   box-sizing: border-box;
   position: relative;

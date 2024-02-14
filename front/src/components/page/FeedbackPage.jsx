@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import * as StompJs from "@stomp/stompjs";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
@@ -9,6 +9,9 @@ import StyledMemoryPage1 from "../styledComponents/StyledMemoryPage1";
 import AlbumProfileImage from "./AlbumProfileImage";
 import { Button } from "@mui/material";
 import userAltImage from "../images/userAltImage.png";
+import HeadsetMicIcon from '@mui/icons-material/HeadsetMic';
+import adminIcon from "../images/adminIcon.png";
+
 
 function FeedbackPage() {
   const chatList = useRef([]);
@@ -23,7 +26,9 @@ function FeedbackPage() {
   const params = useParams();
   const accessToken = sessionStorage.getItem("accessToken");
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
-  console.log(chatList);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     
     if( accessToken) {
@@ -110,14 +115,27 @@ function FeedbackPage() {
     publish(chat);
   };
 
+  const gotoAlbumPage = () => {
+    navigate(`/myalbum`);
+  };
+
   return (
     <StyledMemoryPage1>
       <div className="chat-container">
         {/* 헤더 창 */}
         <div className="chat-container-header">
           <div className="chat-header-back" />
-          <ArrowBackIcon />
-          <div style={{ width: "10%" }}>
+          <ArrowBackIcon 
+            onClick={gotoAlbumPage}
+            style={{
+              width: "1.3em",
+              height: "1.3em",
+              border: "solid",
+              borderRadius: "50%",
+              marginRight: "0.5rem"
+            }}
+          />
+          <div style={{ width: "11%" }}>
             <AlbumProfileImage
               imageUrl={imageUrl}
               setImageUrl={setUserInfo.ImageUrl}
@@ -152,17 +170,27 @@ function FeedbackPage() {
                   className={className}
                   data-cs-message-group
                 >
+                  {/* 채팅창 */}
                   <div className="cs-message-group__content">
+                      {message.messageType == "ANSWER" ? 
+                        <img src= {adminIcon} style={{ width: "15%", borderRadius: "50%", backgroundColor: "white",}}/>
+                        : null   
+                      }
+                      {message.messageType == "ANSWER" ? 
+                        <div style={{color: "white", margin: "0.2em, 0"}}>관리자</div>
+                        : null   
+                      }
                     <div className="cs-message-group__messages">
                       <section className="cs-message" data-cs-message>
                         <div className="cs-message__content-wrapper">
                           <div className="cs-message__content">
-                            <div className="chat-message">
+                            <div className="chat-message" style={{ fontFamily: "TheJamsil2Light", fontWeight: "bolder", fontFamily: "KyoboHand" }}>
                               {message.content}
                             </div>
                           </div>
                         </div>
                       </section>
+                      {/* 채팅창 시간*/}
                       {
                         message.messageType == "ANSWER" ? 
                         <div className="chat-date-outcoming" >
@@ -201,7 +229,12 @@ function FeedbackPage() {
                 onClick={(event) => handleSubmit(event, chat)}
                 className="chat-message-form-button"
               >
-                <ArrowUpwardIcon />
+                <ArrowUpwardIcon 
+                  style=
+                  {{borderRadius: "50%",
+                    border: "solid",
+                  }}
+                />
               </Button>
             </div>
             <div className="chat-message-input-button"></div>
