@@ -19,30 +19,31 @@ function RollingPaper() {
   const [currentPage, setCurrentPage] = useState(1);
   const imagesPerPage = 4;
   const [selectedImages, setSelectedImages] = useState({});
-  // const [messages, setMessages] = useState({})
+  const [messages, setMessages] = useState([])
   const location = useLocation();
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${API_URL}/members/myMemories`, {
-  //       headers: { accessToken: sessionStorage.accessToken },
-  //     })
-  //     .then((response) => {
-  //       setMessages(response.data); 
-  //   })
-  // }, []); 
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/members/myMemories`, {
+        headers: { accessToken: sessionStorage.accessToken },
+      })
+      .then((response) => {
+        setMessages(response.data); 
+    })
+  }, []); 
 
+  console.log(messages)
   
   
   // 더미 데이터 
-  const messages = [
-    { id: 1, image: dogBall, nickname: 'test1', message: "아으디라으니안이라ㅣㄴㅇ란일" },
-    { id: 2, image: dogHat, nickname: 'test2', message: "123123123" },
-    { id: 3, image: albumFrame, nickname: 'test3', message: "가나다라마바사" },
-    { id: 4, image: background3, nickname: 'test4', message: "asdasfvfsdfsf" },
-    { id: 5, image: userAltImage, nickname: 'test5', message: "테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터 테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터" },
-  ];
+  // const messages = [
+  //   { id: 1, image: dogBall, nickname: 'test1', message: "아으디라으니안이라ㅣㄴㅇ란일" },
+  //   { id: 2, image: dogHat, nickname: 'test2', message: "123123123" },
+  //   { id: 3, image: albumFrame, nickname: 'test3', message: "가나다라마바사" },
+  //   { id: 4, image: background3, nickname: 'test4', message: "asdasfvfsdfsf" },
+  //   { id: 5, image: userAltImage, nickname: 'test5', message: "테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터 테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터" },
+  // ];
 
 
   const totalPages = Math.ceil(messages.length / imagesPerPage)
@@ -61,39 +62,49 @@ function RollingPaper() {
       [index]: !prevSelected[index]
     }));
   };
+  console.log(selectedImages)
   
   const downloadSelectedImages = async () => {
-    const zip = new JSZip()
-    for (const id of Object.keys(selectedImages)) {
+    const zip = new JSZip();
+    const canvasPromises = [];
+  
+    Object.keys(selectedImages).forEach((id) => {
       if (selectedImages[id]) {
         const message = messages.find(message => message.id.toString() === id);
         if (message) {
+          console.log(message)
           const imageContainer = document.createElement("div");
           imageContainer.style.padding = "10px";
-          imageContainer.style.background = "white";
+          // imageContainer.style.background = "white"; 
           imageContainer.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
           // 다운받는 사진의 css 건드리는곳 
           imageContainer.innerHTML = `
             <img src="${message.image}" alt="${message.nickname}" style="max-width: 100%; display: block; margin-bottom: 10px; border: 1px solid black" />
             <h5 style="margin: 0;">${message.nickname}</h5>
-            <p style="margin: 0;">${message.message}</p>
+            <p style="margin: 0;">${message.content}</p>
           `;
-  
           document.body.appendChild(imageContainer);
-
-          await html2canvas(imageContainer).then(canvas => {
-            const image = canvas.toDataURL("image/png");
-            zip.file(`image_${id}.png`, image.split('base64,')[1], { base64: true })
+          
+          const promise = new Promise((resolve, reject) => {
+            html2canvas(imageContainer).then(canvas => {
+              canvas.toBlob(blob => {
+                zip.file(`image_${id}.png`, blob);
+                document.body.removeChild(imageContainer);
+                resolve();
+              }, 'image/png');
+            });
           });
-          document.body.removeChild(imageContainer)
+          canvasPromises.push(promise);
         }
       }
-      
-    }
-    zip.generateAsync({ type: "blob"}).then( function (content) {
-      saveAs(content, "congraduation.zip")
-    })
-    navigate('/myalbum')
+    });
+  
+    
+    await Promise.all(canvasPromises).then(() => {
+      zip.generateAsync({ type: "blob" }).then(content => {
+        saveAs(content, "congraduation.zip");
+      });
+    });
   };
 
  
@@ -134,7 +145,7 @@ function RollingPaper() {
                     {message.nickname}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {message.message}
+                    {message.content}
                   </Typography>
                 </CardContent>
               </CardActionArea>
