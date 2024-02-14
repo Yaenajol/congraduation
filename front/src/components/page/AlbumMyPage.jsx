@@ -26,8 +26,6 @@ import CustomButton from "../button/CustomButton";
 import CustomButton1 from "../button/CustomButton1";
 import MenuButton from "../../components/button/MenuButton";
 
-import "../page/Snowrain.css"
-
 
 // image
 import userAltImage from "../images/userAltImage.png";
@@ -71,7 +69,6 @@ const AlbumMypage = () => {
   const itemsPerPage = 4;
   const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 4개씩 1페이지이면 2페이지일 때는 4)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  const [shareButton, setShareButton] = useState(false);
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
 

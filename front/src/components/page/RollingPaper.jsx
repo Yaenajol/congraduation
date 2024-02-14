@@ -4,12 +4,6 @@ import html2canvas from "html2canvas";
 import JSZip from "jszip";
 import saveAs from "file-saver";
 
-import userAltImage from "../images/userAltImage.png";
-import albumFrame from "../images/albumFrame.png";
-import AlbumProfileImage from "./AlbumProfileImage";
-import dogBall from "../images/dogBall.png";
-import dogHat from "../images/dogHat.png";
-import background3 from "../images/background3.png";
 import { useLocation, useNavigate } from "react-router";
 
 import {
@@ -22,6 +16,8 @@ import {
   CardActionArea,
   Grid,
 } from "@mui/material";
+
+import background3 from "../images/background3.png"
 
 function RollingPaper() {
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
@@ -58,15 +54,15 @@ function RollingPaper() {
     setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage);
   };
 
-  const toggleImageSelection = (index) => {
+  const toggleImageSelection = (id) => {
     setSelectedImages((prevSelected) => ({
       ...prevSelected,
-      [index]: !prevSelected[index],
+      [id]: !prevSelected[id],
     }));
   };
 
   const downloadSelectedImages = async () => {
-    const zip = new JSZip();
+    const zip = new JSZip(); 
     const canvasPromises = [];
 
     Object.keys(selectedImages).forEach((id) => {
@@ -84,7 +80,6 @@ function RollingPaper() {
           imageContainer.style.alignItems = "center";
           imageContainer.style.flexDirection = "column";
           imageContainer.style.padding = "10px";
-          // imageContainer.style.background = "white";
           imageContainer.style.border = "1px solid black";
           imageContainer.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
           // 다운받는 사진의 css 건드리는곳
@@ -117,16 +112,16 @@ function RollingPaper() {
   };
 
   return (
-    <Box>
-      <Grid container spacing={2}>
+    <Box style={{ backgroundColor: 'gray'}}>
+      <Grid container spacing={2} >
         {messages
           .slice((currentPage - 1) * imagesPerPage, currentPage * imagesPerPage)
-          .map((message, index) => (
+          .map((message) => (
             <Grid
               item
               xs={6}
-              key={index}
-              onClick={() => toggleImageSelection(index)}
+              key={message.id}
+              onClick={() => toggleImageSelection(message.id)}
             >
               <Card
                 sx={{ maxWidth: 500, maxHeight: 500, position: "relative" }}
@@ -137,9 +132,9 @@ function RollingPaper() {
                     image={message.image}
                     alt={message.nickname}
                     sx={{ height: 250 }} // 사이트에서 보여지는 사진 크기
-                    id={`image-${index}`}
+                    id={`image-${message.id}`}
                   />
-                  {selectedImages[index] && (
+                  {selectedImages[message.id] && (
                     <Box
                       sx={{
                         position: "absolute",

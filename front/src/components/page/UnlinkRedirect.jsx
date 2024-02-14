@@ -6,17 +6,13 @@ import { isLoginAtom } from "../store/atom";
 
 function UnlinkRedirect() {
   const API_URL = process.env.REACT_APP_BACKEND_API_URL
-  const [token, setToken] = useState("")
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
-  // const Token = sessionStorage.getItem('accessToken')
   const navigate = useNavigate()
-  const params = useParams()
   const code = new URL(window.location.href);
   const tokens = code.searchParams.get("code");
 
 
   useEffect(() => {
-    setToken(sessionStorage.getItem('accessToken'))
     sendToken(tokens)
   }, [])
 

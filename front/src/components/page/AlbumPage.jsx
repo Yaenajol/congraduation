@@ -1,7 +1,7 @@
 // react
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Sharebutton from "../button/Sharebutton";
+
 // recoil
 import { useRecoilState } from "recoil";
 import { lookingPkAtom, albumPageMainImgAtom } from "../store/atom";
@@ -24,8 +24,7 @@ import "../page/Snowrain.css";
 
 // component
 import CustomButton from "../button/CustomButton";
-import CustomButton1 from "../button/CustomButton1";
-import MenuButton from "../../components/button/MenuButton";
+
 
 // image
 import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
@@ -34,7 +33,6 @@ import albumFrame from "../images/albumFrame.png";
 
 // external
 import axios from "axios";
-import moment from "moment";
 
 const AlbumPage = () => {
   // 전역 상태 변수 목록
@@ -68,7 +66,6 @@ const AlbumPage = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const ShareUrl = `${window.location.origin}/albums/${lookingPk}`;
 
   const [snowflakes, setSnowflakes] = useState([]);
 
