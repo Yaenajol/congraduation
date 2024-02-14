@@ -1,48 +1,306 @@
-## 조민준
-- 240115 JIRA 컨벤션 : https://www.notion.so/JIRA-7959e7df694d45e19922ef5581f34394
-- 240116 유저스토리 : https://www.notion.so/ea2298fb4d11445691871ebc2d65aed5
-- 240117 UI 목업 작업 진행 : https://www.notion.so/UI-ebcf88d800df4f81adbcc693ced13656
-- 240118 UI 목업 작업 마무리 : 위 URL 동일
-- 240118 API 명세 작업 진행
-- 240119 컨벤션 작업, 개발환경 논의, API 명세 확인
+<div align='center'>
+
+# :mortar_board: 얘들아 나 졸업해!! 
 
 
-## 박성인
-- 우리팀 아이디어 : https://www.notion.so/cbd5b932834a4be996f7dd28ebf902da?v=4530defb0ef149e8aafb43a34f72cbcb
-- 24/01/16 TIL : 와이어프레임 작성(https://www.notion.so/7-47731fd2819d44da80fd729aaac93618?p=3c409f6d3631479d8efc313fe77aa5bb&pm=s), 소셜 로그인 로직 공부 
-
-- 24/01/17 TIL : 소셜 로그인 구현, 와이어 프레임 구성 설계
-- 24/01/18 TIL : 목업 설계, API명세 설계
-- 24/01/19 TIL : API 명세 완성, GIT, FRONT 컨벤션 정리 , 소셜 로그인 구현(비동기 요청)
-- 24/01/24 TIL : MemoryUploadPage css, Navbar구현(안 쓸수도 있음 - 보류)
-
-## 문경림
-- 요구사항 명세 : https://www.notion.so/bf1796a924334040845204939020d4c8
-- 목업 만들기 :  https://www.figma.com/file/M0WWufaQ4FQ5JIZc0tUEEu/%EC%96%98%EB%82%98%EC%A1%B8-%ED%94%BC%EA%B7%B8%EB%A7%88-%EC%9E%91%EC%97%85?type=design&node-id=0-1&mode=design&t=heJqXBBXTFowxx3L-0
-- UI 목업 프레임 : https://www.notion.so/UI-ebcf88d800df4f81adbcc693ced13656
-- 요구사항 명세서 노션DB : https://www.notion.so/019710456ed54f349cfbfe0cf24e7005?v=dfc5ec056c4447c4aa322cab55e0e8ca
-- API명세서 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff
-
-## 이용준
-- 기능명세서 : https://www.notion.so/8b8f2ddbbc0e4eb99d4ec671b425a948
-- 팀 개발 일정 : https://www.notion.so/2-3c409f6d3631479d8efc313fe77aa5bb
-- 2주차 2차 컨코미팅 : https://www.notion.so/2-2-3c409f6d3631479d8efc313fe77aa5bb
-- API 명세서 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff?p=77e0b578092c4c329e587eae773833ac&pm=s
-- API 명세서 + 프로젝트 세팅 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff
-- Entity 작성 : JPA Entity 설계 및 작성 
+![logo](/uploads/876df0af63931d868ec2f12915a8418d/logo.png)
 
 
-## 서정현
-- 얘나졸 :  https://www.notion.so/454354bff23d43ef983cb71750406aef
-- ERD : https://www.erdcloud.com/d/ckzgeoKmup9GoQsg2
-- 공개일 전 썸네일 : 프레임 하나 저장, 블러처리할 거임 
-- api명세:https://www.notion.so/7-47731fd2819d44da80fd729aaac93618?p=7703343dfe03452b97954ae938e70dff&pm=s
-- api명세 수정:https://www.notion.so/7-47731fd2819d44da80fd729aaac93618?p=7703343dfe03452b97954ae938e70dff&pm=s
-- jenkins 구축
+</div>
 
-## 박소현
-- 240115 미팅 : https://www.notion.so/24-01-15-2fb74597d04d46049906e63e0fe7431f
-- 코치세션 : https://www.notion.so/1-65faf3df29484ac7a057cccabebf34a6
-- 240118 유저스토리 수정 : https://www.notion.so/48aa0c4e08194cabbea2e687826294d3
-- api명세서 : https://www.notion.so/API-7703343dfe03452b97954ae938e70dff
-- entity->mysql 연동
+
+
+
+<br>
+
+# :date: 프로젝트 개요
+
+
+| 프로젝트 기간 | 2024.01.?? ~ 2024.02.16 (총 7주) |
+| --- | --- |
+
+<br/>
+
+### 기획 배경
+
+<div>
+
+졸업식은 많은 사람들에게 특별한 순간입니다. 그동안 함께한 친구들과의 소중한 추억을 함께 공유하고 싶어하지만, 때로는 예상치 못한 일정 변경이나 거리로 인해 함께하지 못하는 경우가 있습니다. 이런 상황에서도 친구들과의 추억을 공유할 수 있는 방법이 필요했습니다. '사진 롤링페이퍼'는 이러한 고민을 해결하기 위해 탄생했습니다.
+
+</div>
+
+
+<br>
+<br>
+
+
+### 프로젝트 설명 
+
+<div>
+
+'사진 롤링페이퍼'는 사용자들이 졸업식 전까지 함께 찍은 사진들을 모아 졸업식 다음날 함께 볼 수 있는 온라인 플랫폼입니다. 사용자들은 친구들과의 소중한 순간을 담은 사진을 선택하여 네컷 프레임에 담고, 개인적인 메시지와 함께 전송할 수 있습니다. 이를 통해 졸업식에 참석하지 못하는 사람들도 각자의 시간에 맞춰 사진을 공유하고, 함께한 추억을 되새기며 졸업식의 특별한 순간을 함께할 수 있습니다. '사진 롤링페이퍼'는 친구들 간의 연결을 강화하고, 소중한 순간을 온라인으로 공유함으로써 졸업식을 더욱 특별하게 만들어줍니다.
+
+</div>
+
+
+# 📖목차 
+- [README](#readme)
+	- [🔑 주요 기능](#-주요-기능)
+	- [🎥 시연 영상](#-시연-영상)
+	- [❤ 역할](#-역할)
+	- [📂 파일 구조](#-파일-구조)
+	- [🛠 기술 스택](#-기술-스택)
+	- [🏗️ 아키텍쳐](#-아키텍쳐)
+	- [📝 설계 문서](#-설계-문서)
+	    - [ERD](#erd)
+	    - [API](#api)
+        - [FIGMA](#FIGMA)
+
+	- [💾 결과물](#-결과물)
+	
+	- [🖥 회고](#-회고)
+
+
+<br>
+<br>
+
+# 🔑 주요 기능 
+
+#### 주요기능1
+
+
+
+#### 주요기능2 
+
+
+<br>
+<br>
+
+
+# 🎥 시연 영상 
+
+<div align="center">
+
+### 메모리 업로드 
+![memoryupload](/uploads/607c73be2f28a02317b3da5975e7d2e4/memoryupload.gif)
+<br>
+	 총 4장의 사진과 별명, 메세지를 작성하여 특정 앨범에 메모리를 등록합니다.
+
+
+### 메모리 확인 
+![checkmomery](/uploads/2f7ada6079c3d85554ea86e59b43ac31/checkmomery.gif)
+<br>
+	 졸업일 이후에 앨범의 주인은 각각의 메모리를 모달창을 통해 확인할 수 있습니다
+
+
+### 카카오 공유
+
+![linkshare](/uploads/3408e0107e21e73d6d84ac4414cfad88/linkshare.gif)
+<br>
+	 카카오 공유 API를 통해 카카오톡과 연계하여 앨범 링크를 공유할 수 있습니다.
+
+
+### 메모리 다운로드 
+![download](/uploads/8aebc3d8610af07f2b2d8148cdcae1b3/download.gif)
+<br>
+	 또한 지인이 작성해준 메모리를 선택하여 압축파일로 다운로드를 받을 수 있습니다.
+
+#### 압축 해제 후 
+![image](/uploads/66246326f4424290f399dc4ab0d85c4b/image.png)
+
+
+#### 다운로드 된 메모리 한 장 
+![image_13](/uploads/28c512627a0fdaed7a547127c2310ac5/image_13.png)
+
+</div>
+
+
+
+# ❤ 역할
+
+|        | Part      | Detail                                                                                                 |
+| ------ | --------- | ------------------------------------------------------------------------------------------------------ |
+|  | Front-End |                            |
+|  | Front-End  |                             |
+|  | Front-End  |                           |
+|  | Back-End  |                            |
+|  | Back-End |                          |
+|  | Back-End |                            |
+
+<br/>
+
+
+
+
+<br>
+
+# 📂 파일 구조
+
+### Front
+```
+📦front
+ ┣ 📂build
+ ┣ 📂node_modules
+ ┣ 📂public
+ ┣ 📂src
+ ┃ ┣ 📂components
+ ┃ ┃ ┣ 📂button
+ ┃ ┃ ┣ 📂font
+ ┃ ┃ ┣ 📂images
+ ┃ ┃ ┣ 📂page
+ ┃ ┃ ┣ 📂spinner
+ ┃ ┃ ┣ 📂store
+ ┃ ┃ ┗ 📂styledComponents
+ ┃ ┣ 📜App.css
+ ┃ ┣ 📜App.js
+ ┃ ┣ 📜App.test.js
+ ┃ ┣ 📜globalStyle.js
+ ┃ ┣ 📜index.css
+ ┃ ┣ 📜index.js
+ ┃ ┣ 📜reportWebVitals.js
+ ┃ ┗ 📜setupTests.js
+ ┣ 📜.env.development
+ ┣ 📜.env.production
+ ┣ 📜.gitignore
+ ┣ 📜Dockerfile
+ ┣ 📜package-lock.json
+ ┣ 📜package.json
+ ┗ 📜README.md
+```
+### Back
+```
+📦backend
+ ┣ 📂.gradle
+ ┣ 📂.idea
+ ┣ 📂build
+ ┣ 📂gradle
+ ┣ 📂out
+ ┣ 📂src
+ ┃ ┣ 📂main
+ ┃ ┃ ┣ 📂generated
+ ┃ ┃ ┣ 📂java
+ ┃ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┃ ┗ 📂ssafy
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂backend
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂domain
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂exception
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂errorcode
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜CustomException.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜GlobalExceptionHandler.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂jwt
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂mattermost
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂sender
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜MMFeedbackManager.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂model
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂response
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜FeedbackDto.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MattermostIncomingDto.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📜MattermostIncomingProperties.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜MattermostOutgoingDto.java
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂service
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂stomp
+ ┃ ┃ ┃ ┃ ┃ ┃ ┣ 📂util
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜BackendApplication.java
+ ┃ ┃ ┗ 📂resources
+ ┃ ┃ ┃ ┣ 📂static
+ ┃ ┃ ┃ ┗ 📂templates
+ ┃ ┗ 📂test
+ ┃ ┃ ┗ 📂java
+ ┃ ┃ ┃ ┗ 📂com
+ ┃ ┃ ┃ ┃ ┗ 📂ssafy
+ ┃ ┃ ┃ ┃ ┃ ┗ 📂backend
+ ┃ ┃ ┃ ┃ ┃ ┃ ┗ 📜BackendApplicationTests.java
+ ┣ 📜build.gradle
+ ┣ 📜Dockerfile
+ ┣ 📜gradlew
+ ┣ 📜gradlew.bat
+ ┗ 📜settings.gradle
+ ```
+
+<br>
+<br>
+
+# 🛠 기술 스택
+
+
+### Front
+
+- Node v20.10.0
+- React v18.2.0
+- react-router v6.21.3
+- 상태관리 라이브러리
+  - recoil v0.7.7
+- Socket.io-client v1.0.34
+- JSX
+
+- APIs
+  - KAKAOLINK API
+  - KAKAO LOGIN API
+- Library
+	- html2canvas v1.4.1
+	- @mui 
+	- js-file-download v0.4.12
+	
+### Back
+- 작성해야됨 
+
+### DB
+
+- Amazon S3
+- MySQL
+
+### CI/CD
+
+- Docker
+- Jenkins
+- NGINX
+
+### 협업 툴
+
+- GitLab
+- Notion
+- JIRA
+- MatterMost
+- Webex
+
+
+<br>
+<br>
+
+
+# 🏗️ 아키텍쳐
+
+
+#### 뭔 글을 써야 가지나?
+  -사진  추가
+
+
+
+
+
+
+
+# 📝 설계 문서
+
+
+### 요구사항 명세서
+
+
+### ERD
+
+
+### API 명세서
+
+
+### 와이어 프레임
+
+
+
+# 💾 결과물
+
+
+
+# 🖥 회고 
