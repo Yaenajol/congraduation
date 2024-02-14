@@ -1,0 +1,21 @@
+/* Menu 스타일 */
+.MuiPaper-root.MuiMenu-paper {
+  background-color: #f0f0f0; /* 메뉴 배경색 */
+  color: #333; /* 메뉴 내 텍스트 색상 */
+  border-radius: 8px; /* 메뉴의 모서리 둥글기 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 메뉴에 그림자 추가 */
+}
+
+/* MenuItem 스타일 */
+.MuiMenuItem-root {
+  font-family: 'Roboto', sans-serif; /* 폰트 스타일 */
+  font-size: 16px; /* 폰트 크기 */
+  color: #555; /* 아이템 텍스트 색상 */
+}
+
+
+
+/* MenuItem 사이의 구분선 */
+.MuiMenuItem-root + .MuiMenuItem-root {
+  border-top: 1px solid #ddd; /* 아이템 사이의 구분선 */
+}

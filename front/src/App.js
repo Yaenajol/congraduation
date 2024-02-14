@@ -10,6 +10,9 @@ import AlbumMyPage from "./components/page/AlbumMyPage";
 import RedirectPage from "./components/page/RedirectPage";
 import SettingsPage from "./components/page/SettingPage";
 import DragPage from "./components/page/DragPage";
+import { isLoginAtom } from "./components/store/atom";
+import RollingPaper from "./components/page/RollingPaper";
+import UnlinkRedirect from "./components/page/UnlinkRedirect";
 import FeedbackPage from "./components/page/FeedbackPage";
 import FeedbackPage2 from "./components/page/FeedbackPage2";
 
@@ -22,26 +25,24 @@ function App() {
       setIsLogin(true);
     }
   }, [setIsLogin])
- 
-  return ( 
-    <BrowserRouter>
-     
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path='/albums/:PK' element={<AlbumPage />} />
-        <Route path="/myalbum/setting" element={<SettingsPage />} />
-        <Route path="/albums/:PK/edit" element={<MemoryUpload />} />
-        <Route path="/kakao/oauth" element={<RedirectPage />} />
-        <Route path="/albums/drag" element={<DragPage/>} />
-        <Route path="/myalbum" element={<AlbumMyPage/>} />
-        <Route path="/feedback" element={<FeedbackPage/>}/>
-        
-        {/* <Route path="/feedback" element={<FeedbackPage2/>}/> */}
 
-        {/* 오류페이지 만들어야됨 */}
-        <Route path="*" element={<Navigate replace to="/kakao/oauth" />} />
-      </Routes>
-    </BrowserRouter>
+  return ( 
+    <Routes>
+      <Route path="/" element={<LoginPage />} />
+      <Route path='/albums/:PK' element={<AlbumPage />} />
+      <Route path="/myalbum/setting" element={<SettingsPage />} />
+      <Route path="/albums/:PK/edit" element={<MemoryUpload />} />
+      <Route path="/kakao/oauth" element={<RedirectPage />} />
+      <Route path="/albums/drag" element={<DragPage/>} />
+      <Route path="/myalbum" element={<AlbumMyPage/>} />
+      <Route path="/myalbum/download" element={<RollingPaper/>}/>
+      <Route path="/kakao/unlink" element={<UnlinkRedirect/>}/>
+      <Route path="/feedback" element={<FeedbackPage/>}/>
+
+      {/* 오류페이지 만들어야됨 */}
+      {/* <Route path="*" element={<Navigate replace to="/kakao/oauth" />} /> */}
+    </Routes>
+    
   );
 }
 

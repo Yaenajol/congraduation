@@ -1,6 +1,6 @@
 // react
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import FunnyDog from "../button/FunnyDog";
 // recoil
 import { useRecoilState } from "recoil";
@@ -26,14 +26,13 @@ import "../page/Snowrain.css"
 import CustomButton from "../button/CustomButton";
 import CustomButton1 from "../button/CustomButton1";
 import MenuButton from "../../components/button/MenuButton";
-import "../page/Snowrain.css";
-import Sharebutton from "../button/Sharebutton";
-import fileDownload from "js-file-download";
+
 
 // image
 import userAltImage from "../images/userAltImage.png";
 import albumFrame from "../images/albumFrame.png";
 import AlbumProfileImage from "./AlbumProfileImage";
+
 
 // external
 import axios from "axios";
@@ -71,7 +70,6 @@ const AlbumMypage = () => {
   const itemsPerPage = 4;
   const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 4개씩 1페이지이면 2페이지일 때는 4)
   const endIndex = startIndex + itemsPerPage; // 끝 인덱스
-  const [shareButton, setShareButton] = useState(false);
   const navigate = useNavigate();
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
 
@@ -84,7 +82,6 @@ const AlbumMypage = () => {
 
     for (let i = 0; i < snowCount; i++) {
       const randomXStart = Math.random() * window.innerWidth;
-      const randomXEnd = Math.random() * window.innerWidth;
       const randomScale = Math.random() * 0.1;
       const fallDuration = randomRange(10, 30) + "s";
       const fallDelay = randomRange(-30, 0) + "s";
@@ -250,36 +247,10 @@ const AlbumMypage = () => {
       return prevIndex; // 이미지 인덱스가 0보다 작을 때는 현재 인덱스를 반환
     });
   };
+  
 
-  const download = (filename) => {
-    axios({
-      url: `${API_URL}/albums/${downalbumPk}/memories`, // 이 url은 블라처리 된 이미지와 , 닉네임만 나옴
-      method: "GET",
-      responseType: "blob",
-    })
-      .then((response) => {
-        console.log(response.data); // Blob 데이터 로깅
-        fileDownload(response.data, "filename.html"); // 여기서 파일 확징자를 바꿀 수 있음
-      })
-      .catch((error) => {
-        console.error("Download error:", error);
-      });
-  };
-
-  const downloadImages = () => {
-    albumMemories.forEach((memory, index) => {
-      const { imageUrl, nickName } = memory;
-
-      const link = document.createElement("a");
-      link.href = imageUrl; // 이미지 URL을 href로 설정합니다.
-
-      link.download = `memory-${nickName}-${index + 1}.png`;
-
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-  };
+  
+  
 
   return (
     <div
@@ -304,7 +275,7 @@ const AlbumMypage = () => {
               albumPk={album.albumPk}
               isClickable={true}
             />
-            {/* <MenuButton zin={false} />   */}
+
           </div>
           <div>
             <StyledTypography>
@@ -333,7 +304,7 @@ const AlbumMypage = () => {
                 </div>
               )}
             </StyledTypography>
-            {/* <Sharebutton /> */}
+
           </div>
         </div>
         {/* 공유 버튼 */}
@@ -364,12 +335,11 @@ const AlbumMypage = () => {
             ShareUrl={ShareUrl}
           ></CustomButton1>
 
-          {/* <button onClick={()=>download(`${album.nickname}의 앨범`)}>download test button</button> */}
-          <MenuButton zin={false} />
+          <MenuButton zin={false} albumPk={album.albumPk}/>
         </div>
 
-        {/* <button onClick={downloadImages}>Download Images</button> */}
 
+        
         <div style={{ position: "relative", width: "100%", zIndex: "0" }}>
           <img
             src={albumFrame}

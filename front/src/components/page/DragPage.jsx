@@ -80,7 +80,7 @@ export default function App({selectedGridItem, setImages, setOpenModal, albumPk}
   
   async function onDownloadCropClick(page) {
     setIsLoading(true)
-    console.log(page)
+
     try {
       const updateImage = (imageData) => {
         setImages((prevImages) => ({

@@ -11,7 +11,7 @@ import DragPage from "../page/DragPage";
 
 // image
 import userAltImage from '../images/userAltImage.png'
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
+
 
 /**
  * 앨범 프로필 사진을 변경합니다
