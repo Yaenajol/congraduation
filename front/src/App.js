@@ -14,8 +14,6 @@ import { isLoginAtom } from "./components/store/atom";
 import RollingPaper from "./components/page/RollingPaper";
 import UnlinkRedirect from "./components/page/UnlinkRedirect";
 import FeedbackPage from "./components/page/FeedbackPage";
-import FeedbackPage2 from "./components/page/FeedbackPage2";
-import { isLoginAtom } from "./components/store/atom";
 
 function App() {
   const setIsLogin = useSetRecoilState(isLoginAtom);

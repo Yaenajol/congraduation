@@ -26,6 +26,7 @@ function FeedbackPage() {
   const params = useParams();
   const accessToken = sessionStorage.getItem("accessToken");
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
+  const DOMAIN_URL = process.env.REACT_APP_BACKEND_DOMAIN_URL;
 
   const navigate = useNavigate();
 
@@ -37,7 +38,6 @@ function FeedbackPage() {
         headers: { accessToken: sessionStorage.accessToken },
       })
       .then((response) => {
-        console.log("Album Data:", response.data);
         setUserInfo(response.data);
         setImageUrl(response.data.coverUrl);
         connect(response.data.albumPk);
@@ -49,9 +49,8 @@ function FeedbackPage() {
 
   const connect = (albumPk) => {
     client.current = new StompJs.Client({
-      brokerURL: "ws://codakcodak.site:8001/backend/ws/chat",
+      brokerURL: `ws://${DOMAIN_URL}/ws/chat`,
       onConnect: () => {
-        console.log('success');
         subscribe(albumPk);
       },
     });
@@ -80,7 +79,6 @@ function FeedbackPage() {
     client.current.subscribe("/sub/feedback/" + albumPk, (body) => {
       try {
         const json_body = JSON.parse(body.body);
-        console.log(json_body);
 
         chatList.current.push({
           messageType: json_body.messageType,
@@ -111,7 +109,6 @@ function FeedbackPage() {
   const handleSubmit = (event, chat) => {
     // 보내기 버튼 눌렀을 때 publish
     event.preventDefault();
-    console.log(chat);
     publish(chat);
   };
 

@@ -109,6 +109,7 @@ function RollingPaper() {
         saveAs(content, "congraduation.zip");
       });
     });
+    navigate('/myalbum');
   };
 
   return (
