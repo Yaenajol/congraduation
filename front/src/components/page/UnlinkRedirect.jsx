@@ -1,18 +1,50 @@
 import axios from "axios"
-import { useEffect } from "react"
+import { useEffect,useState } from "react"
+import { useNavigate,useParams} from "react-router-dom"
+import { useRecoilState } from 'recoil';
+import { isLoginAtom } from "../store/atom";
 
 function UnlinkRedirect() {
   const API_URL = process.env.REACT_APP_BACKEND_API_URL
-  const Token = sessionStorage.getItem('accessToken')
+  const [token, setToken] = useState("")
+  const [isLogin, setIsLogin] = useRecoilState(isLoginAtom)
+  // const Token = sessionStorage.getItem('accessToken')
+  const navigate = useNavigate()
+  const params = useParams()
+  const code = new URL(window.location.href);
+  const tokens = code.searchParams.get("code");
 
-  axios
-      .post(`${API_URL}/kakao/unlinkCallback`, {
-        
+
+  useEffect(() => {
+    setToken(sessionStorage.getItem('accessToken'))
+    sendToken(tokens)
+  }, [])
+
+  async function sendToken(token) {
+    const URL = `${API_URL}/kakao/unlinkCallback?code=${token}`
+    try {
+      const response = await fetch(URL, {
+        method: "POST",
+        headers: {
+          "Content-Type" : "application/json",
+        },
+        body: JSON.stringify({ token}),
       })
-      .then((response) => {
-        console.log(response.data)
-        
-    })
+      
+
+      if (!response.ok) {
+        throw new Error(response.status)
+      } 
+      if (response.ok) {
+        setIsLogin(false)
+        navigate('/');
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
 }
+
 
 export default UnlinkRedirect
