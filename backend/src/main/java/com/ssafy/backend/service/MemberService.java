@@ -349,7 +349,7 @@ public class MemberService {
     List<Memory> memoryList=album.getMemoryList();
     List<MyMemoryResponseDto> myMemoryList=new ArrayList<>();
 
-    int index=1;
+    int index=0;
     for(Memory memory:memoryList){
       myMemoryList.add(MyMemoryResponseDto.builder()
           .id(index++)
