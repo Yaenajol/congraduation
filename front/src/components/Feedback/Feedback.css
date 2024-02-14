@@ -1,19 +1,19 @@
 .chat-container {
   box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-width: 180px;
-    color: rgba(0,0,0,.87);
-    background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 180px;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #fff;
 }
 
 .chat-container-header {
   box-sizing: border-box;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   background-color: #f6fbff;
   /* font-family: Helvetica Neue,Segoe UI,Helvetica,Arial,sans-serif; */
-  font-size: 1em;
+  font-size: 1.3em;
   flex-shrink: 0;
   -webkit-user-select: none;
   -ms-user-select: none;
@@ -23,7 +23,7 @@
   align-items: stretch;
   border: solid #d1dbe3;
   border-width: 0 0 1px;
-  padding: 0.6em 0.9em;
+  padding: 0.6em 1em;
 }
 
 .chat-header-back {
@@ -51,7 +51,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   font-weight: 700;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   background-color: #f6fbff;
 }
 
@@ -88,11 +88,11 @@
   scroll-padding: 0;
 } */
 
-
 .chat-message-list {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  /* overflow: scroll; */
 }
 
 .cs-message-list {
@@ -102,8 +102,10 @@
   overflow: hidden;
   min-height: 1.25em;
   position: relative;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   background-color: #fff;
+  border: solid;
+  border-color: white;
 }
 
 .cs-message-list__scroll-wrapper {
@@ -113,10 +115,16 @@
 .scrollbar-container {
   position: relative;
   height: 100%;
+  /* overflow: scroll; */
+  background-image: url('../images/background3.png');
+  background-size: cover;
+  background-position: center;
 }
 
+/* 채팅창 스크롤바 기능*/
 .ps {
-  overflow: hidden!important;
+  overflow: scroll !important;
+  scrollbar-width: none;
   overflow-anchor: none;
   -ms-overflow-style: none;
   touch-action: auto;
@@ -134,18 +142,23 @@
   padding: 0 1.2em 0 0.8em;
 }
 
-.cs-message-list .cs-message-group.cs-message-group--incoming, .cs-message-list .cs-message.cs-message--incoming {
+/* 내가 입력한 글 위치 조정*/
+.cs-message-list .cs-message-group.cs-message-group--incoming,
+.cs-message-list .cs-message.cs-message--incoming {
   margin-right: auto;
 }
 
-.cs-message-list__scroll-wrapper>.cs-message, .cs-message-list__scroll-wrapper>.cs-message-group {
-  max-width: 85%;
+.cs-message-list__scroll-wrapper > .cs-message,
+.cs-message-list__scroll-wrapper > .cs-message-group {
+  max-width: 100%;
 }
 
 .cs-message-group--incoming {
   justify-content: flex-end;
 }
-
+.cs-message-group--outcoming {
+  justify-content: flex-start;
+}
 .cs-message-group {
   box-sizing: border-box;
   display: flex;
@@ -157,7 +170,8 @@
   order: 1;
 }
 
-.cs-message-group__avatar, .cs-message-group__content {
+.cs-message-group__avatar,
+.cs-message-group__content {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -165,49 +179,81 @@
 
 .cs-message-group__messages {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
 }
 
 .cs-message-group__messages .cs-message:first-child {
   margin-top: 0;
 }
 
-.cs-message:not(:only-child), .cs-message:only-child {
+.cs-message:not(:only-child),
+.cs-message:only-child {
   margin: 0.2em 0 0;
 }
 
 .cs-message {
   box-sizing: border-box;
-  font-size: 1em;
-  font-family: Helvetica Neue,Segoe UI,Helvetica,Arial,sans-serif;
-  color: rgba(0,0,0,.87);
+  font-size: 1.5em;
+  font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
+  color: rgba(0, 0, 0, 0.87);
   display: flex;
   flex-direction: row;
   padding: 0;
   background-color: transparent;
   overflow: hidden;
   border-radius: 0;
+  word-break: break-all;
 }
 
-.cs-message__avatar, .cs-message__content-wrapper {
+.cs-message__avatar,
+.cs-message__content-wrapper {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
 
-.cs-message-group--incoming .cs-message-group__messages .cs-message:first-child .cs-message__content {
-  border-radius: 0 0.7em 0.7em 0;
+/* .cs-message-group--incoming
+  .cs-message-group__messages
+  .cs-message:first-child
+  .cs-message__content {
+  border-radius: 0.7em;
+} */
+
+
+.cs-message-group--incoming
+  .cs-message-group__messages
+  .cs-message
+  .cs-message__content {
+  border-radius: 0.9em;
+  color: rgb(255, 255, 255);
+  background-color: #f3cbcb;
+  padding: 0 0.3em;
 }
 
-.cs-message-group--incoming .cs-message-group__messages .cs-message .cs-message__content {
-  border-radius: 0 0.7em 0.7em 0;
-  color: rgba(0,0,0,.87);
-  background-color: #c6e3fa;
+.cs-message-group--outcoming
+  .cs-message-group__messages
+  .cs-message
+  .cs-message__content {
+  border-radius: 0.9em;
+  color:  rgb(0, 0, 0, 0.827);
+  background-color: #f3cbcb;
+  padding: 0 0.3em;
 }
 
+.chat-date-incoming {
+  font-size: 0.7rem;
+  color: rgba(197, 197, 197, 0.849);
+  text-align: end;
+  vertical-align: bottom;
+}
 
-
-
-
+.chat-date-outcoming {
+  font-size: 0.7rem;
+  color: rgba(197, 197, 197, 0.849);
+  text-align: start;
+  vertical-align: bottom;
+}
 
 /*----------------input------------------*/
 
@@ -226,8 +272,8 @@
   border: solid #d1dbe3;
   border-width: 1px 0 0;
   margin-top: auto;
-  padding: 0.3em 0;
-  color: rgba(0,0,0,.87);
+  /* padding: 0.3em 0; */
+  color: rgba(0, 0, 0, 0.87);
   background-color: #fff;
   display: flex;
   flex-direction: row;
@@ -237,11 +283,13 @@
   flex-shrink: 0;
 }
 
+/* 채팅 입력창 크기 조절*/
 .chat-message-form-wrapper {
+  width: 320px;
   margin-left: 0.8em;
   box-sizing: border-box;
   position: relative;
-  background-color: #c6e3fa;
+  /* background-color: #c6e3fa; */
   margin: 0;
   padding: 0.6em 0.9em;
   border-radius: 0.7em;
@@ -251,20 +299,21 @@
 
 .chat-message-content {
   box-sizing: border-box;
+  width: 200px;
   flex-grow: 1;
-  background-color: #c6e3fa;
-  font-family: Helvetica Neue,Segoe UI,Helvetica,Arial,sans-serif;
+  /* background-color: #c6e3fa; */
+  font-family: Helvetica Neue, Segoe UI, Helvetica, Arial, sans-serif;
   outline: 0;
   border: 0;
   overflow: visible;
-  color: rgba(0,0,0,.87);
+  color: rgba(0, 0, 0, 0.87);
   overflow-wrap: anywhere;
   word-break: break-word;
   flex-direction: row;
 }
 
 .chat-message-form-button {
-  width: 40px; 
+  width: 40px;
   margin-left: 8px;
 }
 

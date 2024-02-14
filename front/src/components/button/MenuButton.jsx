@@ -53,7 +53,7 @@ export default function PositionedMenu({zin, albumPk }) {
       } else if (menuItem === 'Profile' ) {
         navigate(`/myalbum/setting` , { state : settingdata})
       } else if (menuItem === 'Inquiry') {
-        window.location.href = 'https://www.instagram.com/yaenajol.official/'
+        navigate('/feedback');
       } else if (menuItem === 'Withdrawal') {
         window.location.href = `${API_URL}/kakao/unlinkRedirect`;
       } else if (menuItem === 'Download') {
