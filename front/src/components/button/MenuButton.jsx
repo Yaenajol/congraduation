@@ -15,15 +15,16 @@ import { isLoginAtom } from "../store/atom";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import "./MenuButton.css"
+import moment from 'moment';
 
-
-export default function PositionedMenu({zin, albumPk }) {
+export default function PositionedMenu({zin, albumPk,albumOpenAt }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const [settingdata, setSettingdata] = useState("");
   const API_URL = process.env.REACT_APP_BACKEND_API_URL
   const [isLogin, setIsLogin] = useRecoilState(isLoginAtom);
   const navigate = useNavigate();
+  const now = moment();
 
   useEffect(() => {
     if (!zin) {
@@ -36,7 +37,7 @@ export default function PositionedMenu({zin, albumPk }) {
         });
     }
   }, []);
-
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -57,7 +58,11 @@ export default function PositionedMenu({zin, albumPk }) {
       } else if (menuItem === 'Withdrawal') {
         window.location.href = `${API_URL}/kakao/unlinkRedirect`;
       } else if (menuItem === 'Download') {
-        navigate('/myalbum/download' , { state : albumPk})
+        if (now >= albumOpenAt) {
+          navigate('/myalbum/download' , { state : albumPk})
+        } else {
+          alert("졸업일 이후에 가능합니다!")
+        }
       }
     };
   };
