@@ -96,6 +96,7 @@ function FeedbackPage() {
           time: new Date(),
         });
         setCurrentTime(Date.now());
+        setEditDone(!editDone);
       } catch (err) {
         console.log("Subscribe Error : " + err);
       }
