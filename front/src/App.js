@@ -38,7 +38,7 @@ function App() {
       <Route path="/kakao/unlink" element={<UnlinkRedirect/>}/>
 
       {/* 오류페이지 만들어야됨 */}
-      <Route path="*" element={<Navigate replace to="/kakao/oauth" />} />
+      {/* <Route path="*" element={<Navigate replace to="/kakao/oauth" />} /> */}
     </Routes>
     
   );

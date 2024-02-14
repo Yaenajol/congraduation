@@ -56,7 +56,6 @@ export default function PositionedMenu({zin, albumPk }) {
         window.location.href = 'https://www.instagram.com/yaenajol.official/'
       } else if (menuItem === 'Withdrawal') {
         window.location.href = `${API_URL}/kakao/unlinkRedirect`;
-        console.log('회원탈퇴')
       } else if (menuItem === 'Download') {
         navigate('/myalbum/download' , { state : albumPk})
       }

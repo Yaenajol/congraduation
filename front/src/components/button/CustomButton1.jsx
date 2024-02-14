@@ -11,9 +11,8 @@ function CustomButton({
   ShareUrl,
 }) {
   const kakaoButton = () => {
-    // console.log(albumPk.albumPk)
+
     const requestUrl = ShareUrl;
-    console.log(requestUrl);
     window.Kakao.Link.sendDefault({
       objectType: "feed",
       content: {

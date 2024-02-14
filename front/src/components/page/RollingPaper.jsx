@@ -48,17 +48,6 @@ function RollingPaper() {
       });
   }, []);
 
-  console.log(messages);
-
-  // 더미 데이터
-  // const messages = [
-  //   { id: 1, image: dogBall, nickname: 'test1', message: "아으디라으니안이라ㅣㄴㅇ란일" },
-  //   { id: 2, image: dogHat, nickname: 'test2', message: "123123123" },
-  //   { id: 3, image: albumFrame, nickname: 'test3', message: "가나다라마바사" },
-  //   { id: 4, image: background3, nickname: 'test4', message: "asdasfvfsdfsf" },
-  //   { id: 5, image: userAltImage, nickname: 'test5', message: "테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터 테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터테스트용 더미 데이터" },
-  // ];
-
   const totalPages = Math.ceil(messages.length / imagesPerPage);
 
   const handleNext = () => {
@@ -75,7 +64,6 @@ function RollingPaper() {
       [index]: !prevSelected[index],
     }));
   };
-  console.log(selectedImages);
 
   const downloadSelectedImages = async () => {
     const zip = new JSZip();
@@ -87,7 +75,6 @@ function RollingPaper() {
           (message) => message.id.toString() === id
         );
         if (message) {
-          console.log(message);
           const imageContainer = document.createElement("div");
           imageContainer.style.boxShadow =
             "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);";
