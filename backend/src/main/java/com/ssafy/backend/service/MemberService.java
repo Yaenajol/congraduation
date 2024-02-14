@@ -354,7 +354,7 @@ public class MemberService {
       myMemoryList.add(MyMemoryResponseDto.builder()
           .id(index++)
           .content(memory.getContent())
-          .nickname(memory.getContent())
+          .nickname(memory.getNickname())
           .image(imageService.getPresingendURL(memory.getImageName()))
           .build());
     }
