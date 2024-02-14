@@ -17,7 +17,7 @@ import {
   Grid,
 } from "@mui/material";
 
-import background3 from "../images/background3.png"
+import background3 from "../images/background3.png";
 
 function RollingPaper() {
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
@@ -62,7 +62,7 @@ function RollingPaper() {
   };
 
   const downloadSelectedImages = async () => {
-    const zip = new JSZip(); 
+    const zip = new JSZip();
     const canvasPromises = [];
 
     Object.keys(selectedImages).forEach((id) => {
@@ -109,12 +109,12 @@ function RollingPaper() {
         saveAs(content, "congraduation.zip");
       });
     });
-    navigate('/myalbum');
+    navigate("/myalbum");
   };
 
   return (
-    <Box style={{ backgroundColor: 'gray'}}>
-      <Grid container spacing={2} >
+    <Box style={{ backgroundColor: "gray" }}>
+      <Grid container spacing={2}>
         {messages
           .slice((currentPage - 1) * imagesPerPage, currentPage * imagesPerPage)
           .map((message) => (
@@ -185,6 +185,7 @@ function RollingPaper() {
         <Button
           variant="contained"
           onClick={downloadSelectedImages}
+          disabled={!Object.values(selectedImages).some((value) => value)}
           sx={{ ml: 2 }}
         >
           선택 다운로드
