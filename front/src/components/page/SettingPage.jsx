@@ -6,9 +6,6 @@ import CustomButton from "../button/CustomButton";
 
 import StyledMemoryPage from "../styledComponents/StyledMemoryPage";
 import HomeIcon from "@mui/icons-material/Home";
-
-import StyledTypography from "../styledComponents/StyledTypography";
-import userAltImage from "../images/userAltImage.png"; // 이미지 파일의 경로를 import 합니다.
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -184,7 +181,6 @@ const SettingsPage = () => {
                 alignItems: "start",
               }}
             >
-              {/* <div className='font700'>Nickname</div> */}
               <TextField
                 placeholder="15글자 이하로 입력해주세요."
                 label="닉네임"
@@ -217,7 +213,7 @@ const SettingsPage = () => {
                 marginTop: "15px",
               }}
             >
-              {/* <div className='font700'>Graduation Place</div> */}
+
               <TextField
                 placeholder="15글자 이하로 입력해주세요."
                 label="졸업 학교"
@@ -249,7 +245,7 @@ const SettingsPage = () => {
                 marginTop: "15px",
               }}
             >
-              {/* <div className='font700'>Title</div>   */}
+ 
               <TextField
                 placeholder="15글자 이하로 입력해주세요."
                 label="앨범 이름"

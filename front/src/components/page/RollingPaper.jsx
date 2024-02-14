@@ -17,7 +17,6 @@ import {
   Grid,
 } from "@mui/material";
 
-import background3 from "../images/background3.png"
 
 function RollingPaper() {
   const API_URL = process.env.REACT_APP_BACKEND_API_URL;
@@ -25,7 +24,6 @@ function RollingPaper() {
   const imagesPerPage = 4;
   const [selectedImages, setSelectedImages] = useState({});
   const [messages, setMessages] = useState([]);
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -103,16 +101,18 @@ function RollingPaper() {
         }
       }
     });
-
+   
     await Promise.all(canvasPromises).then(() => {
       zip.generateAsync({ type: "blob" }).then((content) => {
         saveAs(content, "congraduation.zip");
       });
     });
+    navigate('/myalbum')
+    
   };
 
   return (
-    <Box style={{ backgroundColor: 'gray'}}>
+    <Box style={{ backgroundColor: '#9C93B2'}}>
       <Grid container spacing={2} >
         {messages
           .slice((currentPage - 1) * imagesPerPage, currentPage * imagesPerPage)
@@ -184,6 +184,7 @@ function RollingPaper() {
         <Button
           variant="contained"
           onClick={downloadSelectedImages}
+          disabled={!Object.values(selectedImages).some(value => value)}
           sx={{ ml: 2 }}
         >
           선택 다운로드
