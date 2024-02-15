@@ -77,14 +77,14 @@ public class FeedbackStompService {
     // 관리자가 보낸 응답에 포함되어있는 memberPk로 앨범pk 전달 : 전달시 앨범pk전달할건지 맴버pk 전달할건지 고민필요
 //    String memberPk = textArray[1].trim();
      String albumPk = textArray[1].trim();
-    Album album = albumRepository.findByMemberPk(albumPk);
+//    Album album = albumRepository.findByMemberPk(albumPk);
     String content = textArray[2];
 
 
     // 2. FeedbackDto에 할당하기 : 가공 완료 후 Dto에 담기
     FeedbackDto feedbackDto = FeedbackDto.builder()
         .messageType(MessageType.ANSWER)
-        .albumPk(album.getPk())
+        .albumPk(albumPk)
         .senderPk("feedManager")
         .accessToken("feedManager") // 보낸 사람이 Outgoing properties에 설정된 userId는 관리자 관리자인 것을 알려주는 PK
         .content(content)
