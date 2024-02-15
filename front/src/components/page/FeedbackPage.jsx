@@ -187,7 +187,7 @@ function FeedbackPage() {
                       <img
                         src={adminIcon}
                         style={{
-                          width: "15%",
+                          width: "45px",
                           borderRadius: "50%",
                           backgroundColor: "white",
                         }}
