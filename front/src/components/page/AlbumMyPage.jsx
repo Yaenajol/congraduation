@@ -66,6 +66,7 @@ const AlbumMypage = () => {
   const timeGap = dday.getTime() - today.getTime();
   const remainDay = Math.ceil(timeGap / (1000 * 60 * 60 * 24));
 
+  
   // 페이지네이션 변수 목록
   const itemsPerPage = 4;
   const startIndex = (currentPage - 1) * itemsPerPage; // 페이지의 첫 인덱스 (예를 들면 4개씩 1페이지이면 2페이지일 때는 4)
@@ -335,7 +336,7 @@ const AlbumMypage = () => {
             ShareUrl={ShareUrl}
           ></CustomButton1>
 
-          <MenuButton zin={false} albumPk={album.albumPk}/>
+          <MenuButton zin={false} albumPk={album.albumPk} remainDay={remainDay}/>
         </div>
 
 

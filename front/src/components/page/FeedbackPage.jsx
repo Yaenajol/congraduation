@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import * as StompJs from "@stomp/stompjs";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -20,7 +20,7 @@ function FeedbackPage() {
   const client = useRef({});
   const [imageUrl, setImageUrl] = useState(userAltImage);
 
-  const [userInfo, setUserInfo] = useState([]);
+  const [userInfo, setUserInfo] = useState([]);  
 
   const params = useParams();
   const accessToken = sessionStorage.getItem("accessToken");
@@ -29,8 +29,20 @@ function FeedbackPage() {
 
   const navigate = useNavigate();
 
+  const scrollRef = useRef();
+  const [editDone, setEditDone] = useState(false); // editDone 상태를 useState로 관리
+
+  const scrollToBottom = useCallback(() => {
+      scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+  }, [editDone]);
+
   useEffect(() => {
-    if (accessToken) {
+    scrollToBottom(); // 마운트 및 editDone 변경 시 스크롤 함수 호출
+  }, [scrollToBottom]);
+ 
+  useEffect(() => {
+
+    if( accessToken) {
       axios
         .get(`${API_URL}/members/myAlbum`, {
           headers: { accessToken: sessionStorage.accessToken },
@@ -77,13 +89,14 @@ function FeedbackPage() {
     client.current.subscribe("/sub/feedback/" + albumPk, (body) => {
       try {
         const json_body = JSON.parse(body.body);
-
+        console.log(json_body)
         chatList.current.push({
           messageType: json_body.messageType,
           content: json_body.content,
           time: new Date(),
         });
         setCurrentTime(Date.now());
+        setEditDone(!editDone);
       } catch (err) {
         console.log("Subscribe Error : " + err);
       }
@@ -107,6 +120,7 @@ function FeedbackPage() {
   const handleSubmit = (event, chat) => {
     // 보내기 버튼 눌렀을 때 publish
     event.preventDefault();
+    setEditDone(!editDone);
     publish(chat);
   };
 
@@ -144,7 +158,7 @@ function FeedbackPage() {
         </div>
 
         {/* 중앙 대화 창 */}
-        <div className="chat-message-list cs-message-list">
+        <div className="chat-message-list cs-message-list" ref={scrollRef}>
           <div
             data-cs-message-list
             className="scrollbar-container cs-message-list__scroll-wrapper ps"
@@ -153,6 +167,7 @@ function FeedbackPage() {
               overflowAnchor: "auto",
               touchAction: "none",
             }}
+            ref={scrollRef}
           >
             {chatList.current.map((message, index) => {
               let className =
@@ -164,6 +179,7 @@ function FeedbackPage() {
                   key={index}
                   className={className}
                   data-cs-message-group
+                  ref={scrollRef}
                 >
                   {/* 채팅창 */}
                   <div className="cs-message-group__content">
@@ -171,10 +187,11 @@ function FeedbackPage() {
                       <img
                         src={adminIcon}
                         style={{
-                          width: "15%",
+                          width: "45px",
                           borderRadius: "50%",
                           backgroundColor: "white",
                         }}
+                        alt="adminIcon"
                       />
                     ) : null}
                     {message.messageType == "ANSWER" ? (

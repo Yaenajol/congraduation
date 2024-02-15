@@ -61,7 +61,6 @@ const MemoryUpload = () => {
    */
   const handleCloseModal = () => {
     setOpenModal(false);
-    // setSelectedImageIndex(null);
   };
 
   /**
@@ -70,7 +69,6 @@ const MemoryUpload = () => {
    */
   const handleGridItemClick = (key) => {
     setSelectedGridItem(key);
-    // fileInputRef.current.click();
     setSelectedImage(null);
     setOpenModal(true);
   };
@@ -242,9 +240,7 @@ const MemoryUpload = () => {
       <br />
 
       <TextField
-        // id="outlined-multiline-flexible"
         className="input-field"
-        // variant="filled"
         multiline
         rows={4} // 표시되는 기본 줄 수
         type="text"

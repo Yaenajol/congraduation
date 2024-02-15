@@ -180,7 +180,7 @@
 .cs-message-group__messages {
   box-sizing: border-box;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 .cs-message-group__messages .cs-message:first-child {

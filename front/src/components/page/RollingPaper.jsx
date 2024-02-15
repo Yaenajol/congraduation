@@ -25,7 +25,6 @@ function RollingPaper() {
   const imagesPerPage = 4;
   const [selectedImages, setSelectedImages] = useState({});
   const [messages, setMessages] = useState([]);
-  const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -113,7 +112,7 @@ function RollingPaper() {
   };
 
   return (
-    <Box style={{ backgroundColor: "gray" }}>
+    <Box style={{ backgroundColor: "#9C93B2" }}>
       <Grid container spacing={2}>
         {messages
           .slice((currentPage - 1) * imagesPerPage, currentPage * imagesPerPage)
