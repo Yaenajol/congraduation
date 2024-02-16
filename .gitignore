@@ -17,7 +17,10 @@ front/build
 .env.development
 .env.test.local
 .env.production
+<<<<<<< HEAD
 .env
+=======
+>>>>>>> back
 
 npm-debug.log*
 yarn-debug.log*
