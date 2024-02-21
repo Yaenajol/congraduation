@@ -4,8 +4,8 @@
 
 <p align='center'>
 
-<img src="/uploads/876df0af63931d868ec2f12915a8418d/logo.png" width="40%">
-<img src="/uploads/71434a3913224259b5a166dca949ca08/dogimo.png" width="20%">
+<img src="https://github.com/Yaenajol/congraduation/assets/133967948/c2c08543-3e0a-4ee2-a253-55ec5b342feb" width="40%">
+<img src="https://github.com/Yaenajol/congraduation/assets/133967948/beb9f8a7-1e8c-4d53-9af0-d7818dcb8556" width="20%">
 
 </p>
 
@@ -79,43 +79,44 @@ https://zest-fact-d42.notion.site/cf83737962c04bb1b543becaafa94791
 <div align="center">
 
 ### 메모리 업로드 
-![memoryupload](/uploads/607c73be2f28a02317b3da5975e7d2e4/memoryupload.gif)
+https://lab.ssafy.com/s10-webmobile1-sub2/S10P12B107/uploads/607c73be2f28a02317b3da5975e7d2e4/memoryupload.gif
 <br>
 	 총 4장의 사진과 별명, 메세지를 작성하여 특정 앨범에 메모리를 등록합니다.
 
 
 ### 메모리 확인 
-![checkmomery](/uploads/2f7ada6079c3d85554ea86e59b43ac31/checkmomery.gif)
+https://lab.ssafy.com/s10-webmobile1-sub2/S10P12B107/uploads/2f7ada6079c3d85554ea86e59b43ac31/checkmomery.gif
 <br>
 	 졸업일 이후에 앨범의 주인은 각각의 메모리를 모달창을 통해 확인할 수 있습니다
 
 
 ### 카카오 공유
 
-![linkshare](/uploads/3408e0107e21e73d6d84ac4414cfad88/linkshare.gif)
+![linkshare](https://github.com/Yaenajol/congraduation/assets/133967948/1c1f5cbf-286d-4671-883f-1c80353e963a)
 <br>
 	 카카오 공유 API를 통해 카카오톡과 연계하여 앨범 링크를 공유할 수 있습니다.
 
 
 ### 1:1 문의(Mattermost)
-![inquiry](/uploads/077d107260450a88338bc146d9ce9c15/inquiry.gif)
+![inquiry](https://github.com/Yaenajol/congraduation/assets/133967948/acf2c867-0bd5-464b-a514-76e33504c16b)
+
 <br>
 	websoket(stomp) 기능을 통해 Mattermost와 연동하여 실시간 피드백을 할 수 있습니다
 
 
 ### 메모리 다운로드 
-![download](/uploads/8aebc3d8610af07f2b2d8148cdcae1b3/download.gif)
+https://lab.ssafy.com/s10-webmobile1-sub2/S10P12B107/uploads/8aebc3d8610af07f2b2d8148cdcae1b3/download.gif
 <br>
 	 또한 지인이 작성해준 메모리를 선택하여 압축파일로 다운로드를 받을 수 있습니다.
 
 
 
 #### 압축 해제 후 
-![image](/uploads/66246326f4424290f399dc4ab0d85c4b/image.png)
+![image](https://github.com/Yaenajol/congraduation/assets/133967948/f33e4a63-3990-45e9-a91d-621599d0ab1c)
 
 
 #### 다운로드 된 메모리 한 장 
-![image_13](/uploads/28c512627a0fdaed7a547127c2310ac5/image_13.png)
+![image_13](https://github.com/Yaenajol/congraduation/assets/133967948/d0ee5d62-eb85-4125-be46-12f783f57945)
 
 </div>
 
@@ -285,7 +286,7 @@ https://zest-fact-d42.notion.site/cf83737962c04bb1b543becaafa94791
 
 # 🚧 시스템 아키텍쳐
 
-![CICD__1_](/uploads/0caa2f638b1183b7fc4a553c10c8edcd/CICD__1_.png)
+![CICD__1_](https://github.com/Yaenajol/congraduation/assets/133967948/c62b6dbd-5a54-48f6-8f30-3605e26ca2a9)
 
 <br>
 
@@ -297,8 +298,8 @@ https://zest-fact-d42.notion.site/cf83737962c04bb1b543becaafa94791
 <details>
 <summary>요구사항 명세서</summary>
 <div markdown="1">       
-    ![image](/uploads/592e868ceb8c521435ac3544c76df16d/image.png)
 
+![requirement](https://github.com/Yaenajol/congraduation/assets/133967948/0d90c733-d7c3-47d1-841c-076603c80968)
 </div>
 https://zest-fact-d42.notion.site/a375431242fd4360950edc156236184d?v=0dd40bfe21e34aeb8f5b940508d94105
 </details>
@@ -309,8 +310,8 @@ https://zest-fact-d42.notion.site/a375431242fd4360950edc156236184d?v=0dd40bfe21e
 <details>
 <summary>ERD</summary>
 <div markdown="1">       
-    ![image](/uploads/1ddb5cf4e002aa8fb5eb478040932b40/image.png)
-
+	
+![erd](https://github.com/Yaenajol/congraduation/assets/133967948/c209135e-410a-48f1-b1ef-f9f8fcd281cb)
 </div>
 https://www.notion.so/ERD-2839ae0ee9154a77b3afcc9437c01f10
 </details>
@@ -320,8 +321,8 @@ https://www.notion.so/ERD-2839ae0ee9154a77b3afcc9437c01f10
 <details>
 <summary>API 문서</summary>
 <div markdown="1">       
-    ![image](/uploads/6c388cab9f4926be06773afc7d485a0b/image.png)
-
+  
+![api](https://github.com/Yaenajol/congraduation/assets/133967948/9fc63413-5085-4932-990b-cf9ab9cafcc0)
 </div>
 https://www.notion.so/API-b9e2afe99a9f4adfb3ad059cca08a888
 </details>
@@ -331,8 +332,8 @@ https://www.notion.so/API-b9e2afe99a9f4adfb3ad059cca08a888
 <details>
 <summary>와이어 프레임</summary>
 <div markdown="1">       
-    ![image](/uploads/24a055381853cc820ff7c4a4009de650/image.png)
 
+ ![wire](https://github.com/Yaenajol/congraduation/assets/133967948/3df06d55-d6d8-41fe-a2e1-58a100619566)
 </div>
 https://zest-fact-d42.notion.site/98a70919678b40cabaac94fdf2135188
 </details>
@@ -346,7 +347,7 @@ https://zest-fact-d42.notion.site/98a70919678b40cabaac94fdf2135188
 <details>
 <summary>UCC</summary>
 <div markdown="1">       
-![UCC_최최종](/uploads/274423460082be2e35ada327c260b1d8/UCC_최최종.gif)
+(https://lab.ssafy.com/s10-webmobile1-sub2/S10P12B107/uploads/274423460082be2e35ada327c260b1d8/UCC_%EC%B5%9C%EC%B5%9C%EC%A2%85.gif)
 </div>
 </details>
 
@@ -355,7 +356,9 @@ https://zest-fact-d42.notion.site/98a70919678b40cabaac94fdf2135188
 <details>
 <summary>GA</summary>
 <div markdown="1">       
-![image](/uploads/aba93cb825eee78d904fdce43ffe1066/image.png)
+
+![ga](https://github.com/Yaenajol/congraduation/assets/133967948/1f5c2e14-5acb-47f2-a9e9-e3849340aa40)
+
 </div>
 </details>
 
@@ -365,8 +368,8 @@ https://zest-fact-d42.notion.site/98a70919678b40cabaac94fdf2135188
 <summary>트래픽 조사</summary>
 <div markdown="1">       
 
-![image__1_](/uploads/69424bd2a21d5284e25a81fb17cfb914/image__1_.png)
-![image__2_](/uploads/266b77a5d37d8948abf323f9f82a1d7f/image__2_.png)
+![traffic1](https://github.com/Yaenajol/congraduation/assets/133967948/dac322bd-c4eb-4333-b71a-4b368f682c82)
+![traffic2](https://github.com/Yaenajol/congraduation/assets/133967948/34e9426c-d4d7-4a19-8f0f-d6226a12c4dc)
 </div>
 </details>
 
