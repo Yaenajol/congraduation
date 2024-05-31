@@ -79,7 +79,7 @@ https://zest-fact-d42.notion.site/cf83737962c04bb1b543becaafa94791
 <div align="center">
 
 ### 메모리 업로드 
-https://lab.ssafy.com/s10-webmobile1-sub2/S10P12B107/uploads/607c73be2f28a02317b3da5975e7d2e4/memoryupload.gif
+![memoryupload_optimized](https://github.com/Yaenajol/congraduation/assets/133967948/55607a36-e075-4645-a91b-488e4b6fc3cb)
 <br>
 	 총 4장의 사진과 별명, 메세지를 작성하여 특정 앨범에 메모리를 등록합니다.
 
