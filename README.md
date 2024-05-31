@@ -85,7 +85,9 @@ https://zest-fact-d42.notion.site/cf83737962c04bb1b543becaafa94791
 
 
 ### 메모리 확인 
-https://lab.ssafy.com/s10-webmobile1-sub2/S10P12B107/uploads/2f7ada6079c3d85554ea86e59b43ac31/checkmomery.gif
+![checkmomery](https://github.com/Yaenajol/congraduation/assets/133967948/198dddab-4f56-461b-941d-d5bb0299faf3)
+
+
 <br>
 	 졸업일 이후에 앨범의 주인은 각각의 메모리를 모달창을 통해 확인할 수 있습니다
 
@@ -105,7 +107,7 @@ https://lab.ssafy.com/s10-webmobile1-sub2/S10P12B107/uploads/2f7ada6079c3d85554e
 
 
 ### 메모리 다운로드 
-https://lab.ssafy.com/s10-webmobile1-sub2/S10P12B107/uploads/8aebc3d8610af07f2b2d8148cdcae1b3/download.gif
+![download](https://github.com/Yaenajol/congraduation/assets/133967948/7ac5da80-fa8a-4ac7-bc41-a89b0e67fb5d)
 <br>
 	 또한 지인이 작성해준 메모리를 선택하여 압축파일로 다운로드를 받을 수 있습니다.
 
